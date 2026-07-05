@@ -39,14 +39,18 @@ def get_youtube_urls(url, output_file="youtube_urls.txt"):
                 if entry:
                     if entry.get('_type') in ['playlist', 'multi_video']:
                         continue
-                        
+
                     video_id = entry.get('id') or entry.get('url')
                     if video_id:
                         if str(video_id).startswith('http'):
                             video_url = video_id
                         else:
+                            # 채널의 "재생목록" 탭 등은 _type이 'url'로 나와 위 필터를 통과하지만
+                            # id가 영상이 아니라 재생목록 ID(11자가 아님)이므로 여기서 걸러냅니다.
+                            if not re.fullmatch(r'[\w-]{11}', str(video_id)):
+                                continue
                             video_url = f"https://www.youtube.com/watch?v={video_id}"
-                        
+
                         if video_url not in video_urls:
                             video_urls.append(video_url)
             

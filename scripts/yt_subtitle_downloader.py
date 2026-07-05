@@ -212,7 +212,17 @@ def main():
         print("다음 명령으로 먼저 설치해 주세요: pip install yt-dlp")
         sys.exit(1)
 
-    urls = []
+    # 기본 URL 파일을 youtube_urls.txt로 설정
+    url_file = 'youtube_urls.txt'
+    
+    # URL 파일이 존재하는지 확인
+    if not os.path.isfile(url_file):
+        print(f"URL 파일 '{url_file}'이(가) 존재하지 않습니다.")
+        sys.exit(1)
+    
+    # URL 파일에서 URL 읽기
+    with open(url_file, 'r') as f:
+        urls = f.read().splitlines()
 
     if args.file:
         file_path = Path(args.file)
