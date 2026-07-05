@@ -7,8 +7,7 @@
   - subtitles 폴더 안의 TXT 자막 파일들을 제목 키워드 기준으로
     주제별 하위 폴더로 자동 이동/정리합니다.
   - 이미 정리된 파일을 다시 실행해도 안전하도록 '복사'가 아닌 '이동'이며,
-    같은 이름의 파일이 이미 목적지에 있으면 내용을 비교해 동일하면 원본(중복)을
-    삭제하고, 내용이 다르면 수동 확인을 위해 건너뜁니다.
+    같은 이름의 파일이 있으면 건너뜁니다.
   - 어떤 카테고리에도 속하지 않는 파일은 '기타' 폴더로 모으고,
     실행 후 목록을 출력해줍니다 (수동으로 확인하실 수 있도록).
 
@@ -26,7 +25,6 @@
 """
 
 import argparse
-import filecmp
 import shutil
 from pathlib import Path
 
@@ -79,7 +77,7 @@ CATEGORIES = [
 OTHER_FOLDER = "12_기타"
 
 # 자막이 아닌 부산물 파일(다운로더가 생성하는 실패 로그 등)은 분류 대상에서 제외합니다.
-IGNORE_FILES = {"failed_urls.txt", ".downloaded_ids.txt"}
+IGNORE_FILES = {"failed_urls.txt"}
 
 
 def classify(filename: str) -> str:
@@ -140,11 +138,7 @@ def main():
         for f in files:
             dest = target_dir / f.name
             if dest.exists():
-                if filecmp.cmp(f, dest, shallow=False):
-                    f.unlink()
-                    print(f"  중복 삭제 (내용 동일): {category}/{f.name}")
-                else:
-                    print(f"  건너뜀 (이름은 같지만 내용이 다름 - 수동 확인 필요): {category}/{f.name}")
+                print(f"  건너뜀 (이미 존재): {category}/{f.name}")
                 skipped_count += 1
                 continue
             shutil.move(str(f), str(dest))
