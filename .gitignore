@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+*:Zone.Identifier
 _tmp_vtt/
 .claude/
