@@ -27,6 +27,7 @@
 
 import argparse
 import filecmp
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -80,6 +81,30 @@ CATEGORIES = [
 ]
 
 OTHER_FOLDER = "12_misc"
+
+
+# 제목 자체에 회차 번호가 있어 'NN_' 접두사 규칙을 쓰지 않는 폴더
+NO_RENUMBER = {"01_sleep_meditation"}
+
+
+def renumber_folder(folder: Path, dry_run: bool = False) -> int:
+    """폴더 안 파일에 가나다순으로 01_, 02_... 번호를 다시 매깁니다. 바뀐 파일 수를 돌려줍니다."""
+    files = [f for f in folder.glob("*.txt") if f.is_file() and f.name not in NON_SUBTITLE_FILES]
+    stems = sorted(((re.sub(r'^\d+_', '', f.name), f) for f in files), key=lambda t: t[0])
+    pad = max(2, len(str(len(stems))))
+    plan = [(f, folder / f"{i:0{pad}d}_{stem}") for i, (stem, f) in enumerate(stems, start=1)]
+    plan = [(src, dst) for src, dst in plan if src != dst]
+    if dry_run:
+        return len(plan)
+    # 이름이 서로 겹치지 않도록 임시 이름을 거쳐 바꿉니다.
+    temps = []
+    for src, dst in plan:
+        tmp = src.with_name(src.name + ".renumber_tmp")
+        src.rename(tmp)
+        temps.append((tmp, dst))
+    for tmp, dst in temps:
+        tmp.rename(dst)
+    return len(plan)
 
 
 def classify(filename: str) -> str:
@@ -150,6 +175,13 @@ def main():
             moved_count += 1
 
     print(f"\n완료: {moved_count}개 이동, {skipped_count}개 건너뜀")
+
+    # 파일이 들어온 폴더는 'NN_' 번호를 가나다순으로 다시 매깁니다.
+    for category in plan:
+        if category not in NO_RENUMBER:
+            changed = renumber_folder(base_dir / category)
+            if changed:
+                print(f"  번호 재정렬: {category} ({changed}개 파일명 변경)")
 
     if plan.get(OTHER_FOLDER):
         print(f"\n'{OTHER_FOLDER}' 폴더로 분류된 파일은 키워드가 매칭되지 않은 항목입니다.")
