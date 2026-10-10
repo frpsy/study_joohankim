@@ -1,57 +1,42 @@
 #!/usr/bin/env python3
 """
-YouTube 자막 스마트 다운로드 (단일 영상/재생목록/채널 자동 판단)
-=====================================================
+YouTube 자막 다운로더 — URL 하나만 주면 끝
+=========================================
 
-URL 하나만 주면:
-  1) 그게 단일 영상인지, 재생목록인지, 채널인지 자동으로 판단하고
-  2) 저장소의 기존 폴더 구조(authors/<이름>/subtitles)를 고려해서
-     저장 폴더를 알아서 만들거나, 원하면 직접 지정할 수 있고
-  3) 자막을 받아서 파일 이름을 (재생목록/채널이면 순서 번호 + 다듬은 제목으로,
-     단일 영상이면 다듬은 제목만으로) 구분하기 쉽게 정리해 저장합니다.
+  python scripts/auto_subtitle_downloader.py <URL>
 
-다른 스크립트를 import하지 않는 독립 실행 스크립트입니다.
+단일 영상 / 재생목록 / 채널 어떤 주소든 그대로 붙여넣으면 알아서 처리합니다.
+
+  1) 주소 종류를 자동 판별 (채널은 '영상' 탭으로 자동 보정)
+  2) 저장 폴더를 자동 결정: authors/<이름>/subtitles
+     (채널ID/제목으로 기존 폴더를 찾고, 없으면 새로 만듭니다. 질문 없음)
+  3) 이미 받은 영상은 자동으로 건너뜀 → 채널 주소를 다시 넣으면 '새 영상만' 받습니다
+     (폴더의 .downloaded_ids.txt, authors/<이름>/urls.txt, 기존 자막 제목과 대조)
+  4) 자막(ko 우선, 없으면 en)을 받아 타임코드를 제거한 .txt로 저장
 
 사전 준비:
   pip install yt-dlp --break-system-packages
 
-사용법:
-  # 완전 대화형 (URL만 입력하면 나머지는 전부 자동/질문으로 진행)
-  python scripts/auto_subtitle_downloader.py
+사용 예:
+  python scripts/auto_subtitle_downloader.py "https://www.youtube.com/@joohankim"
+  python scripts/auto_subtitle_downloader.py "https://www.youtube.com/@joohankim" -n 1   # 최신 1개만
+  python scripts/auto_subtitle_downloader.py "https://youtu.be/xxxx"                      # 단일 영상
+  python scripts/auto_subtitle_downloader.py                                                # URL을 물어봄
 
-  # URL을 바로 지정 (단일 영상/재생목록/채널 무엇이든 그대로 붙여넣으면 됨)
-  python scripts/auto_subtitle_downloader.py --url "https://www.youtube.com/@어떤채널"
+옵션 (대부분 필요 없음):
+  url                      영상 / 재생목록 / 채널 URL
+  -n, --limit N            새 영상 중 최신 N개만 처리
+  --months N / --since D   최근 N개월 / YYYY-MM-DD 이후에 올라온 영상만 처리 (채널·재생목록)
+  -o, --outdir             저장 폴더를 직접 지정 (기본: 자동)
+  --dry-run                받지 않고 어디에 무엇을 저장할지만 미리보기
+  --all                    이미 받은 영상도 다시 받기
+  --lang                   자막 언어 우선순위 (기본: ko,en)
+  --auto-only              자동생성 자막만 사용
+  --sleep / --retries      영상 간 대기(초) / 429 재시도 횟수
+  --cookies / --cookies-from-browser   429가 계속될 때 로그인 쿠키 사용
 
-  # 저장 폴더를 직접 지정하고 싶을 때 (자동 판단 건너뜀)
-  python scripts/auto_subtitle_downloader.py --url "..." --outdir authors/이름/subtitles
-
-  # 빠른 테스트: 실제로 받지 않고 무엇을 어디에 어떻게 저장할지만 미리보기
-  python scripts/auto_subtitle_downloader.py --url "..." --dry-run
-
-  # 빠른 테스트: 앞의 3개 영상만 받아보기
-  python scripts/auto_subtitle_downloader.py --url "..." --limit 3
-
-옵션:
-  --url                    단일 영상 / 재생목록 / 채널 URL (무엇이든 자동 판단)
-  --outdir                 저장 폴더 경로. 지정하지 않으면 저장소의 authors/ 구조를
-                           고려해 자동 생성하며, 실행 중 원하는 이름으로 바꿀지 물어봅니다.
-  --limit                  앞에서부터 N개 영상만 처리 (빠른 테스트용)
-  --dry-run                실제로 다운로드하지 않고, 판단 결과/저장 위치/파일명 계획만 출력
-  --lang                   우선 자막 언어 코드, 콤마 구분 가능 (기본값: ko,en)
-                           우선순위대로 하나씩만 요청하며, 먼저 찾은 언어만 사용합니다.
-                           단, 영상의 자동자막 원본 언어를 판별할 수 있으면 그 언어를
-                           이 목록보다 항상 먼저 시도합니다 (번역된 자막 대신 원본 우선).
-  --auto-only              자동생성 자막만 사용 (수동 자막 무시)
-  --sleep                  영상 처리 사이 최소 대기 시간(초) (기본값: 5, 429 발생 시 자동으로 늘어남)
-  --retries                429 오류 시 영상당 재시도 횟수 (기본값: 3)
-  --cookies                쿠키 파일 경로 (Netscape 형식). 429가 계속되면 사용하세요.
-  --cookies-from-browser   설치된 브라우저에서 쿠키를 가져옵니다 (예: chrome, firefox, edge)
-
-참고 (429/Too Many Requests가 계속될 때):
-  유튜브가 자막 요청을 IP 단위로 차단한 것이므로 코드 문제가 아닙니다.
-  1) 잠시(수십 분) 쉬었다가 다시 시도하거나
-  2) --cookies-from-browser chrome 등으로 로그인 쿠키를 사용하면 훨씬 덜 차단됩니다.
-  중단됐다 다시 실행해도 이미 받은 영상은 건너뛰고 이어받습니다.
+429(Too Many Requests)가 계속되면 IP 단위 차단이므로 코드 문제가 아닙니다.
+수십 분 쉬거나 --cookies-from-browser chrome 을 쓰세요. 중단 후 재실행하면 이어받습니다.
 """
 
 import argparse
@@ -62,48 +47,11 @@ import sys
 import time
 from pathlib import Path
 
-
-# ---------------------------------------------------------------------------
-# yt-dlp 실행 방식
-# ---------------------------------------------------------------------------
-
-def get_ytdlp_cmd():
-    """실행 가능한 yt-dlp 호출 방식을 찾습니다. CLI가 없으면 'python -m yt_dlp'를 사용합니다."""
-    if shutil.which("yt-dlp"):
-        return ["yt-dlp"]
-    try:
-        import yt_dlp  # noqa: F401
-        return [sys.executable, "-m", "yt_dlp"]
-    except ImportError:
-        return None
-
-
-def check_ytdlp_installed():
-    return get_ytdlp_cmd() is not None
-
-
-def cookie_cli_args(cookies: str = None, cookies_from_browser: str = None) -> list:
-    if cookies:
-        return ["--cookies", cookies]
-    if cookies_from_browser:
-        return ["--cookies-from-browser", cookies_from_browser]
-    return []
-
-
-def sanitize_name(name: str) -> str:
-    """파일/폴더명으로 쓸 수 없는 문자를 제거/치환합니다."""
-    name = re.sub(r'[\\/:*?"<>|]', '_', name)
-    name = name.strip().strip(".")
-    return name[:150] or "untitled"
-
-
-def clean_title(title: str) -> str:
-    """제목 앞뒤 공백/구분기호를 정리해서 파일명으로 쓰기 좋게 다듬습니다."""
-    if not title:
-        return "untitled"
-    t = re.sub(r'\s+', ' ', title).strip()
-    t = t.strip(' -_·')
-    return sanitize_name(t or "untitled")
+from subtitle_utils import (
+    NON_SUBTITLE_FILES, VIDEO_ID_RE, clean_title, cookie_cli_args, cookie_ydl_opts,
+    extract_video_id, get_ytdlp_cmd, is_rate_limited, require_ytdlp, sanitize_name,
+    vtt_to_plain_text,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -133,7 +81,11 @@ def extract_source(source: str, cookies: str = None, cookies_from_browser: str =
     import yt_dlp
 
     url = source
-    if 'list=' in url and 'playlist?list=' not in url:
+    is_single_video = bool(re.search(r'(?:[?&]v=|youtu\.be/|/shorts/)[\w-]{11}', url))
+    if is_single_video:
+        # 재생목록 안의 영상 링크(&list=...)여도 '그 영상 하나'만 받습니다.
+        url = re.sub(r'[?&](list|index|start_radio|pp)=[^&]*', '', url).replace('?&', '?')
+    elif 'list=' in url and 'playlist?list=' not in url:
         playlist_id = re.search(r'list=([^&]+)', url)
         if playlist_id:
             url = f"https://www.youtube.com/playlist?list={playlist_id.group(1)}"
@@ -146,22 +98,20 @@ def extract_source(source: str, cookies: str = None, cookies_from_browser: str =
     ydl_opts = {
         'extract_flat': True,
         'ignoreerrors': True,
-        'noplaylist': False,
+        'noplaylist': is_single_video,
     }
-    if cookies:
-        ydl_opts['cookiefile'] = cookies
-    elif cookies_from_browser:
-        ydl_opts['cookiesfrombrowser'] = (cookies_from_browser,)
+    ydl_opts.update(cookie_ydl_opts(cookies, cookies_from_browser))
 
     print(f"\n[안내] 주소를 분석 중입니다: {url}")
     print("[안내] 영상이 많을 경우 시간이 다소 소요될 수 있습니다...\n")
 
     video_urls = []
+    titles = {}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         result = ydl.extract_info(url, download=False)
 
         if not result:
-            return None, None, None, None, video_urls
+            return None, None, None, None, video_urls, titles
 
         source_type = detect_source_type(url, result)
         title = result.get('title')
@@ -196,8 +146,10 @@ def extract_source(source: str, cookies: str = None, cookies_from_browser: str =
 
             if video_url not in video_urls:
                 video_urls.append(video_url)
+                if entry.get('title'):
+                    titles[video_url] = entry['title']
 
-    return source_type, title, uploader, channel_id, video_urls
+    return source_type, title, uploader, channel_id, video_urls, titles
 
 
 def step1_extract(source: str, cookies: str = None, cookies_from_browser: str = None):
@@ -206,7 +158,7 @@ def step1_extract(source: str, cookies: str = None, cookies_from_browser: str = 
     print("=" * 60)
 
     try:
-        source_type, title, uploader, channel_id, video_urls = extract_source(
+        source_type, title, uploader, channel_id, video_urls, titles = extract_source(
             source, cookies=cookies, cookies_from_browser=cookies_from_browser
         )
     except Exception as e:
@@ -223,7 +175,7 @@ def step1_extract(source: str, cookies: str = None, cookies_from_browser: str = 
     print(f"★ 총 {len(video_urls)}개의 영상 URL을 찾았습니다.")
     print("-" * 50)
 
-    return source_type, title, uploader, channel_id, video_urls
+    return source_type, title, uploader, channel_id, video_urls, titles
 
 
 # ---------------------------------------------------------------------------
@@ -231,6 +183,7 @@ def step1_extract(source: str, cookies: str = None, cookies_from_browser: str = 
 # ---------------------------------------------------------------------------
 
 CHANNEL_ID_MARKER = ".channel_id"
+ALIASES_FILE = ".aliases"   # 폴더 이름 외에 제목/업로더에서 찾을 이름들 (한 줄에 하나, 예: 한글 이름)
 
 
 def find_repo_authors_dir() -> Path:
@@ -242,6 +195,15 @@ def find_repo_authors_dir() -> Path:
     return None
 
 
+def author_names(author_dir: Path) -> list:
+    """폴더 이름 + .aliases 파일에 적힌 별칭들."""
+    names = [author_dir.name]
+    aliases = author_dir / ALIASES_FILE
+    if aliases.is_file():
+        names += [l.strip() for l in aliases.read_text(encoding="utf-8").splitlines() if l.strip()]
+    return [n for n in names if n]
+
+
 def find_matching_author_folder(authors_dir: Path, channel_id: str, *text_candidates: str):
     """authors/ 밑에서 이 채널에 해당하는 기존 폴더를 찾습니다.
 
@@ -249,8 +211,8 @@ def find_matching_author_folder(authors_dir: Path, channel_id: str, *text_candid
        다음부터는 제목에 한글 이름이 없는 단일 영상이어도 정확히 찾을 수 있습니다).
     2) 채널ID로 못 찾으면, 제목/업로더 문자열 안에 기존 폴더 이름이 들어있는지로 보조 매칭합니다.
        (유튜브 메타데이터의 uploader/channel은 보통 영문 채널명이라 예: "Joohan Kim's ...",
-       저장소가 이미 쓰는 한글 이름 "김주환"과 다를 때가 많은데, 재생목록/영상 제목에는
-       한글 이름이 그대로 들어있는 경우가 많기 때문입니다.)
+       폴더 이름과 다를 때가 많은데, 재생목록/영상 제목에는 한글 이름이 그대로 들어있는
+       경우가 많습니다. 폴더 이름은 영어로 두고, 한글 이름은 폴더 안 .aliases 파일에 적어두세요.)
     """
     if authors_dir is None:
         return None
@@ -266,7 +228,7 @@ def find_matching_author_folder(authors_dir: Path, channel_id: str, *text_candid
         if not cand:
             continue
         for d in existing:
-            if d.name and d.name in cand:
+            if any(name in cand for name in author_names(d)):
                 return d
 
     return None
@@ -296,83 +258,30 @@ def auto_outdir(uploader: str, title: str, channel_id: str = "") -> Path:
 
 
 def resolve_outdir(args, uploader: str, title: str, channel_id: str = "") -> Path:
+    """--outdir이 있으면 그대로, 없으면 질문 없이 자동으로 결정합니다."""
     if args.outdir:
         return Path(args.outdir)
-
-    auto_path = auto_outdir(uploader, title, channel_id)
-
-    try:
-        user_input = input(
-            f"저장 폴더를 입력하세요 (엔터 시 자동 생성: '{auto_path}'): "
-        ).strip().strip('"').strip("'")
-    except EOFError:
-        user_input = ""
-
-    if not user_input:
-        print(f"[안내] 입력값이 없어 자동 생성 폴더 '{auto_path}'를 사용합니다.")
-        return auto_path
-
-    return Path(user_input)
+    return auto_outdir(uploader, title, channel_id)
 
 
 def prompt_for_url(args):
+    if args.url:
+        return
+    if not sys.stdin.isatty():
+        print("[오류] URL이 필요합니다. 예: python scripts/auto_subtitle_downloader.py <URL>")
+        sys.exit(1)
+    try:
+        args.url = input("영상 / 재생목록 / 채널 URL을 붙여넣으세요: ").strip().strip('"').strip("'")
+    except EOFError:
+        args.url = ""
     if not args.url:
-        try:
-            args.url = input("단일 영상 / 재생목록 / 채널 URL을 입력하세요: ").strip().strip('"').strip("'")
-        except EOFError:
-            args.url = ""
-        if not args.url:
-            print("[종료] 입력된 URL이 없어 프로그램을 종료합니다.")
-            sys.exit(1)
+        print("[종료] 입력된 URL이 없습니다.")
+        sys.exit(1)
 
 
 # ---------------------------------------------------------------------------
 # 2단계: 자막 다운로드
 # ---------------------------------------------------------------------------
-
-def vtt_to_plain_text(vtt_path: Path) -> str:
-    """VTT 자막 파일을 읽어 타임코드/태그를 제거한 순수 텍스트로 변환합니다."""
-    with open(vtt_path, "r", encoding="utf-8", errors="ignore") as f:
-        lines = f.readlines()
-
-    text_lines = []
-    seen_lines = set()
-
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
-        if line.upper().startswith("WEBVTT"):
-            continue
-        if line.startswith("Kind:") or line.startswith("Language:"):
-            continue
-        if "-->" in line:
-            continue
-        if re.match(r'^\d+$', line):
-            continue
-        line = re.sub(r'<[^>]+>', '', line)
-        line = line.strip()
-        if not line:
-            continue
-        if line in seen_lines:
-            continue
-        seen_lines.add(line)
-        text_lines.append(line)
-
-    return "\n".join(text_lines)
-
-
-def is_rate_limited(stderr_text: str) -> bool:
-    if not stderr_text:
-        return False
-    lowered = stderr_text.lower()
-    return "429" in lowered or "too many requests" in lowered
-
-
-def extract_video_id(url: str) -> str:
-    match = re.search(r'(?:v=|youtu\.be/|shorts/)([\w-]{6,})', url)
-    return match.group(1) if match else url
-
 
 def load_done_ids(outdir: Path) -> set:
     """이전 실행에서 이미 성공한 영상 ID 목록을 읽어옵니다 (429로 중단됐다 재실행할 때 이어받기용)."""
@@ -386,6 +295,63 @@ def mark_done(outdir: Path, video_id: str):
     manifest = outdir / ".downloaded_ids.txt"
     with open(manifest, "a", encoding="utf-8") as f:
         f.write(video_id + "\n")
+
+
+def collect_known_ids(outdir: Path) -> set:
+    """이 저장 폴더 기준으로 이미 받았거나 목록에 올려둔 영상 ID를 모읍니다."""
+    ids = set(load_done_ids(outdir))
+    for f in (outdir / "urls.txt", outdir.parent / "urls.txt"):
+        if f.is_file():
+            ids.update(VIDEO_ID_RE.findall(f.read_text(encoding="utf-8", errors="ignore")))
+    return ids
+
+
+def _normalize_title(name: str) -> str:
+    name = re.sub(r'^\d+[\s_.\-]+', '', name)        # 앞의 번호 접두사 제거
+    return re.sub(r'[\W_]+', '', name).lower()
+
+
+def collect_existing_titles(outdir: Path) -> set:
+    """폴더(하위 분류 폴더 포함)에 이미 있는 자막 파일의 제목을 모읍니다."""
+    if not outdir.is_dir():
+        return set()
+    return {_normalize_title(f.stem) for f in outdir.rglob("*.txt")
+            if f.name not in NON_SUBTITLE_FILES}
+
+
+def get_upload_date(url: str, cookies: str = None, cookies_from_browser: str = None):
+    """영상의 업로드 날짜(YYYYMMDD)를 조회합니다. 실패하면 None."""
+    import yt_dlp
+    opts = {'skip_download': True, 'quiet': True, 'no_warnings': True, 'ignoreerrors': True}
+    if cookies:
+        opts['cookiefile'] = cookies
+    elif cookies_from_browser:
+        opts['cookiesfrombrowser'] = (cookies_from_browser,)
+    try:
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+    except Exception:
+        return None
+    return (info or {}).get('upload_date')
+
+
+def filter_since(items: list, cutoff: str, cookies=None, cookies_from_browser=None, patience: int = 3):
+    """최신순 목록에서 cutoff(YYYYMMDD) 이후 영상만 남깁니다.
+
+    채널 목록은 최신순이므로 cutoff보다 오래된 영상이 연속 patience개 나오면 조회를 멈춥니다
+    (상단 고정 영상 때문에 한두 개 섞여 있어도 안전하도록).
+    """
+    kept, older_streak = [], 0
+    for pos, u in items:
+        d = get_upload_date(u, cookies, cookies_from_browser)
+        if d is None or d >= cutoff:
+            kept.append((pos, u))
+            older_streak = 0
+        else:
+            older_streak += 1
+            if older_streak >= patience:
+                break
+    return kept
 
 
 def detect_original_lang(url: str, cookies: str = None, cookies_from_browser: str = None) -> str:
@@ -403,10 +369,7 @@ def detect_original_lang(url: str, cookies: str = None, cookies_from_browser: st
         'no_warnings': True,
         'ignoreerrors': True,
     }
-    if cookies:
-        ydl_opts['cookiefile'] = cookies
-    elif cookies_from_browser:
-        ydl_opts['cookiesfrombrowser'] = (cookies_from_browser,)
+    ydl_opts.update(cookie_ydl_opts(cookies, cookies_from_browser))
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -417,12 +380,20 @@ def detect_original_lang(url: str, cookies: str = None, cookies_from_browser: st
     if not info:
         return None
 
-    for lang, fmts in (info.get('automatic_captions') or {}).items():
-        for fmt in fmts:
-            if 'tlang=' not in (fmt.get('url') or ''):
-                return lang
+    auto_caps = info.get('automatic_captions') or {}
 
-    return None
+    # 최신 yt-dlp는 원본 트랙을 'ko-orig' 처럼 표시합니다.
+    for lang in auto_caps:
+        if lang.endswith('-orig'):
+            return lang[:-len('-orig')]
+
+    # 구버전 대비: 번역 파라미터(tlang=)가 없는 트랙이 '딱 하나'일 때만 원본으로 인정합니다.
+    # (여러 개면 추측하지 않습니다 — 엉뚱한 언어를 요청해 429처럼 실패하던 원인이었습니다.)
+    originals = [
+        lang for lang, fmts in auto_caps.items()
+        if any('tlang=' not in (f.get('url') or '') for f in fmts)
+    ]
+    return originals[0] if len(originals) == 1 else None
 
 
 def _try_single_lang(url: str, work_dir: Path, out_template: str, lang: str, auto_only: bool,
@@ -471,15 +442,19 @@ def _try_single_lang(url: str, work_dir: Path, out_template: str, lang: str, aut
 
 
 def build_filename_stem(index: int, total: int, source_type: str, title: str) -> str:
-    """재생목록/채널이면 순서 번호를 붙이고, 단일 영상이면 제목만 사용합니다."""
+    """재생목록만 순서 번호를 붙이고, 채널/단일 영상은 제목만 사용합니다.
+
+    채널은 실행할 때마다 '새 영상'만 받기 때문에 번호를 붙이면 매번 1번부터 다시 매겨져
+    기존 파일과 번호가 꼬입니다.
+    """
     clean = clean_title(title)
-    if source_type == 'video' or total <= 1:
+    if source_type != 'playlist' or total <= 1:
         return clean
     pad = len(str(total))
     return f"{index:0{pad}d}_{clean}"
 
 
-def download_batch(urls: list, outdir: Path, source_type: str, langs: str, auto_only: bool,
+def download_batch(items: list, total: int, outdir: Path, source_type: str, langs: str, auto_only: bool,
                     sleep: float = 5, retries: int = 3,
                     cookies: str = None, cookies_from_browser: str = None,
                     max_rate_limit_cooldowns: int = 3):
@@ -494,9 +469,8 @@ def download_batch(urls: list, outdir: Path, source_type: str, langs: str, auto_
 
     # 이전 실행에서 이미 받아둔 영상은 건너뜁니다 (429로 중단됐다가 다시 실행하는 경우 대비).
     done_ids = load_done_ids(outdir)
-    total = len(urls)
 
-    for i, url in enumerate(urls, start=1):
+    for n, (i, url) in enumerate(items, start=1):
         video_id = extract_video_id(url)
         if video_id in done_ids:
             print(f"\n[{i}/{total}] 이미 받은 영상이라 건너뜁니다: {url}")
@@ -537,7 +511,7 @@ def download_batch(urls: list, outdir: Path, source_type: str, langs: str, auto_
         if consecutive_rate_limits >= 1:
             cooldowns_used += 1
             if cooldowns_used > max_rate_limit_cooldowns:
-                remaining = urls[i:]
+                remaining = [u for _, u in items[n:]]
                 print(f"\n[중단] 429 오류가 {max_rate_limit_cooldowns}회 대기 후에도 반복되어, "
                       "유튜브가 현재 IP를 차단한 것으로 보입니다.")
                 print(f"[중단] 남은 {len(remaining)}개 영상은 건너뜁니다. "
@@ -551,7 +525,7 @@ def download_batch(urls: list, outdir: Path, source_type: str, langs: str, auto_
             time.sleep(180)
             consecutive_rate_limits = 0
 
-        if i < total and dynamic_sleep > 0:
+        if n < len(items) and dynamic_sleep > 0:
             time.sleep(dynamic_sleep)
 
     return success_list, fail_list
@@ -615,13 +589,23 @@ def download_subtitle(url, outdir, index, total, source_type, langs, auto_only,
             print(f"  ✗ 자막 파일을 찾지 못했습니다 (자막이 없는 영상일 수 있습니다): {url}")
         return False, url, last_err, was_rate_limited, last_wait
 
+    # 받고 나서야 알 수 있는 '진짜 제목'이 이미 있는 자막과 같으면 중복이므로 저장하지 않습니다.
+    if source_type != 'video' and _normalize_title(clean_title(title)) in collect_existing_titles(outdir):
+        for vf in vtt_files:
+            try:
+                vf.unlink()
+            except OSError:
+                pass
+        print(f"  = 중복(이미 같은 제목의 자막이 있음)이라 저장하지 않습니다: {clean_title(title)}")
+        return True, url, "중복 건너뜀", False, last_wait
+
     chosen = vtt_files[0]
     plain_text = vtt_to_plain_text(chosen)
 
     filename_stem = build_filename_stem(index, total, source_type, title)
     out_path = outdir / f"{filename_stem}.txt"
     counter = 1
-    while out_path.exists():
+    while out_path.exists() and source_type != 'video':   # 단일 영상은 같은 이름이면 덮어씁니다
         out_path = outdir / f"{filename_stem}_{counter}.txt"
         counter += 1
 
@@ -648,15 +632,15 @@ def write_fail_log(outdir: Path, fail_list: list):
     return fail_log_path
 
 
-def step2_download_subtitles(urls: list, outdir: Path, source_type: str, lang: str, auto_only: bool,
+def step2_download_subtitles(items: list, total: int, outdir: Path, source_type: str, lang: str, auto_only: bool,
                               sleep: float = 5, retries: int = 3,
                               cookies: str = None, cookies_from_browser: str = None):
     print("\n" + "=" * 60)
     print("2단계: 자막 다운로드")
     print("=" * 60)
-    print(f"총 {len(urls)}개의 URL을 처리합니다. 저장 폴더: {outdir.resolve()}\n")
+    print(f"총 {len(items)}개의 영상을 처리합니다. 저장 폴더: {outdir.resolve()}\n")
 
-    success_list, fail_list = download_batch(urls, outdir, source_type, lang, auto_only,
+    success_list, fail_list = download_batch(items, total, outdir, source_type, lang, auto_only,
                                               sleep=sleep, retries=retries,
                                               cookies=cookies, cookies_from_browser=cookies_from_browser)
 
@@ -675,72 +659,104 @@ def step2_download_subtitles(urls: list, outdir: Path, source_type: str, lang: s
 
 def main():
     parser = argparse.ArgumentParser(
-        description="단일 영상/재생목록/채널을 자동으로 판단해 자막을 다운로드하고, "
-                    "저장소 구조(authors/이름/subtitles)를 고려해 폴더를 자동 생성합니다."
+        description="URL 하나만 주면 영상/재생목록/채널을 자동 판별해 새 영상의 자막만 받아 "
+                    "authors/<이름>/subtitles에 저장합니다."
     )
-    parser.add_argument("--url", help="단일 영상 / 재생목록 / 채널 URL")
-    parser.add_argument("--outdir", help="저장 폴더 경로 (지정하지 않으면 자동 생성 여부를 물어봅니다)")
-    parser.add_argument("--limit", type=int, help="앞에서부터 N개 영상만 처리 (빠른 테스트용)")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="실제로 다운로드하지 않고 판단 결과/저장 위치/파일명 계획만 출력")
-    parser.add_argument("--lang", default="ko,en", help="우선 자막 언어 코드, 콤마 구분 가능 (기본값: ko,en)")
+    parser.add_argument("url", nargs="?", help="영상 / 재생목록 / 채널 URL (생략하면 물어봅니다)")
+    parser.add_argument("--url", dest="url_opt", help=argparse.SUPPRESS)  # 예전 사용법 호환
+    parser.add_argument("-n", "--limit", type=int, help="새 영상 중 최신 N개만 처리")
+    parser.add_argument("--months", type=int, help="최근 N개월 이내에 올라온 영상만")
+    parser.add_argument("--since", metavar="YYYY-MM-DD", help="이 날짜 이후에 올라온 영상만")
+    parser.add_argument("-o", "--outdir", help="저장 폴더 직접 지정 (기본: authors/<이름>/subtitles 자동)")
+    parser.add_argument("--dry-run", action="store_true", help="받지 않고 계획만 출력")
+    parser.add_argument("--all", action="store_true", help="이미 받은 영상도 다시 받기")
+    parser.add_argument("--lang", default="ko,en", help="자막 언어 우선순위, 콤마 구분 (기본값: ko,en)")
     parser.add_argument("--auto-only", action="store_true", help="자동생성 자막만 사용")
-    parser.add_argument("--sleep", type=float, default=5, help="영상 처리 사이 최소 대기 시간(초) (기본값: 5)")
-    parser.add_argument("--retries", type=int, default=3, help="429 오류 시 영상당 재시도 횟수 (기본값: 3)")
-    parser.add_argument("--cookies", help="쿠키 파일 경로 (Netscape 형식). 429가 계속되면 사용하세요.")
+    parser.add_argument("--sleep", type=float, default=5, help="영상 사이 최소 대기 시간(초) (기본값: 5)")
+    parser.add_argument("--retries", type=int, default=3, help="429 시 영상당 재시도 횟수 (기본값: 3)")
+    parser.add_argument("--cookies", help="쿠키 파일 경로 (Netscape 형식)")
     parser.add_argument("--cookies-from-browser", metavar="BROWSER",
-                        help="설치된 브라우저에서 쿠키를 가져옵니다 (예: chrome, firefox, edge)")
+                        help="브라우저 쿠키 사용 (예: chrome, firefox, edge)")
     args = parser.parse_args()
+    args.url = args.url or args.url_opt
 
-    if check_ytdlp_installed() is None:
-        print("오류: yt-dlp가 설치되어 있지 않습니다.")
-        print("다음 명령으로 먼저 설치해 주세요: pip install yt-dlp --break-system-packages")
-        sys.exit(1)
+    require_ytdlp()
 
     prompt_for_url(args)
 
-    source_type, title, uploader, channel_id, video_urls = step1_extract(
+    source_type, title, uploader, channel_id, video_urls, titles = step1_extract(
         args.url, cookies=args.cookies, cookies_from_browser=args.cookies_from_browser
     )
 
-    if args.limit and args.limit > 0:
-        video_urls = video_urls[:args.limit]
-        print(f"[안내] --limit {args.limit} 지정으로 앞의 {len(video_urls)}개 영상만 처리합니다.")
-
     outdir = resolve_outdir(args, uploader, title, channel_id)
+    total = len(video_urls)
+    print(f"저장 폴더: {outdir.resolve()}")
 
-    authors_dir = find_repo_authors_dir()
-    resolved_outdir = outdir.resolve()
-    if (authors_dir is not None and resolved_outdir.name == "subtitles"
-            and resolved_outdir.parent.parent == authors_dir.resolve()):
-        remember_channel_id(resolved_outdir.parent, channel_id)
+    # 이미 받은 영상 걸러내기 (ID 또는 제목이 같은 자막이 이미 있으면 건너뜀)
+    items = list(enumerate(video_urls, start=1))
+    if not args.all and source_type != 'video':   # 단일 영상은 지정한 그 영상을 항상 받습니다
+        known_ids = collect_known_ids(outdir)
+        known_titles = collect_existing_titles(outdir)
+        fresh = []
+        for pos, u in items:
+            t = titles.get(u)
+            if extract_video_id(u) in known_ids or (t and _normalize_title(clean_title(t)) in known_titles):
+                continue
+            fresh.append((pos, u))
+        print(f"이미 받은 영상 {len(items) - len(fresh)}개는 건너뜁니다 → 새 영상 {len(fresh)}개")
+        items = fresh
+
+    if not items:
+        print("\n새로 받을 영상이 없습니다. (모두 받은 상태입니다. 다시 받으려면 --all)")
+        return
+
+    cutoff = None
+    if args.since:
+        cutoff = args.since.replace("-", "")
+    elif args.months:
+        import datetime
+        cutoff = (datetime.date.today() - datetime.timedelta(days=round(args.months * 30.44))
+                  ).strftime("%Y%m%d")
+    if cutoff and source_type != 'video':
+        print(f"{cutoff[:4]}-{cutoff[4:6]}-{cutoff[6:]} 이후 영상만 선별하는 중...")
+        before = len(items)
+        items = filter_since(items, cutoff, args.cookies, args.cookies_from_browser)
+        print(f"기간 필터: {before}개 → {len(items)}개")
+        if not items:
+            print("\n해당 기간에 새로 받을 영상이 없습니다.")
+            return
+
+    if args.limit and args.limit > 0:
+        items = items[:args.limit]
+        print(f"최신 {len(items)}개만 처리합니다 (-n {args.limit}).")
 
     if args.dry_run:
-        print("\n" + "=" * 60)
-        print("[dry-run] 실제로 다운로드하지 않고 계획만 보여줍니다.")
-        print("=" * 60)
-        print(f"저장 폴더: {outdir.resolve()}")
-        total = len(video_urls)
-        if total > 1:
-            print("(실제 파일명의 제목 부분은 다운로드 시점에 각 영상의 진짜 제목으로 채워집니다)")
-        for i, u in enumerate(video_urls, start=1):
-            stem = build_filename_stem(i, total, source_type, "영상 제목")
-            print(f"  [{i}/{total}] {u}  ->  {stem}.txt")
-        print("\n(--dry-run 이므로 실제 파일은 만들지 않았습니다.)")
+        print("\n[dry-run] 받을 영상 목록 (실제로 다운로드하지 않습니다)")
+        for n, (pos, u) in enumerate(items, start=1):
+            t = titles.get(u)
+            stem = build_filename_stem(pos, total, source_type, t or "영상 제목")
+            print(f"  [{n}/{len(items)}] {u}  ->  {stem}.txt")
         return
+
+    # 채널ID 기록: 다음부터 제목에 이름이 없는 단일 영상도 같은 폴더로 매칭됩니다.
+    authors_dir = find_repo_authors_dir()
+    resolved = outdir.resolve()
+    if (authors_dir is not None and resolved.name == "subtitles"
+            and resolved.parent.parent == authors_dir.resolve()):
+        remember_channel_id(resolved.parent, channel_id)
 
     outdir.mkdir(parents=True, exist_ok=True)
 
-    with open(outdir / "urls.txt", "w", encoding="utf-8") as f:
-        for u in video_urls:
-            f.write(u + "\n")
-
-    step2_download_subtitles(video_urls, outdir, source_type, args.lang, args.auto_only,
-                              sleep=args.sleep, retries=args.retries,
-                              cookies=args.cookies, cookies_from_browser=args.cookies_from_browser)
+    success, fail = step2_download_subtitles(
+        items, total, outdir, source_type, args.lang, args.auto_only,
+        sleep=args.sleep, retries=args.retries,
+        cookies=args.cookies, cookies_from_browser=args.cookies_from_browser)
 
     print("\n" + "=" * 60)
-    print(f"전체 완료! 저장 폴더: {outdir.resolve()}")
+    print(f"완료: 성공 {len(success)}건 / 실패 {len(fail)}건  →  {outdir.resolve()}")
+    for _, info in success:
+        if info and Path(str(info)).suffix == ".txt":
+            print(f"  + {Path(info).name}")
     print("=" * 60)
 
 

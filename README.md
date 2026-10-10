@@ -6,25 +6,34 @@
 
 ## 폴더 구조
 
+폴더 이름은 모두 영어(ASCII)로 통일합니다. 파일 이름(영상 제목)은 원문 그대로 둡니다.
+
 ```
 .
-├── scripts/                        # 자막 다운로드 / 자동 분류 도구 (저자 무관, 공용)
-│   ├── yt_subtitle_downloader.py      # 단일/여러 URL을 받아 자막 TXT로 저장
-│   ├── auto_subtitle_downloader.py    # 영상/재생목록/채널 자동 판별 + 저자 폴더 자동 매칭
-│   ├── get_youtube_urls.py            # 채널/재생목록의 영상 URL 목록 추출
-│   ├── organize_subtitles.py          # TXT 자막을 주제별 폴더로 분류
+├── scripts/                        # 자막 다운로드 / 분류 도구 (저자 무관, 공용)
+│   ├── auto_subtitle_downloader.py    # (권장) URL 하나로 영상/재생목록/채널 자동 처리
+│   ├── yt_subtitle_downloader.py      # URL 목록 파일(urls.txt)로 일괄 다운로드
+│   ├── get_youtube_urls.py            # 채널/재생목록의 영상 URL 목록만 추출
+│   ├── organize_subtitles.py          # TXT 자막을 주제별 폴더로 분류 (김주환 기준 카테고리)
+│   ├── subtitle_utils.py              # 위 스크립트들이 공유하는 공용 함수
 │   └── README.md
-└── authors/                        # 저자별 강의 자막 아카이브
-    ├── 김주환/                        # README.md, urls.txt, subtitles/(주제별 01~12 + 요약본 + 핵심6가지)
-    ├── 제갈건/
-    ├── Andrew Huberman/
-    ├── Bryan Johnson/
-    └── Nathaniel Drew/
-        └── subtitles/               # 각 저자의 자막 TXT (.channel_id = 채널 매칭용 마커)
-
-※ 다운로드 중 생기는 임시 VTT는 `_tmp_vtt/`에 만들어지며 `.gitignore`에 등록되어 있습니다.
-   `.downloaded_ids.txt`는 이어받기용 기록이므로 지우지 마세요.
+└── authors/                        # 저자(채널)별 자막 아카이브
+    └── <이름>/
+        ├── .channel_id                # 채널ID (폴더 자동 매칭용, 다운로더가 생성)
+        ├── .aliases                   # 제목/업로더에서 찾을 다른 이름들 (예: 한글 이름, 선택)
+        ├── urls.txt                   # 영상 URL 목록 (있을 때만)
+        ├── README.md                  # 저자 소개 + 카테고리 설명 (선택)
+        └── subtitles/                 # 자막 TXT (주제 폴더로 나뉘어 있기도 함)
+            ├── .downloaded_ids.txt       # 이미 받은 영상 ID (이어받기용)
+            └── failed_urls.txt           # 다운로드 실패 목록 (있을 때만)
 ```
+
+현재 저자: 김주환(`Joohan Kim`), 제갈건(`Jegal Geon`), `Nathaniel Drew`, `Bryan Johnson`, `Andrew Huberman`.
+
+- Joohan Kim은 `01_sleep_meditation` ~ `12_misc`, `summaries`, `core_six` 폴더로 주제별 분류되어 있습니다.
+- Jegal Geon은 `zhuangzi_guide/` 시리즈 폴더, 나머지 저자는 폴더 분류 없이 `subtitles/`에 바로 둡니다.
+- 재생목록으로 받은 파일은 `NN_제목.txt`처럼 순서 번호가 붙습니다.
+- 다운로드 중 임시 VTT는 `subtitles/_tmp_vtt/`에 만들어졌다가 지워지며, `.gitignore`에 등록되어 있습니다.
 
 ## 사용법
 
@@ -33,15 +42,18 @@
 ```bash
 pip install yt-dlp --break-system-packages
 
-# 1. URL 목록으로 자막 다운로드 (단일/여러 URL용)
-python scripts/yt_subtitle_downloader.py --file authors/김주환/urls.txt --outdir authors/김주환/subtitles
+# 1. (권장) URL만 넣으면 끝 — 채널이면 새 영상만, 단일 영상이면 그 영상만, 저장 폴더는 자동
+python scripts/auto_subtitle_downloader.py "<채널/재생목록/영상 URL>"
 
-# 1b. 채널/재생목록 자동 처리 (대용량/자동화용)
-python scripts/auto_subtitle_downloader.py --url "<채널/재생목록/영상 URL>" --outdir authors/김주환/subtitles
+# 1b. URL 목록 파일로 일괄 다운로드
+python scripts/yt_subtitle_downloader.py --file "authors/Joohan Kim/urls.txt" --outdir "authors/Joohan Kim/subtitles"
+
+# 1c. 자막은 받지 않고 영상 URL 목록만 뽑기
+python scripts/get_youtube_urls.py "<채널/재생목록 URL>" -o "authors/Joohan Kim/urls.txt"
 
 # 2. 다운로드된 자막을 주제별 폴더로 자동 분류
-python scripts/organize_subtitles.py --dir authors/김주환/subtitles --dry-run   # 미리보기
-python scripts/organize_subtitles.py --dir authors/김주환/subtitles            # 실제 이동
+python scripts/organize_subtitles.py --dir "authors/Joohan Kim/subtitles" --dry-run   # 미리보기
+python scripts/organize_subtitles.py --dir "authors/Joohan Kim/subtitles"            # 실제 이동
 ```
 
 각 스크립트의 자세한 옵션과 동작(임시 `_tmp_vtt` 처리, 언어 우선순위, 429 재시도 정책 등)은
@@ -49,8 +61,9 @@ python scripts/organize_subtitles.py --dir authors/김주환/subtitles          
 
 ## 새로운 저자/교수님 추가하기
 
-1. `authors/<이름>/` 폴더를 만들고 `urls.txt`에 해당 채널의 유튜브 URL을 넣습니다.
-2. 위 다운로드 명령을 `--outdir authors/<이름>/subtitles`로 실행합니다.
+1. `python scripts/auto_subtitle_downloader.py "<채널 URL>"`을 실행하면 `authors/<이름>/subtitles`가 자동으로 만들어집니다.
+   (직접 지정하려면 `-o authors/<이름>/subtitles`)
+2. 목록 파일로 받고 싶다면 `authors/<이름>/urls.txt`에 URL을 넣고 `yt_subtitle_downloader.py --file`을 사용합니다.
 3. `scripts/organize_subtitles.py`의 `CATEGORIES`는 김주환 교수님 강의 주제에 맞춰져 있으므로,
    새 저자의 강의 주제에 맞게 카테고리/키워드를 수정하거나 별도 분류 스크립트를 만들어 사용하세요.
 4. `authors/<이름>/README.md`에 채널 소개와 카테고리 설명을 간단히 남겨두면 좋습니다.

@@ -13,7 +13,7 @@
     실행 후 목록을 출력해줍니다 (수동으로 확인하실 수 있도록).
 
 사용법 (저장소 루트에서 실행):
-  python3 scripts/organize_subtitles.py --dir authors/김주환/subtitles
+  python3 scripts/organize_subtitles.py --dir "authors/Joohan Kim/subtitles"
 
 옵션:
   --dir       정리할 폴더 경로 (기본값: ./subtitles)
@@ -28,58 +28,58 @@
 import argparse
 import filecmp
 import shutil
+import sys
 from pathlib import Path
+
+from subtitle_utils import NON_SUBTITLE_FILES
 
 
 # 카테고리별 키워드 정의 (순서가 중요합니다 - 위에서부터 먼저 매칭)
 # 하나의 파일이 여러 키워드에 걸릴 경우, 먼저 나열된 카테고리로 분류됩니다.
 CATEGORIES = [
-    ("01_수면유도명상", [
+    ("01_sleep_meditation", [
         "수면유도 명상",
     ]),
-    ("02_마음근력_회복탄력성", [
+    ("02_mental_strength_resilience", [
         "마음근력", "회복탄력성", "그릿", "그릿(", "성취역량", "동기부여",
         "자기불리화", "인정중독", "인정에 의존",
     ]),
-    ("03_뇌과학_의식", [
+    ("03_neuroscience_consciousness", [
         "뇌", "의식", "신경가소성", "도파민", "뇌파", "감마파", "미토콘드리아",
         "능동적 추론", "예측모형", "마코프 블랭킷",
     ]),
-    ("04_감정_심리", [
+    ("04_emotion_psychology", [
         "불안", "분노", "용서", "사랑", "감사", "연민", "두려움", "감정",
         "트라우마", "EMDR", "최면", "플라시보",
     ]),
-    ("05_명상이론_전통", [
+    ("05_meditation_theory_tradition", [
         "명상", "아나빠나사띠", "니미따", "불교", "유교", "간화선", "돈오점수",
         "알아차림", "메따", "위빠사나",
     ]),
-    ("06_철학_사상", [
+    ("06_philosophy_thought", [
         "장자", "화엄", "공(空)", "연기(", "자유 의지", "이기적 유전자",
         "중관사상", "체화된 마음", "신라", "지눌",
     ]),
-    ("07_몸_신체_감각", [
+    ("07_body_sensation", [
         "소매틱", "미주신경", "고유감각", "내부감각", "알로스태시스",
         "움직임", "호흡", "심상 훈련",
     ]),
-    ("08_사회_미디어_기호학", [
+    ("08_society_media_semiotics", [
         "기호", "브랜드", "대중매체", "디지털", "미술", "세뇌", "휴대폰",
     ]),
-    ("09_자녀_교육_학습", [
+    ("09_children_education_learning", [
         "아이", "공부", "학습", "시험", "어린이집",
     ]),
-    ("10_관계_소통", [
+    ("10_relationships_communication", [
         "내면소통", "인간관계", "부부", "연인", "커뮤니케이션", "엄마",
         "친절", "무례",
     ]),
-    ("11_건강_수면_영양", [
+    ("11_health_sleep_nutrition", [
         "숙면", "잠 잘 자는 법", "식사", "운동법", "먹어야",
     ]),
 ]
 
-OTHER_FOLDER = "12_기타"
-
-# 자막이 아닌 부산물 파일(다운로더가 생성하는 실패 로그 등)은 분류 대상에서 제외합니다.
-IGNORE_FILES = {"failed_urls.txt", ".downloaded_ids.txt"}
+OTHER_FOLDER = "12_misc"
 
 
 def classify(filename: str) -> str:
@@ -99,12 +99,11 @@ def main():
 
     base_dir = Path(args.dir)
     if not base_dir.exists():
-        print(f"오류: 폴더를 찾을 수 없습니다 - {base_dir}")
-        return
+        sys.exit(f"오류: 폴더를 찾을 수 없습니다 - {base_dir}")
 
     txt_files = sorted([
         f for f in base_dir.glob("*.txt")
-        if f.is_file() and f.name not in IGNORE_FILES
+        if f.is_file() and f.name not in NON_SUBTITLE_FILES
     ])
 
     if not txt_files:
