@@ -8,24 +8,22 @@
 
 ```
 .
-├── scripts/                     # 자막 다운로드 / 자동 분류 도구 (저자 무관, 공용)
-│   ├── yt_subtitle_downloader.py   # 단일/여러 URL을 받아 자막 TXT로 저장
-│   ├── auto_subtitle_downloader.py # 채널/재생목록 자동 처리 버전
-│   ├── organize_subtitles.py       # TXT 자막을 주제별 폴더로 분류
+├── scripts/                        # 자막 다운로드 / 자동 분류 도구 (저자 무관, 공용)
+│   ├── yt_subtitle_downloader.py      # 단일/여러 URL을 받아 자막 TXT로 저장
+│   ├── auto_subtitle_downloader.py    # 영상/재생목록/채널 자동 판별 + 저자 폴더 자동 매칭
+│   ├── get_youtube_urls.py            # 채널/재생목록의 영상 URL 목록 추출
+│   ├── organize_subtitles.py          # TXT 자막을 주제별 폴더로 분류
 │   └── README.md
-└── authors/                     # 저자(교수님)별 강의 자막 아카이브
-    └── 김주환/
-        ├── README.md            # 이 저자 소개 + 카테고리 설명
-        ├── urls.txt             # 다운로드할 유튜브 URL 목록
-        ├── failed_urls.txt      # 자막 다운로드 실패 목록 (있을 때만)
-        └── subtitles/           # 주제별로 정리된 자막 TXT
-            ├── 01_수면유도명상/
-            ├── 02_마음근력_회복탄력성/
-            ├── ...
-            └── 12_기타/         # 아직 카테고리가 없는 자막
+└── authors/                        # 저자별 강의 자막 아카이브
+    ├── 김주환/                        # README.md, urls.txt, subtitles/(주제별 01~12 + 요약본 + 핵심6가지)
+    ├── 제갈건/
+    ├── Andrew Huberman/
+    ├── Bryan Johnson/
+    └── Nathaniel Drew/
+        └── subtitles/               # 각 저자의 자막 TXT (.channel_id = 채널 매칭용 마커)
 
-※ 다운로드 과정에서 임시 VTT 파일은 `subtitles/_tmp_vtt/`에 생성되며
-   이 폴더는 `.gitignore`에 등록되어 있습니다.
+※ 다운로드 중 생기는 임시 VTT는 `_tmp_vtt/`에 만들어지며 `.gitignore`에 등록되어 있습니다.
+   `.downloaded_ids.txt`는 이어받기용 기록이므로 지우지 마세요.
 ```
 
 ## 사용법
