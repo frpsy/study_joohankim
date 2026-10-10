@@ -25,8 +25,10 @@ python scripts/yt_subtitle_downloader.py --file urls.txt --outdir out --lang ko,
 ## organize_subtitles.py
 
 폴더 안의 자막 TXT 파일들을 제목 키워드 기준으로 주제별 하위 폴더로 이동시킵니다.
-이동이므로 재실행해도 안전하며(이미 있는 파일은 건너뜀), 어떤 카테고리에도
-안 걸리는 파일은 `12_기타` 폴더로 모입니다.
+이동이므로 재실행해도 안전합니다 — 목적지에 같은 이름의 파일이 이미 있으면 내용을 비교해서,
+내용이 같으면 원본(중복)을 삭제하고, 내용이 다르면 건너뛰고 수동 확인이 필요하다고 알려줍니다.
+`failed_urls.txt`, `.downloaded_ids.txt`처럼 자막이 아닌 부산물 파일은 분류 대상에서 제외됩니다.
+어떤 카테고리에도 안 걸리는 파일은 `12_기타` 폴더로 모입니다.
 
 ```bash
 python scripts/organize_subtitles.py --dir authors/김주환/subtitles --dry-run   # 미리보기만
