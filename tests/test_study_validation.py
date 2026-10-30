@@ -13,4 +13,5 @@ class ValidationRegression(unittest.TestCase):
     def test_wrong_unit(self):self.assertTrue(any('ledger differ' in x for x in inspect(PAGE.replace('data-study-unit="one"','data-study-unit="two"'),LEDGER,20)))
     def test_bad_range(self):self.assertTrue(any('range out of bounds' in x for x in inspect(PAGE,LEDGER,5)))
     def test_duplicate_id(self):self.assertTrue(any('duplicate id' in x for x in inspect(PAGE+'<p id="overview"></p>',LEDGER,20)))
+    def test_missing_script_target(self):self.assertTrue(any('missing script target' in x for x in inspect(PAGE+"<script>document.querySelector('#removed').append('x')</script>",LEDGER,20)))
 if __name__=='__main__':unittest.main()
