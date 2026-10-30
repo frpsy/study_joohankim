@@ -68,18 +68,33 @@ def inspect(source,ledger,duration):
         if len(unit.get('question',[]))!=len(unit.get('answer',[])):errors.append('question/answer count differs: '+u['id'])
     return errors
 
+def coverage_errors(root):
+    registered={r['id'] for r in json.loads((root/'lectures.json').read_text(encoding='utf-8'))}
+    pages={p.stem for p in (root/'lectures').glob('*.html')}
+    records={p.stem for p in (root/'study-audits').glob('*.json')}
+    return ([f'missing study source record: {vid}' for vid in sorted(registered-records)]
+            +[f'unregistered lecture page: {vid}' for vid in sorted(pages-registered)]
+            +[f'missing lecture page: {vid}' for vid in sorted(registered-pages)])
+
 def main():
-    root=Path(__file__).resolve().parents[1];fail=False
+    root=Path(__file__).resolve().parents[1]
+    coverage=coverage_errors(root);fail=bool(coverage)
+    for error in coverage:print('FAIL: '+error)
     manifests=sorted((root/'study-audits').glob('*.json'))
     if not manifests:
         print('FAIL: no study source records');return 1
     for path in manifests:
         ledger=json.loads(path.read_text(encoding='utf-8'));vid=ledger['video_id']
-        source=(root/'lectures'/f'{vid}.html').read_text(encoding='utf-8')
+        page_path=root/'lectures'/f'{vid}.html'
+        if not page_path.is_file():
+            print('FAIL: missing page '+vid);fail=True;continue
+        source=page_path.read_text(encoding='utf-8')
         errors=inspect(source,ledger,ledger['duration_seconds'])
         print(vid+': '+('; '.join(errors) if errors else f"PASS ({len(ledger['units'])} teaching units, {ledger['image_count']} images)"))
         fail|=bool(errors)
     for file in [root/'concepts.html']+[root/'lectures'/f"{json.loads(p.read_text(encoding='utf-8'))['video_id']}.html" for p in manifests]:
+        if not file.is_file():
+            print('FAIL: missing page '+str(file));fail=True;continue
         page=Page();page.feed(file.read_text(encoding='utf-8'))
         for href in page.links:
             url=urlparse(href)

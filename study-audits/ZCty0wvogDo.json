@@ -1,0 +1,65 @@
+{
+  "video_id": "ZCty0wvogDo",
+  "duration_seconds": 6138,
+  "image_count": 0,
+  "review_basis": "2026-10-30 웹 기능·문답 정합성 검사. 기존 HTML과 data/acceptance_timeline.tsv에 근거해 해설 연결을 등록. 전체 원본 자막·영상 재대조 완료를 뜻하지 않음.",
+  "transcript": {
+    "path": null,
+    "status": "원본 자막 파일이 현재 저장소에 없어 이번 검사에서 발화와 초 단위 시각을 재검증하지 못함"
+  },
+  "units": [
+    {
+      "id": "acceptance-1",
+      "source_start": 410,
+      "source_end": 1252,
+      "topic": "topic-1",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    },
+    {
+      "id": "acceptance-2",
+      "source_start": 462,
+      "source_end": 587,
+      "topic": "topic-2",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    },
+    {
+      "id": "acceptance-3",
+      "source_start": 894,
+      "source_end": 1252,
+      "topic": "topic-3",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    },
+    {
+      "id": "acceptance-4",
+      "source_start": 1730,
+      "source_end": 2678,
+      "topic": "topic-4",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    },
+    {
+      "id": "acceptance-5",
+      "source_start": 2845,
+      "source_end": 3035,
+      "topic": "topic-5",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    },
+    {
+      "id": "acceptance-6",
+      "source_start": 2678,
+      "source_end": 3708,
+      "topic": "topic-6",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    },
+    {
+      "id": "acceptance-7",
+      "source_start": 5493,
+      "source_end": 6138,
+      "topic": "topic-7",
+      "basis": "기존 시간표의 주제 범위; 자막 직접 검증 아님"
+    }
+  ],
+  "human_content_review_required": true,
+  "remaining_limits": [
+    "TSV 01:47과 댓글 01:13, TSV 14:54와 댓글 15:15는 원본 대조가 필요하며 이번 기능 검사에서 시각을 추정해 변경하지 않음."
+  ]
+}

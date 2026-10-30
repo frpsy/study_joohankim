@@ -1,7 +1,8 @@
 import sys,unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from validate_study_pages import inspect
+from validate_study_pages import inspect,coverage_errors
+import tempfile,json
 
 PAGE='<section id="overview"></section><a href="#overview">목차</a><div data-study-unit="one"><details><summary data-check="question">왜?</summary><p data-check="answer">이유를 설명한 답</p></details></div><img src="a.jpg" alt="화면">'
 LEDGER={'video_id':'example','image_count':1,'units':[{'id':'one','source_start':1,'source_end':10,'slides':['overview']}]}
@@ -14,4 +15,14 @@ class ValidationRegression(unittest.TestCase):
     def test_bad_range(self):self.assertTrue(any('range out of bounds' in x for x in inspect(PAGE,LEDGER,5)))
     def test_duplicate_id(self):self.assertTrue(any('duplicate id' in x for x in inspect(PAGE+'<p id="overview"></p>',LEDGER,20)))
     def test_missing_script_target(self):self.assertTrue(any('missing script target' in x for x in inspect(PAGE+"<script>document.querySelector('#removed').append('x')</script>",LEDGER,20)))
+
+class CoverageRegression(unittest.TestCase):
+    def test_registered_lecture_without_record_fails(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            (root/'lectures').mkdir();(root/'study-audits').mkdir()
+            (root/'lectures.json').write_text(json.dumps([{'id':'new'}]))
+            (root/'lectures/new.html').write_text(PAGE)
+            self.assertIn('missing study source record: new',coverage_errors(root))
+
 if __name__=='__main__':unittest.main()
