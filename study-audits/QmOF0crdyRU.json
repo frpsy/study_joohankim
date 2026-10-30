@@ -1,0 +1,100 @@
+{
+  "video_id": "QmOF0crdyRU",
+  "image_count": 0,
+  "review_basis": "2026-10-30 확보된 영어 자동 자막 전체(4,683행, 131,199자)를 처음부터 끝까지 순서대로 8구간 검토. 이 영상에는 슬라이드가 없어 이미지 대조는 해당하지 않음. 공식 소개란·타임스탬프와 공개 연구 출처를 추가 대조함.",
+  "transcript": {
+    "path": "authors/Andrew Huberman/subtitles/Controlling Your Dopamine For Motivation, Focus & Satisfaction.txt",
+    "language": "en",
+    "caption_type": "English transcript; source file does not record whether captions are manual or automatic",
+    "characters": 131199,
+    "lines": 4683,
+    "coverage": "entire file from opening to closing sponsor section; eight contiguous ranges",
+    "timecodes": "Official Huberman Lab episode timestamps used; caption file itself has no timecodes"
+  },
+  "units": [
+    {
+      "id": "dopamine-1",
+      "source_start": 598,
+      "source_end": 930,
+      "topic": "topic-1",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-2",
+      "source_start": 930,
+      "source_end": 1830,
+      "topic": "topic-2",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-3",
+      "source_start": 1680,
+      "source_end": 2994,
+      "topic": "topic-3",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-4",
+      "source_start": 2994,
+      "source_end": 4070,
+      "topic": "topic-4",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-5",
+      "source_start": 4070,
+      "source_end": 5325,
+      "topic": "topic-5",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-6",
+      "source_start": 5325,
+      "source_end": 6460,
+      "topic": "topic-6",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-7",
+      "source_start": 6460,
+      "source_end": 7010,
+      "topic": "topic-7",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    },
+    {
+      "id": "dopamine-8",
+      "source_start": 7010,
+      "source_end": 7820,
+      "topic": "topic-8",
+      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+    }
+  ],
+  "human_content_review_required": true,
+  "duration_seconds": 8220,
+  "content_review": {
+    "reviewed_on": "2026-10-30",
+    "checks": [
+      "자막 전 구간의 주제 흐름과 강의 소개·시간표 일치",
+      "도파민 신호의 부위·측정 수준과 혈장 측정 구별",
+      "강의의 설명 모형과 합의된 연구 근거 구별",
+      "건강·의약품 주장의 한계 및 자가처방 위험 표현",
+      "영상이 슬라이드를 제공하지 않아 화면 자료를 추정하거나 만들지 않음",
+      "해설-시간표 링크·문답·탐색 링크 확인"
+    ],
+    "new_primary_sources": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC8220193/",
+      "https://pubmed.ncbi.nlm.nih.gov/27069377/",
+      "https://pubmed.ncbi.nlm.nih.gov/37788571/",
+      "https://pubmed.ncbi.nlm.nih.gov/10751106/",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC5435294/"
+    ]
+  }
+}
