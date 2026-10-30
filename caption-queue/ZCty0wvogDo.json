@@ -1,0 +1,17 @@
+{
+  "video_id": "ZCty0wvogDo",
+  "url": "https://www.youtube.com/watch?v=ZCty0wvogDo",
+  "published": "2023-01-29",
+  "first_checked": "2026-10-30",
+  "last_checked": "2026-10-30",
+  "next_check": null,
+  "check_count": 1,
+  "caption": {
+    "type": "auto",
+    "language": "ko",
+    "range": "00:00:00.560~01:42:10"
+  },
+  "reservation_id": null,
+  "status": "caption_acquired",
+  "note": "자막 확보 완료. 해설 본문 전수 대조는 남아 있어 completed로 두지 않음. 재확인 예약 불필요."
+}

@@ -2,10 +2,11 @@
   "video_id": "ZCty0wvogDo",
   "duration_seconds": 6138,
   "image_count": 0,
-  "review_basis": "2026-10-30 웹 기능·문답 정합성 검사. 기존 HTML과 data/acceptance_timeline.tsv에 근거해 해설 연결을 등록. 전체 원본 자막·영상 재대조 완료를 뜻하지 않음.",
+  "review_basis": "2026-10-30 유튜브 한국어 자동 자막(00:00:00~01:42:10, 4701개 구간)을 다시 확보해 data/acceptance_timeline.tsv 53개 시각을 발화와 대조했고 주제가 모두 일치함을 확인했다. 해설 본문 전체를 자막과 문장 단위로 대조한 것은 아니다.",
   "transcript": {
-    "path": null,
-    "status": "원본 자막 파일이 현재 저장소에 없어 이번 검사에서 발화와 초 단위 시각을 재검증하지 못함"
+    "path": "authors/Joohan Kim/subtitles/00_core_six_training/04_수용 - 무슨 일이 일어나든.txt",
+    "status": "2026-10-30 자동 자막 재확보(타임스탬프 없는 텍스트). 시각 대조는 원본 VTT로 수행했으며 VTT는 저장소에 보관하지 않음",
+    "coverage": "00:00:00.560~01:42:10 (영상 길이 01:42:18)"
   },
   "units": [
     {
@@ -59,5 +60,9 @@
     }
   ],
   "human_content_review_required": true,
-  "remaining_limits": []
+  "remaining_limits": [
+    "해설 본문 문장 단위 원자료 대조 미실시",
+    "영상 화면(슬라이드) 대조 미실시",
+    "자동 자막이라 고유명사·전문용어 오인식 가능"
+  ]
 }
