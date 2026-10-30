@@ -77,3 +77,20 @@ class LectureLayoutRegression(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]
         source=(root/'lectures/ZCty0wvogDo.html').read_text()
         self.assertIn('accessible copy status missing',lecture_layout_errors(source.replace('aria-live="polite"','')))
+
+class MindmapRegression(unittest.TestCase):
+    def test_outline_changes_require_regeneration(self):
+        import shutil
+        from build_mindmaps import errors
+        repo=Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            shutil.copytree(repo/'lectures',root/'lectures')
+            shutil.copytree(repo/'data',root/'data')
+            shutil.copyfile(repo/'lectures.json',root/'lectures.json')
+            self.assertEqual(errors(root),[])
+            path=root/'data/lecture_mindmaps.json'
+            outlines=json.loads(path.read_text())
+            first=next(iter(outlines));outlines[first]['root']='새 중심 개념'
+            path.write_text(json.dumps(outlines,ensure_ascii=False))
+            self.assertIn('generated mindmap differs: '+first,errors(root))

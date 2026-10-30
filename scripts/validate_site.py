@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlparse,unquote
 import json,sys
 from build_library import render
+from build_mindmaps import errors as mindmap_errors
 class Document(HTMLParser):
     def __init__(self):
         super().__init__();self.ids=[];self.hrefs=[];self.styles=[];self.scripts=[];self.h1=0;self.header=0;self.notes=False;self.inline_style=False
@@ -30,7 +31,7 @@ def structural_errors(text):
     return errors,d
 def lecture_layout_errors(source):
     d=Document();d.feed(source);errors=[]
-    required=['lecture-overview','lecture-details','lecture-review','lecture-practice','lecture-sources','lecture-comment']
+    required=['lecture-overview','lecture-mindmap','lecture-details','lecture-review','lecture-practice','lecture-sources','lecture-comment']
     if any(id not in d.ids for id in required):errors.append('standard lecture section missing')
     else:
         positions=[d.ids.index(id) for id in required]
@@ -62,6 +63,7 @@ def validate(root):
             if not target.is_relative_to(root.resolve()):errors.append('link outside root: '+href);continue
             if not target.is_file():errors.append(p.name+': missing target '+href);continue
             if u.fragment and target in docs and unquote(u.fragment) not in docs[target].ids:errors.append(p.name+': missing anchor '+href)
+    if (root/'data/lecture_mindmaps.json').is_file():errors.extend(mindmap_errors(root))
     home=(root/'index.html').read_text(encoding='utf-8')
     if rows and home!=render(rows):errors.append('generated home differs from index.html')
     for row in rows:

@@ -90,3 +90,8 @@ description: 이 저장소의 강의 학습 웹페이지와 학습 규칙을 작
 - 본문의 필수 단계는 핵심 요약 → 접는 주제별 해설 → 복습 질문 → 학습 순서와 일상 적용 → 근거와 출처 → 댓글용 타임라인이다. 원본 화면은 자료가 있을 때 관련 해설에 연결한다.
 - 공통 단계 ID는 lecture-overview, lecture-details, lecture-review, lecture-practice, lecture-sources, lecture-comment로 유지하고 기존 앵커도 보존한다. 공통 site.js에서 펼치기와 댓글 원문 복사를 처리하며 복사 상태는 role=status·aria-live=polite로 알린다.
 - 강의 하단 탐색은 강의 모음과 개념집으로 통일한다. validate_site.py의 공통 레이아웃 검사와 PC·모바일 화면 검사를 통과해야 한다. 캐시된 공통 파일로 동작이 달라지지 않도록 자산 버전도 갱신한다.
+
+## 강의 마인드맵
+
+- 모든 강의는 핵심 요약 다음에 미니멀한 마인드맵을 제공한다. 중심 질문과 핵심 개념의 관계를 짧은 가지로 표현하고 세부 항목은 실제 해설 앵커로 연결한다. 새로운 과학적 주장이나 원본에 없는 인과관계를 만들지 않는다.
+- data/lecture_mindmaps.json에서 강의별 개념 구조를 관리하고 scripts/build_mindmaps.py로 생성한다. --check와 사이트 검증으로 데이터·본문 일치와 앵커를 검사한다. PC에서는 연결선이 있는 가지 구조, 모바일에서는 가로 넘침 없는 세로 구조를 사용한다.
