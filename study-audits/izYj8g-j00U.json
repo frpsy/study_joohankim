@@ -1,0 +1,99 @@
+{
+  "video_id": "izYj8g-j00U",
+  "image_count": 24,
+  "review_basis": "2026-10-30 전 구간 대조를 마친 원자료를 재사용. 이번 작업은 학습 해설과 문답을 확장하고 새 연구 설명을 원문에 재대조함.",
+  "units": [
+    {
+      "id": "positive-memory",
+      "source_start": 1454,
+      "source_end": 3378,
+      "slides": [
+        "slide-02",
+        "slide-09",
+        "slide-10"
+      ],
+      "primary_sources": [
+        "https://pubmed.ncbi.nlm.nih.gov/30953005/"
+      ],
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "perception-memory",
+      "source_start": 1749,
+      "source_end": 2925,
+      "slides": [
+        "slide-04",
+        "slide-05",
+        "slide-06",
+        "slide-07",
+        "slide-08"
+      ],
+      "primary_sources": [],
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "neurofeedback",
+      "source_start": 3643,
+      "source_end": 5957,
+      "slides": [
+        "slide-11",
+        "slide-12",
+        "slide-13",
+        "slide-14",
+        "slide-15"
+      ],
+      "primary_sources": [
+        "https://pubmed.ncbi.nlm.nih.gov/28407727/"
+      ],
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "internal-seesaw",
+      "source_start": 6033,
+      "source_end": 7723,
+      "slides": [
+        "slide-16",
+        "slide-17",
+        "slide-18",
+        "slide-19",
+        "slide-20"
+      ],
+      "primary_sources": [
+        "https://pubmed.ncbi.nlm.nih.gov/31952856/"
+      ],
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "practice-connection",
+      "source_start": 7723,
+      "source_end": 8921,
+      "slides": [
+        "slide-21",
+        "slide-22",
+        "slide-23",
+        "slide-24"
+      ],
+      "primary_sources": [
+        "https://news.mit.edu/2020/with-these-neurons-extinguishing-fear-its-own-reward-0121"
+      ],
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    }
+  ],
+  "human_content_review_required": true,
+  "duration_seconds": 8986,
+  "content_review": {
+    "reviewed_on": "2026-10-30",
+    "checks": [
+      "정의와 설명의 논리 연결",
+      "기존 자막·슬라이드 해설과의 일치",
+      "예시·비유의 보충 표시",
+      "연구 유형과 해석 범위",
+      "답변으로 질문에 실제 답할 수 있는지"
+    ],
+    "new_primary_sources": [
+      "https://pubmed.ncbi.nlm.nih.gov/30953005/",
+      "https://pubmed.ncbi.nlm.nih.gov/28407727/",
+      "https://news.mit.edu/2020/with-these-neurons-extinguishing-fear-its-own-reward-0121"
+    ]
+  }
+}
