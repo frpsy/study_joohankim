@@ -7,7 +7,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse,parse_qs
 from collections import Counter
-import json,sys
+import json,sys,re
 
 class Page(HTMLParser):
     def __init__(self):
@@ -41,6 +41,9 @@ def inspect(source,ledger,duration):
     p=Page();p.feed(source);errors=list(p.errors)
     if p.details:errors.append('unbalanced details')
     if len(p.ids)!=len(set(p.ids)):errors.append('duplicate id')
+    for script in re.findall(r'<script[^>]*>(.*?)</script>',source,re.S):
+        for target in re.findall(r"document\.querySelector\(\s*['\"]#([\w-]+)['\"]\s*\)",script):
+            if target not in p.ids:errors.append('missing script target: '+target)
     if len(p.images)!=ledger['image_count']:errors.append('image count changed')
     if any(not i.get('src') or not i.get('alt') for i in p.images):errors.append('image without source or alt')
     for href in p.links:
