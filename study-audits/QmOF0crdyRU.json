@@ -118,5 +118,33 @@
       "No proof of all 40 click targets in playback",
       "Full repository Python regression tests not run in execution environment"
     ]
+  },
+  "user_supplied_srt": {
+    "received_on": "2026-10-30",
+    "filename": "[English] Controlling Your Dopamine For Motivation, Focus & Satisfaction.srt",
+    "cue_count": 3258,
+    "last_cue_end": "02:16:29.093",
+    "validation": "All 3258 sequential SRT cue blocks parsed with chronological timestamps, none invalid",
+    "source": "User-uploaded English SRT; not yet checked against the live YouTube player in entirety",
+    "verified_points": [
+      {
+        "time": "00:09:58",
+        "cue": "So let's talk about dopamine."
+      },
+      {
+        "time": "00:15:31",
+        "cue": "So what are the underlying neural circuits?"
+      },
+      {
+        "time": "00:36:58",
+        "cue": "So let's talk about the baseline of dopamine"
+      },
+      {
+        "time": "01:37:56",
+        "cue": "Now, I'd like to talk about the positive aspects"
+      }
+    ],
+    "repository_upload_status": "SRT binary/text attachment not yet committed; audit-only update",
+    "next_step": "Store full SRT from attached file in repository and recheck all chapter anchors"
   }
 }
