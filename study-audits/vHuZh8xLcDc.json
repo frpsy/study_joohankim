@@ -1,0 +1,116 @@
+{
+  "video_id": "vHuZh8xLcDc",
+  "image_count": 53,
+  "review_basis": "2026-10-30 전 구간 대조를 마친 원자료를 재사용. 이번 작업은 학습 해설과 문답을 확장하고 새 연구 설명을 원문에 재대조함.",
+  "units": [
+    {
+      "id": "comparison-1",
+      "source_start": 1096,
+      "source_end": 3090,
+      "topic": "topic-1",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-2",
+      "source_start": 3344,
+      "source_end": 4097,
+      "topic": "topic-2",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-3",
+      "source_start": 4097,
+      "source_end": 4339,
+      "topic": "topic-3",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-4",
+      "source_start": 4339,
+      "source_end": 7059,
+      "topic": "topic-4",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-5",
+      "source_start": 7059,
+      "source_end": 7867,
+      "topic": "topic-5",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-6",
+      "source_start": 7867,
+      "source_end": 8220,
+      "topic": "topic-6",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-7",
+      "source_start": 8220,
+      "source_end": 8860,
+      "topic": "topic-7",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-8",
+      "source_start": 8860,
+      "source_end": 9210,
+      "topic": "topic-8",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-9",
+      "source_start": 9210,
+      "source_end": 9333,
+      "topic": "topic-9",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-10",
+      "source_start": 9333,
+      "source_end": 9545,
+      "topic": "topic-10",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-11",
+      "source_start": 9545,
+      "source_end": 10288,
+      "topic": "topic-11",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    },
+    {
+      "id": "comparison-12",
+      "source_start": 10288,
+      "source_end": 10501,
+      "topic": "topic-12",
+      "basis": "기존 전체 자막·화면 대조 완료 본문과 같은 주제의 캡처",
+      "supplement": "[보충] 예시·비유는 학습을 위한 설명이며 원 강의의 실제 발언·사례로 제시하지 않음"
+    }
+  ],
+  "human_content_review_required": true,
+  "duration_seconds": 10513,
+  "content_review": {
+    "reviewed_on": "2026-10-30",
+    "checks": [
+      "정의와 설명의 논리 연결",
+      "기존 자막·슬라이드 해설과의 일치",
+      "예시·비유의 보충 표시",
+      "연구 유형과 해석 범위",
+      "답변으로 질문에 실제 답할 수 있는지"
+    ],
+    "new_primary_sources": []
+  }
+}
