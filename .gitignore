@@ -4,3 +4,6 @@ __pycache__/
 *:Zone.Identifier
 _tmp_vtt/
 .claude/
+
+# Generated subtitle search database
+data/subtitles.db
