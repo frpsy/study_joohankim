@@ -59,7 +59,21 @@ class TimelineDisplayRegression(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]
         for page in (root/'lectures').glob('*.html'):
             source=page.read_text(encoding='utf-8')
-            sections=re.findall(r'<section[^>]*id="(?:timeline|comment|comment-section)"[^>]*>.*?</section>',source,re.S)
+            sections=re.findall(r'<section[^>]*id="(?:lecture-comment|timeline|comment|comment-section)"[^>]*>.*?</section>',source,re.S)
             self.assertTrue(any('<pre' in section for section in sections),page.name)
             for section in sections:
                 self.assertNotRegex(section,r'<(?:ol|ul)\b',page.name)
+
+class LectureLayoutRegression(unittest.TestCase):
+    def test_missing_required_stage_is_rejected(self):
+        from validate_site import lecture_layout_errors
+        root=Path(__file__).resolve().parents[1]
+        source=(root/'lectures/ZCty0wvogDo.html').read_text()
+        self.assertEqual(lecture_layout_errors(source),[])
+        self.assertIn('standard lecture section missing',lecture_layout_errors(source.replace('id="lecture-review"','id="missing-review"')))
+
+    def test_copy_status_must_be_announced(self):
+        from validate_site import lecture_layout_errors
+        root=Path(__file__).resolve().parents[1]
+        source=(root/'lectures/ZCty0wvogDo.html').read_text()
+        self.assertIn('accessible copy status missing',lecture_layout_errors(source.replace('aria-live="polite"','')))

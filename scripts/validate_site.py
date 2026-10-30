@@ -23,11 +23,24 @@ def structural_errors(text):
     if d.h1!=1:errors.append('expected one page title')
     if 'main' not in d.ids:errors.append('skip target missing')
     if len(d.ids)!=len(set(d.ids)):errors.append('duplicate id')
-    if not any(x.endswith('assets/site.css') for x in d.styles):errors.append('shared stylesheet missing')
-    if not any(x.endswith('assets/site.js') for x in d.scripts):errors.append('shared behavior missing')
+    if not any(urlparse(x).path.endswith('assets/site.css') for x in d.styles):errors.append('shared stylesheet missing')
+    if not any(urlparse(x).path.endswith('assets/site.js') for x in d.scripts):errors.append('shared behavior missing')
     if d.notes:errors.append('removed note UI reintroduced')
     if d.inline_style:errors.append('page-specific inline style reintroduced')
     return errors,d
+def lecture_layout_errors(source):
+    d=Document();d.feed(source);errors=[]
+    required=['lecture-overview','lecture-details','lecture-review','lecture-practice','lecture-sources','lecture-comment']
+    if any(id not in d.ids for id in required):errors.append('standard lecture section missing')
+    else:
+        positions=[d.ids.index(id) for id in required]
+        if positions!=sorted(positions):errors.append('standard lecture section order differs')
+    import re
+    if 'data-copy-target=' not in source:errors.append('shared comment copy missing')
+    if not re.search(r'<span[^>]*id="status"[^>]*role="status"[^>]*aria-live="polite"',source):errors.append('accessible copy status missing')
+    if 'data-expand-scope="#lecture-details"' not in source:errors.append('shared expand controls missing')
+    return errors
+
 def validate(root):
     rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=[];docs={}
     if len({x['id'] for x in rows})!=len(rows):errors.append('duplicate video in registry')
@@ -37,6 +50,7 @@ def validate(root):
         source=p.read_text(encoding='utf-8')
         problems,d=structural_errors(source);docs[p.resolve()]=d
         if p.parent.name=='lectures':
+            problems.extend(lecture_layout_errors(source))
             for label in ('왜 중요한가','이 강의에서 얻을 수 있는 것'):
                 if label not in source:problems.append('missing learning introduction: '+label)
         errors.extend(p.name+': '+x for x in problems)
