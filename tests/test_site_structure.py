@@ -52,3 +52,14 @@ class WordingRegression(unittest.TestCase):
             text = page.read_text(encoding="utf-8")
             for word in self.BANNED:
                 self.assertNotIn(word, text, f"{page.name}: {word}")
+
+class TimelineDisplayRegression(unittest.TestCase):
+    def test_no_separate_timeline_link_lists(self):
+        import re
+        root=Path(__file__).resolve().parents[1]
+        for page in (root/'lectures').glob('*.html'):
+            source=page.read_text(encoding='utf-8')
+            sections=re.findall(r'<section[^>]*id="(?:timeline|comment|comment-section)"[^>]*>.*?</section>',source,re.S)
+            self.assertTrue(any('<pre' in section for section in sections),page.name)
+            for section in sections:
+                self.assertNotRegex(section,r'<(?:ol|ul)\b',page.name)
