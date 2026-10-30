@@ -145,6 +145,33 @@
       }
     ],
     "repository_upload_status": "SRT binary/text attachment not yet committed; audit-only update",
-    "next_step": "Store full SRT from attached file in repository and recheck all chapter anchors"
+    "next_step": "Store full SRT from attached file in repository and recheck all chapter anchors",
+    "web_check_date": "2026-10-30",
+    "source_cue_count": 3258,
+    "last_time": "02:16:29.093",
+    "spot_checks": [
+      {
+        "chapter": "9:58",
+        "cue": "9:58",
+        "status": "aligned"
+      },
+      {
+        "chapter": "15:30",
+        "cue": "15:31",
+        "status": "within one second"
+      },
+      {
+        "chapter": "36:58",
+        "cue": "36:58",
+        "status": "aligned"
+      },
+      {
+        "chapter": "1:37:55",
+        "cue": "1:37:56",
+        "status": "within one second"
+      }
+    ],
+    "site_notice": "Added timed-transcript-check to original lecture page",
+    "repository_srt_status": "not uploaded; full SRT present only in conversation upload"
   }
 }
