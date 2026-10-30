@@ -32,6 +32,12 @@
     input.addEventListener('input',filter);filter();
     document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.value||'';filter();input.focus()}));
   });
+  document.querySelectorAll('[data-copy-target]').forEach(button=>button.addEventListener('click',async()=>{
+    const source=document.getElementById(button.dataset.copyTarget),status=document.getElementById('status');
+    if(!source||!status)return;
+    try{await navigator.clipboard.writeText(source.textContent);status.textContent='복사했습니다.'}
+    catch{const range=document.createRange();range.selectNodeContents(source);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);status.textContent='텍스트를 선택했습니다. 복사해 주세요.'}
+  }));
   document.querySelectorAll('[data-expand-scope]').forEach(button=>button.addEventListener('click',()=>{
     document.querySelectorAll(button.dataset.expandScope+' details').forEach(d=>d.open=button.dataset.expand==='true');
   }));
