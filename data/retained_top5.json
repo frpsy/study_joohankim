@@ -1,0 +1,461 @@
+{
+  "checked_on": "2026-10-30",
+  "selection": {
+    "Joohan Kim": "Highest current view counts among all 45 previously stored transcripts",
+    "Andrew Huberman": "Top five indexed long-form channel videos from https://insidecreateurs.com/en/channels/andrew-huberman, individually verified with YouTube metadata"
+  },
+  "videos": [
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/02_연민 - 친절하고 따뜻해야 마음근력이 강해진다.txt",
+      "id": "ENm40KZM1_g",
+      "title": "연민 - 친절하고 따뜻해야 마음근력이 강해진다",
+      "views": 1193779,
+      "duration": 6506
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/06_존중 - 모든 마음근력의 근원.txt",
+      "id": "kLizfh-5vuE",
+      "title": "존중 - 모든 마음근력의 근원",
+      "views": 923192,
+      "duration": 7143
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/04_수용 - 무슨 일이 일어나든.txt",
+      "id": "ZCty0wvogDo",
+      "title": "수용 - 무슨 일이 일어나든",
+      "views": 610852,
+      "duration": 6138
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/01_용서 - 그 인간을 내가 왜.txt",
+      "id": "hw4_kLaHOMg",
+      "title": "용서? 그 인간을? 내가 왜?",
+      "views": 551733,
+      "duration": 5737
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/03_사랑 - 연애하면 불행하고, 사랑해야 행복하다.txt",
+      "id": "vNqK0GhTP6s",
+      "title": "사랑 - 연애하면 불행하고, 사랑해야 행복하다",
+      "views": 548089,
+      "duration": 5792
+    },
+    {
+      "author": "Andrew Huberman",
+      "path": "authors/Andrew Huberman/subtitles/How to Build Immense Inner Strength _ David Goggins.txt",
+      "id": "nDLb8_wgX50",
+      "title": "How to Build Immense Inner Strength | David Goggins",
+      "views": 23237955,
+      "duration": 9455,
+      "language": "en",
+      "caption_type": "manual"
+    },
+    {
+      "author": "Andrew Huberman",
+      "path": "authors/Andrew Huberman/subtitles/A Process for Finding & Achieving Your Unique Purpose _ Robert Greene.txt",
+      "id": "50BZQRT1dAg",
+      "title": "A Process for Finding & Achieving Your Unique Purpose | Robert Greene",
+      "views": 15859172,
+      "duration": 11478,
+      "language": "en",
+      "caption_type": "automatic"
+    },
+    {
+      "author": "Andrew Huberman",
+      "path": "authors/Andrew Huberman/subtitles/Dr. Paul Conti_ How to Understand & Assess Your Mental Health _ Huberman Lab Guest Series.txt",
+      "id": "tLRCS48Ens4",
+      "title": "Dr. Paul Conti: How to Understand & Assess Your Mental Health | Huberman Lab Guest Series",
+      "views": 15050215,
+      "duration": 13370,
+      "language": "en",
+      "caption_type": "automatic"
+    },
+    {
+      "author": "Andrew Huberman",
+      "path": "authors/Andrew Huberman/subtitles/Controlling Your Dopamine For Motivation, Focus & Satisfaction.txt",
+      "id": "QmOF0crdyRU",
+      "title": "Controlling Your Dopamine For Motivation, Focus & Satisfaction",
+      "views": 12527888,
+      "duration": 8191,
+      "language": "en",
+      "caption_type": "manual"
+    },
+    {
+      "author": "Andrew Huberman",
+      "path": "authors/Andrew Huberman/subtitles/Dr. Andy Galpin_ How to Build Strength, Muscle Size & Endurance.txt",
+      "id": "IAnhFUUCq6c",
+      "title": "Dr. Andy Galpin: How to Build Strength, Muscle Size & Endurance",
+      "views": 10427174,
+      "duration": 12688,
+      "language": "en",
+      "caption_type": "manual"
+    }
+  ],
+  "previous_joohan_ranking": [
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/02_연민 - 친절하고 따뜻해야 마음근력이 강해진다.txt",
+      "id": "ENm40KZM1_g",
+      "title": "연민 - 친절하고 따뜻해야 마음근력이 강해진다",
+      "views": 1193779,
+      "duration": 6506
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/06_존중 - 모든 마음근력의 근원.txt",
+      "id": "kLizfh-5vuE",
+      "title": "존중 - 모든 마음근력의 근원",
+      "views": 923192,
+      "duration": 7143
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/04_수용 - 무슨 일이 일어나든.txt",
+      "id": "ZCty0wvogDo",
+      "title": "수용 - 무슨 일이 일어나든",
+      "views": 610852,
+      "duration": 6138
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/01_용서 - 그 인간을 내가 왜.txt",
+      "id": "hw4_kLaHOMg",
+      "title": "용서? 그 인간을? 내가 왜?",
+      "views": 551733,
+      "duration": 5737
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/03_사랑 - 연애하면 불행하고, 사랑해야 행복하다.txt",
+      "id": "vNqK0GhTP6s",
+      "title": "사랑 - 연애하면 불행하고, 사랑해야 행복하다",
+      "views": 548089,
+      "duration": 5792
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/00_core_six_training/05_감사 - 인생을 바꾸는 강력한 감사의 힘.txt",
+      "id": "2VTv6WW8Kn8",
+      "title": "감사 - 인생을 바꾸는 강력한 감사의 힘",
+      "views": 547733,
+      "duration": 7081
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/09_relationships_communication/02_내면소통의 힘 - 긍정 확언 제대로 하는 법.txt",
+      "id": "83yGFRNbTqQ",
+      "title": "내면소통의 힘 - 긍정 확언 제대로 하는 법",
+      "views": 544508,
+      "duration": 6559
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/08_children_education_learning/02_아이의 노력하는 능력과 시험 잘 보는 능력을 키워주는 법.txt",
+      "id": "mRAsL1CU620",
+      "title": "아이의 노력하는 능력과 시험 잘 보는 능력을 키워주는 법",
+      "views": 535703,
+      "duration": 10274
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/summaries/01_이걸 이해해야 두려움 없는 삶이 가능해집니다.txt",
+      "id": "aWg4cK7ZNXE",
+      "title": "이걸 이해해야 두려움 없는 삶이 가능해집니다",
+      "views": 452129,
+      "duration": 990
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/09_relationships_communication/04_셀프 어퍼메이션을 스스로 직접 해보는 자기 확언 훈련.txt",
+      "id": "czw72KfOy1M",
+      "title": "셀프 어퍼메이션을 스스로 직접 해보는 자기 확언 훈련",
+      "views": 434336,
+      "duration": 5619
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/01_mental_strength_resilience/02_마음근력 훈련으로 내가 나를 바꾸는 것이 가능한 이유.txt",
+      "id": "ELbMXU-hcTw",
+      "title": "마음근력 훈련으로 내가 나를 바꾸는 것이 가능한 이유",
+      "views": 388801,
+      "duration": 6144
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/02_neuroscience_consciousness/01_감정 - 몸이 의식을 향해 외치는 아우성.txt",
+      "id": "F1nvYHL469Q",
+      "title": "감정 - 몸이 의식을 향해 외치는 아우성",
+      "views": 387520,
+      "duration": 3153
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/09_relationships_communication/03_배경자아 - 내면소통의 핵심.txt",
+      "id": "GqifltZgGQY",
+      "title": "배경자아 - 내면소통의 핵심",
+      "views": 342322,
+      "duration": 6504
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/summaries/02_자기확언과 말의 힘을 발휘하는 방법 - 현장 강의 요약본.txt",
+      "id": "MEEhwqK1fws",
+      "title": "자기확언과 말의 힘을 발휘하는 방법  - 현장 강의 요약본",
+      "views": 324950,
+      "duration": 1330
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/03_emotion_psychology/03_불안감에서 벗어나는 확실한 방법.txt",
+      "id": "jMNWaRyVupE",
+      "title": "불안감에서 벗어나는 확실한 방법",
+      "views": 318737,
+      "duration": 6778
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/02_neuroscience_consciousness/05_정신건강에 있어서 미토콘드리아가 중요한 이유.txt",
+      "id": "vY_q78cWXtY",
+      "title": "정신건강에 있어서 미토콘드리아가 중요한 이유",
+      "views": 305782,
+      "duration": 5485
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/02_neuroscience_consciousness/03_뇌의 구조와 작동 방식을 바꾼다 - 신경가소성.txt",
+      "id": "rcIj2hucRio",
+      "title": "뇌의 구조와 작동 방식을 바꾼다 - 신경가소성",
+      "views": 281166,
+      "duration": 6529
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/03_emotion_psychology/04_불안감을 근본적으로 떨쳐버리는 방법 - 우연의 수용.txt",
+      "id": "v_sYkBdUwxU",
+      "title": "불안감을 근본적으로 떨쳐버리는 방법 - 우연의 수용",
+      "views": 271745,
+      "duration": 5055
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/02_neuroscience_consciousness/02_뇌가 만들어내는 환상, 의식(consciousness).txt",
+      "id": "PUc10nTSQlA",
+      "title": "뇌가 만들어내는 환상, 의식(consciousness)",
+      "views": 266487,
+      "duration": 6400
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/06_body_sensation/02_만성통증 - 주의력 재배치가 필요한 이유.txt",
+      "id": "EjfwQvlwn20",
+      "title": "만성통증 - 주의력 재배치가 필요한 이유",
+      "views": 245584,
+      "duration": 6753
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/04_meditation_theory_tradition/01_「알아차림에 대한 알아차림」과 배경자아.txt",
+      "id": "AvuP2AcL550",
+      "title": "\"알아차림에 대한 알아차림\"과 배경자아",
+      "views": 243156,
+      "duration": 5799
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/09_relationships_communication/06_우리에게 엄마란 어떤 존재인가.txt",
+      "id": "SbPCSXlboX4",
+      "title": "우리에게 엄마란 어떤 존재인가?",
+      "views": 241851,
+      "duration": 8517
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/10_health_sleep_nutrition/01_건강하게 오래 살기 위한 식사와 운동법.txt",
+      "id": "TAfLqGritX4",
+      "title": "건강하게 오래 살기 위한 식사와 운동법",
+      "views": 236043,
+      "duration": 9012
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/04_meditation_theory_tradition/02_텅 빈 고요를 알아차리는 것이 곧 명상.txt",
+      "id": "_Q3yyZvwH1o",
+      "title": "텅 빈 고요를 알아차리는 것이 곧 명상",
+      "views": 220807,
+      "duration": 9531
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/04_meditation_theory_tradition/03_행위적 삶(vita activa)에서 명상적 삶(vita contemplativa)으로.txt",
+      "id": "_g5ZGbtXEj8",
+      "title": "행위적 삶(vita activa)에서 명상적 삶(vita contemplativa)으로",
+      "views": 201738,
+      "duration": 6882
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/06_body_sensation/03_알로스태시스와 내부감각 훈련.txt",
+      "id": "e8bpBDVY078",
+      "title": "알로스태시스와 내부감각 훈련",
+      "views": 200171,
+      "duration": 5638
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/06_body_sensation/01_내가 약속 시간에 자꾸 늦는 이유 - 내부감각과 미주신경.txt",
+      "id": "7A63kEmjwi4",
+      "title": "내가 약속 시간에 자꾸 늦는 이유: 내부감각과 미주신경",
+      "views": 188587,
+      "duration": 6915
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/09_relationships_communication/05_우리가 찾는 것은 우리 안에 있다.txt",
+      "id": "34hb-3PDhuM",
+      "title": "우리가 찾는 것은 우리 안에 있다",
+      "views": 157240,
+      "duration": 7940
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/05_philosophy_thought/01_'자유 의지'란 환상이다.txt",
+      "id": "a2SVP-H_wPY",
+      "title": "'자유 의지'란 환상이다",
+      "views": 156069,
+      "duration": 7200
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/05_philosophy_thought/03_장자, 1년 반에 걸친 내면소통의 마지막 강의.txt",
+      "id": "9ValMx9rFPs",
+      "title": "장자, 1년 반에 걸친 내면소통의 마지막 강의",
+      "views": 154724,
+      "duration": 4946
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/05_philosophy_thought/02_경험의 본질 - 루퍼트 스파이라의 '사물의 투명성'.txt",
+      "id": "BRTyCRL3lNk",
+      "title": "경험의 본질 - 루퍼트 스파이라의 '사물의 투명성'",
+      "views": 150922,
+      "duration": 7536
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/03_emotion_psychology/05_완벽주의를 한방에 날려버리는 방법.txt",
+      "id": "6lfomaaEzr4",
+      "title": "완벽주의를 한방에 날려버리는 방법 (On Perfectionism - English Dubbed)",
+      "views": 148840,
+      "duration": 2119
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/01_mental_strength_resilience/05_회복탄력성과 트라우마 스트레스.txt",
+      "id": "tqiC9G0zWbI",
+      "title": "회복탄력성과 트라우마 스트레스",
+      "views": 148830,
+      "duration": 6557
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/10_health_sleep_nutrition/02_잠 잘 자는 법(수면에 관한 최신 연구 결과를 바탕으로 업데이트).txt",
+      "id": "s1D7mVnyfUQ",
+      "title": "잠 잘 자는 법(수면에 관한 최신 연구 결과를 바탕으로 업데이트)",
+      "views": 145568,
+      "duration": 7960
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/02_neuroscience_consciousness/04_모든 경험은 내 의식 안에서 일어난다.txt",
+      "id": "t-0t7wQ4q40",
+      "title": "모든 경험은 내 의식 안에서 일어난다",
+      "views": 144934,
+      "duration": 7278
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/01_mental_strength_resilience/03_있는 그대로 머무르는 명상이 마음근력의 핵심.txt",
+      "id": "jqSqITZktvk",
+      "title": "있는 그대로 머무르는 명상이 마음근력의 핵심",
+      "views": 142846,
+      "duration": 5594
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/09_relationships_communication/01_'착하고 친절한' 사람들이 더 아픈 이유.txt",
+      "id": "v2iBr8H5Qvo",
+      "title": "'착하고 친절한' 사람들이 더 아픈 이유",
+      "views": 130329,
+      "duration": 8511
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/03_emotion_psychology/02_괴로움 속에서 행복해지는 법 - 라이브 현장 강의.txt",
+      "id": "SHFAqiUYsCE",
+      "title": "괴로움 속에서 행복해지는 법 - 라이브 현장 강의",
+      "views": 122361,
+      "duration": 11410
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/01_mental_strength_resilience/01_느린 호흡이 마음근력을 강화시켜주는 이유 (feat. 2024 Nature Neuroscience 논문).txt",
+      "id": "guxz_gv_XSw",
+      "title": "느린 호흡이 마음근력을 강화시켜주는 이유 (feat. 2024 Nature Neuroscience 논문)",
+      "views": 110269,
+      "duration": 7500
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/01_mental_strength_resilience/06_회복탄력성의 뇌과학적 기제 (feat. 2025 Nature Communications 논문).txt",
+      "id": "V9_YbMaeNAk",
+      "title": "회복탄력성의 뇌과학적 기제 (feat. 2025 Nature Communications 논문)",
+      "views": 105708,
+      "duration": 7747
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/01_mental_strength_resilience/04_최신 뇌과학으로 살펴본 마음근력의 근원.txt",
+      "id": "r2v_yBq7U7g",
+      "title": "최신 뇌과학으로 살펴본 마음근력의 근원",
+      "views": 103965,
+      "duration": 7332
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/03_emotion_psychology/01_과거의 나쁜 기억으로부터 현재의 내 삶을 지켜내는 방법.txt",
+      "id": "sCLH1SenuVM",
+      "title": "과거의 나쁜 기억으로부터 현재의 내 삶을 지켜내는 방법",
+      "views": 99217,
+      "duration": 1729
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/07_society_media_semiotics/01_대중매체가 심어준 고정관념을 바꾸는 법.txt",
+      "id": "sEKmokjfEUw",
+      "title": "대중매체가 심어준 고정관념을 바꾸는 법",
+      "views": 87257,
+      "duration": 7579
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/08_children_education_learning/01_배운다는 것은 도대체 무엇인가.txt",
+      "id": "BunltHZk-pM",
+      "title": "배운다는 것은 도대체 무엇인가?",
+      "views": 76409,
+      "duration": 5890
+    },
+    {
+      "author": "Joohan Kim",
+      "path": "authors/Joohan Kim/subtitles/07_society_media_semiotics/02_사라져가는 한국을 되살리는 법 - 「행복」이 답이다.txt",
+      "id": "e_83Qir_sXY",
+      "title": "사라져가는 한국을 되살리는 법 - \"행복\"이 답이다",
+      "views": 69728,
+      "duration": 7033
+    }
+  ]
+}
