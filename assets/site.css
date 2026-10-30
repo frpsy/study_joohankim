@@ -32,8 +32,26 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
 .lecture-section .topic{margin:14px 0}.lecture-section .topic>summary{font-size:19px}.lecture-section .topic>.box{border:0;border-radius:0;background:transparent;padding:0;margin:0}.lecture-section .topic>.tutor-unit{margin:0 0 20px;padding:18px;border-left:3px solid #7f966e;border-radius:0 10px 10px 0;background:#f0f3e8}.lecture-section .topic>p,.lecture-section .topic>div,.lecture-section .topic>figure{font-size:16px}.lecture-section .topic>h2{font-size:20px}.lecture-section .qa details{background:var(--paper);padding:0 14px}.lecture-section>div.panel{border:0;background:transparent;padding:0}.lecture-section [aria-hidden=true][id]{scroll-margin-top:20px}
 @media(max-width:780px){.lecture-goals{margin-bottom:24px}.lecture-section .topic>summary{font-size:17px}.lecture-goals h2{font-size:23px}}
 
-/* Minimal mindmap: each branch shares a left-aligned heading and content axis. */
-.mindmap{padding:8px 0 20px}.mindmap-root{position:relative;display:table;max-width:100%;margin:0 auto;padding:12px 20px;border:1px solid var(--green);border-radius:6px;font-size:18px;font-weight:650;text-align:center}.mindmap-root::after{content:"";position:absolute;left:50%;bottom:-25px;height:24px;border-left:1px solid var(--line)}
-.mindmap-branches{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;padding:0;margin:24px 0 0}.mindmap-branches::before{content:"";position:absolute;top:0;left:12px;right:calc(25% - 12px);border-top:1px solid var(--line)}
-.mindmap-branch{position:relative;padding:20px 12px 0}.mindmap-branch::before{content:"";position:absolute;top:0;left:12px;height:20px;border-left:1px solid var(--line)}.mindmap-branch h3{font-size:16px;line-height:1.6;min-height:3.2em;margin:0 0 12px;text-align:left}.mindmap-branch ul{list-style:none;padding:0;margin:0}.mindmap-branch li{position:relative;border-left:1px solid var(--line);min-height:3.7em;padding:0 0 10px 14px;font-size:14px}.mindmap-branch li::before{content:"";position:absolute;top:.9em;left:0;width:7px;border-top:1px solid var(--line)}.mindmap-branch a{text-decoration:none}.mindmap-branch a:hover{text-decoration:underline}
-@media(max-width:780px){.mindmap-root{display:block;text-align:left;font-size:17px}.mindmap-root::after{left:20px;bottom:-25px}.mindmap-branches{display:block;border-left:1px solid var(--line);margin:24px 0 0 20px;padding:0 0 0 20px}.mindmap-branches::before{display:none}.mindmap-branch{padding:0 0 20px}.mindmap-branch::before{left:-20px;top:13px;width:12px;height:0;border-left:0;border-top:1px solid var(--line)}.mindmap-branch h3{min-height:0;margin:0 0 8px}.mindmap-branch li{border:0;min-height:0;padding:0 0 5px}.mindmap-branch li::before{display:none}}
+/* Balanced tree: centered connections, left-aligned content within equal branches. */
+.mindmap{padding:8px 0 20px}
+.mindmap-root{position:relative;display:table;max-width:100%;margin:0 auto;padding:12px 20px;border:1px solid var(--green);border-radius:6px;font-size:18px;font-weight:650;text-align:center}
+.mindmap-root::after{content:"";position:absolute;left:50%;bottom:-25px;height:24px;border-left:1px solid var(--line)}
+.mindmap-branches{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto auto;column-gap:16px;row-gap:12px;list-style:none;padding:0;margin:44px 0 0}
+.mindmap-branches::before{content:"";position:absolute;top:-20px;left:calc((100% - 48px)/8);right:calc((100% - 48px)/8);border-top:1px solid var(--line)}
+.mindmap-branch{position:relative;display:grid;grid-row:span 2;grid-template-rows:subgrid;padding:16px;border:1px solid var(--line);border-radius:6px}
+.mindmap-branch::before{content:"";position:absolute;top:-21px;left:50%;height:20px;border-left:1px solid var(--line)}
+.mindmap-branch h3{font-size:16px;line-height:1.6;margin:0;text-align:left}
+.mindmap-branch ul{list-style:none;padding:0;margin:0}
+.mindmap-branch li{padding:0 0 8px;font-size:14px;line-height:1.8}
+.mindmap-branch li:last-child{padding-bottom:0}
+.mindmap-branch a{text-decoration:none}
+.mindmap-branch a:hover{text-decoration:underline}
+@media(max-width:1000px){
+ .mindmap-root{display:block;text-align:left;font-size:17px}
+ .mindmap-root::after{left:20px;bottom:-25px}
+ .mindmap-branches{display:block;border-left:1px solid var(--line);margin:24px 0 0 20px;padding:0 0 0 20px}
+ .mindmap-branches::before{display:none}
+ .mindmap-branch{display:block;margin:0 0 16px}
+ .mindmap-branch::before{left:-21px;top:28px;width:20px;height:0;border-left:0;border-top:1px solid var(--line)}
+ .mindmap-branch h3{margin:0 0 8px}
+}
