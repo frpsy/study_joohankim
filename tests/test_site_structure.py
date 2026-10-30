@@ -40,3 +40,15 @@ class GeneratorRegression(unittest.TestCase):
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
+
+
+class WordingRegression(unittest.TestCase):
+    BANNED = ("자막은 ", "자막 없음", "소개란 없음", "영어를 병기", "화면 화면", "교수의 해석")
+
+    def test_public_pages_have_no_production_notes(self):
+        root = Path(__file__).resolve().parents[1]
+        pages = [root / "index.html", root / "concepts.html", *sorted((root / "lectures").glob("*.html"))]
+        for page in pages:
+            text = page.read_text(encoding="utf-8")
+            for word in self.BANNED:
+                self.assertNotIn(word, text, f"{page.name}: {word}")
