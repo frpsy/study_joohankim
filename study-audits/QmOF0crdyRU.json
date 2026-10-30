@@ -96,5 +96,27 @@
       "https://pubmed.ncbi.nlm.nih.gov/10751106/",
       "https://pmc.ncbi.nlm.nih.gov/articles/PMC5435294/"
     ]
+  },
+  "original_timeline_verification": {
+    "checked_on": "2026-10-30",
+    "verified_against": "https://www.hubermanlab.com/episode/controlling-your-dopamine-for-motivation-focus-and-satisfaction",
+    "video": "https://www.youtube.com/watch?v=QmOF0crdyRU",
+    "basis": "Official episode chapter list: 0:00 through 2:12:20; exact 40 entries in HTML include 5 summary repeats and 35 detailed entries.",
+    "transcript_status": "Existing transcript is an untimed English text. It cannot validate second-precise boundaries. Official website transcript is marked under human review.",
+    "preview_status": "User-provided iPhone screenshot confirms clickable 46:46 timestamp in YouTube comment and playback at 46:54. Does not prove all timestamps or comment account.",
+    "web_status": "GitHub main source verified; live GitHub Pages fetch unavailable in available web tool. User confirmed visible comment text in earlier turn.",
+    "original_caption_disposition": "Preserved: replacing/deleting existing transcript without a better verified timecoded source risks loss of provenance.",
+    "checks_passed": [
+      "original chapter times crosschecked against official chapter table",
+      "40 timeline entries retained; 5 summary and 35 detailed",
+      "existing English source present",
+      "manual HTML structural inspection: no duplicate ids or broken same-page anchors"
+    ],
+    "remaining_limits": [
+      "No end-to-end browser/mobile automated test",
+      "No timed YouTube caption file obtained; vidIQ insufficient credits",
+      "No proof of all 40 click targets in playback",
+      "Full repository Python regression tests not run in execution environment"
+    ]
   }
 }
