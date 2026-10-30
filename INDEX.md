@@ -2,7 +2,7 @@
 
 `python scripts/subtitles.py index`로 자동 생성됩니다. 직접 수정하지 마세요.
 
-전체 210개 / 요약 5개
+전체 210개 / 요약 0개
 
 | 저자 | 자막 수 | 글자 수 |
 |---|---:|---:|
@@ -34,11 +34,11 @@
 
 | # | 제목 | 글자 수 | 요약 |
 |--:|---|--:|---|
-| 1 | [용서 - 그 인간을 내가 왜](authors/Joohan%20Kim/subtitles/00_core_six_training/01_%EC%9A%A9%EC%84%9C%20-%20%EA%B7%B8%20%EC%9D%B8%EA%B0%84%EC%9D%84%20%EB%82%B4%EA%B0%80%20%EC%99%9C.txt) | 34,275 | 용서는 상대를 봐주는 일이 아니라 원한이라는 2차 피해로 나를 처벌하는 일을 멈추는 것이며, 마음으로는 용서하고 머리로는 냉정하게 대응한다. ([Notion](https://app.notion.com/p/3c21121cd846813f82c3cc11986ca086)) |
-| 2 | [연민 - 친절하고 따뜻해야 마음근력이 강해진다](authors/Joohan%20Kim/subtitles/00_core_six_training/02_%EC%97%B0%EB%AF%BC%20-%20%EC%B9%9C%EC%A0%88%ED%95%98%EA%B3%A0%20%EB%94%B0%EB%9C%BB%ED%95%B4%EC%95%BC%20%EB%A7%88%EC%9D%8C%EA%B7%BC%EB%A0%A5%EC%9D%B4%20%EA%B0%95%ED%95%B4%EC%A7%84%EB%8B%A4.txt) | 36,064 | 연민(compassion)은 불쌍히 여김이 아니라 아픔을 함께하며 친절히 돌보는 것이고, 그 출발은 내가 나를 돌보는 것이다. ([Notion](https://app.notion.com/p/3c21121cd84681e9bfd2dc1158c28d80)) |
-| 3 | [사랑 - 연애하면 불행하고, 사랑해야 행복하다](authors/Joohan%20Kim/subtitles/00_core_six_training/03_%EC%82%AC%EB%9E%91%20-%20%EC%97%B0%EC%95%A0%ED%95%98%EB%A9%B4%20%EB%B6%88%ED%96%89%ED%95%98%EA%B3%A0%2C%20%EC%82%AC%EB%9E%91%ED%95%B4%EC%95%BC%20%ED%96%89%EB%B3%B5%ED%95%98%EB%8B%A4.txt) | 34,634 | 사랑은 상대의 건강과 행복을 바라는 내 마음 상태이며, '너 없이는 안 돼'라는 믿음은 대중매체가 만든 로맨틱 러브 이데올로기다. ([Notion](https://app.notion.com/p/3c21121cd8468121bfd2ccd54de29863)) |
-| 4 | [수용 - 무슨 일이 일어나든](authors/Joohan%20Kim/subtitles/00_core_six_training/04_%EC%88%98%EC%9A%A9%20-%20%EB%AC%B4%EC%8A%A8%20%EC%9D%BC%EC%9D%B4%20%EC%9D%BC%EC%96%B4%EB%82%98%EB%93%A0.txt) | 41,284 | 수용은 체념이나 승인이 아니라 이미 일어난 사실과 싸우는 저항을 내려놓는 완전한 항복이며, 아픔은 피할 수 없어도 저항이 더한 고통은 내려놓을 수 있다. ([Notion](https://app.notion.com/p/3c21121cd8468104be6eee9dae4cb6af)) |
-| 6 | [존중 - 모든 마음근력의 근원](authors/Joohan%20Kim/subtitles/00_core_six_training/06_%EC%A1%B4%EC%A4%91%20-%20%EB%AA%A8%EB%93%A0%20%EB%A7%88%EC%9D%8C%EA%B7%BC%EB%A0%A5%EC%9D%98%20%EA%B7%BC%EC%9B%90.txt) | 47,786 | 존중은 상대가 존경할 만해서 생기는 감정이 아니라 훈련으로 기르는 능력이며, 그 뿌리는 내 안의 위대한 것을 알아보는 자기존중이다. ([Notion](https://app.notion.com/p/3c21121cd846813f82cae4af3ce97b6e)) |
+| 1 | [용서 - 그 인간을 내가 왜](authors/Joohan%20Kim/subtitles/00_core_six_training/01_%EC%9A%A9%EC%84%9C%20-%20%EA%B7%B8%20%EC%9D%B8%EA%B0%84%EC%9D%84%20%EB%82%B4%EA%B0%80%20%EC%99%9C.txt) | 34,275 |  |
+| 2 | [연민 - 친절하고 따뜻해야 마음근력이 강해진다](authors/Joohan%20Kim/subtitles/00_core_six_training/02_%EC%97%B0%EB%AF%BC%20-%20%EC%B9%9C%EC%A0%88%ED%95%98%EA%B3%A0%20%EB%94%B0%EB%9C%BB%ED%95%B4%EC%95%BC%20%EB%A7%88%EC%9D%8C%EA%B7%BC%EB%A0%A5%EC%9D%B4%20%EA%B0%95%ED%95%B4%EC%A7%84%EB%8B%A4.txt) | 36,064 |  |
+| 3 | [사랑 - 연애하면 불행하고, 사랑해야 행복하다](authors/Joohan%20Kim/subtitles/00_core_six_training/03_%EC%82%AC%EB%9E%91%20-%20%EC%97%B0%EC%95%A0%ED%95%98%EB%A9%B4%20%EB%B6%88%ED%96%89%ED%95%98%EA%B3%A0%2C%20%EC%82%AC%EB%9E%91%ED%95%B4%EC%95%BC%20%ED%96%89%EB%B3%B5%ED%95%98%EB%8B%A4.txt) | 34,634 |  |
+| 4 | [수용 - 무슨 일이 일어나든](authors/Joohan%20Kim/subtitles/00_core_six_training/04_%EC%88%98%EC%9A%A9%20-%20%EB%AC%B4%EC%8A%A8%20%EC%9D%BC%EC%9D%B4%20%EC%9D%BC%EC%96%B4%EB%82%98%EB%93%A0.txt) | 41,284 |  |
+| 6 | [존중 - 모든 마음근력의 근원](authors/Joohan%20Kim/subtitles/00_core_six_training/06_%EC%A1%B4%EC%A4%91%20-%20%EB%AA%A8%EB%93%A0%20%EB%A7%88%EC%9D%8C%EA%B7%BC%EB%A0%A5%EC%9D%98%20%EA%B7%BC%EC%9B%90.txt) | 47,786 |  |
 
 ## Nathaniel Drew
 
