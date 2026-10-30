@@ -2,13 +2,13 @@
 
 `python scripts/subtitles.py index`로 자동 생성됩니다. 직접 수정하지 마세요.
 
-전체 210개 / 요약 0개
+전체 209개 / 요약 0개
 
 | 저자 | 자막 수 | 글자 수 |
 |---|---:|---:|
 | Andrew Huberman | 5 | 913,570 |
 | Bryan Johnson | 2 | 11,012 |
-| Joohan Kim | 5 | 194,043 |
+| Joohan Kim | 4 | 152,759 |
 | Nathaniel Drew | 198 | 2,224,286 |
 
 ## Andrew Huberman
@@ -30,14 +30,13 @@
 
 ## Joohan Kim
 
-### 00_core_six_training (5)
+### 00_core_six_training (4)
 
 | # | 제목 | 글자 수 | 요약 |
 |--:|---|--:|---|
 | 1 | [용서 - 그 인간을 내가 왜](authors/Joohan%20Kim/subtitles/00_core_six_training/01_%EC%9A%A9%EC%84%9C%20-%20%EA%B7%B8%20%EC%9D%B8%EA%B0%84%EC%9D%84%20%EB%82%B4%EA%B0%80%20%EC%99%9C.txt) | 34,275 |  |
 | 2 | [연민 - 친절하고 따뜻해야 마음근력이 강해진다](authors/Joohan%20Kim/subtitles/00_core_six_training/02_%EC%97%B0%EB%AF%BC%20-%20%EC%B9%9C%EC%A0%88%ED%95%98%EA%B3%A0%20%EB%94%B0%EB%9C%BB%ED%95%B4%EC%95%BC%20%EB%A7%88%EC%9D%8C%EA%B7%BC%EB%A0%A5%EC%9D%B4%20%EA%B0%95%ED%95%B4%EC%A7%84%EB%8B%A4.txt) | 36,064 |  |
 | 3 | [사랑 - 연애하면 불행하고, 사랑해야 행복하다](authors/Joohan%20Kim/subtitles/00_core_six_training/03_%EC%82%AC%EB%9E%91%20-%20%EC%97%B0%EC%95%A0%ED%95%98%EB%A9%B4%20%EB%B6%88%ED%96%89%ED%95%98%EA%B3%A0%2C%20%EC%82%AC%EB%9E%91%ED%95%B4%EC%95%BC%20%ED%96%89%EB%B3%B5%ED%95%98%EB%8B%A4.txt) | 34,634 |  |
-| 4 | [수용 - 무슨 일이 일어나든](authors/Joohan%20Kim/subtitles/00_core_six_training/04_%EC%88%98%EC%9A%A9%20-%20%EB%AC%B4%EC%8A%A8%20%EC%9D%BC%EC%9D%B4%20%EC%9D%BC%EC%96%B4%EB%82%98%EB%93%A0.txt) | 41,284 |  |
 | 6 | [존중 - 모든 마음근력의 근원](authors/Joohan%20Kim/subtitles/00_core_six_training/06_%EC%A1%B4%EC%A4%91%20-%20%EB%AA%A8%EB%93%A0%20%EB%A7%88%EC%9D%8C%EA%B7%BC%EB%A0%A5%EC%9D%98%20%EA%B7%BC%EC%9B%90.txt) | 47,786 |  |
 
 ## Nathaniel Drew
