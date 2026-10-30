@@ -25,3 +25,6 @@
 디자인 수정은 편집규칙11절을 따른다. 공통 site.css/site.js와 메뉴를 사용하고 강의 목록은 lectures.json 및 build_library.py로 생성한다. validate_site.py·기존 강의 검증·전체 회귀 검사와 PC/모바일 동작을 확인한다. 시행착오는 docs/design-review-날짜.md로 누적한다.
 
 저장소 전용 편집 스킬: [.agents/skills/lecture-study/SKILL.md](.agents/skills/lecture-study/SKILL.md). 기존 편집규칙과 원자료 대조를 통해 검증된 재사용 가능한 새 규칙은 이 스킬에도 반영한다. 설치된 외부 스킬은 자동으로 수정되지 않는다.
+
+- 홈 편집 전 `lectures.json`과 생성기의 정합성을 확인한다. 홈 카드 수·검색 수·등록 강의 수가 같아야 하고, 강의 누락·수동 카드 표시는 방치하지 않는다.
+- 사용자 피드백이나 검수에서 재사용 가능한 편집 원칙을 발견하면 같은 변경에서 `편집규칙.md`와 저장소 스킬을 함께 검토하여 반영한다. 특정 강의 고유 사실은 일반 규칙으로 올리지 않는다.
