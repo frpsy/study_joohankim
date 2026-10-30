@@ -20,3 +20,9 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
 @media(max-width:780px){.site-header-inner{min-height:60px}.site-brand{font-size:13px;white-space:nowrap}.site-brand small{display:none}.sidebar{top:60px}.latest-entry p{display:none}.latest-entry{padding:18px}.latest-entry h2{font-size:20px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lecture{transition:none}.lecture:hover{transform:none}}
 @media print{.site-header,.sidebar,.actions,.toolbar,.related-nav,.site-footer,.search-panel{display:none}.site-shell{width:100%}.study-layout{display:block}body{background:white;color:black}details>*{display:block!important}.slide-card{break-inside:avoid}.page-hero{padding:0 0 20px}}
+
+/* Compact hub and shared study navigation. */
+.hub-hero{padding:24px 0;gap:24px}.hub-hero h1{font-size:34px}.hub-hero .lead{font-size:18px}.hub-hero .actions{margin-bottom:0}.search-panel{padding:16px;margin-bottom:18px}.search-panel .search{padding:9px 12px}
+.topic-index{margin:0 0 24px;border:1px solid var(--line);border-radius:12px;padding:0 18px;background:var(--surface)}.topic-index nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;padding-bottom:18px}.topic-index nav a{font-size:14px;padding:6px 0}
+.learning-route{border-top:1px solid var(--line);padding-top:26px}.learning-route ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding-left:24px}.learning-route li{padding-left:4px}.learning-route a{font-weight:650;font-size:15px}.learning-route p{font-size:14px;color:var(--muted);margin:8px 0}
+@media(max-width:780px){.hub-hero{padding:18px 0;gap:16px}.hub-hero h1{font-size:28px}.hub-hero .lead{font-size:16px}.topic-index nav,.learning-route ol{grid-template-columns:1fr}.learning-route ol{gap:14px}}
