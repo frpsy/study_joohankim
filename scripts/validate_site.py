@@ -3,6 +3,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlparse,unquote
 import json,sys
+from build_library import render
 class Document(HTMLParser):
     def __init__(self):
         super().__init__();self.ids=[];self.hrefs=[];self.styles=[];self.scripts=[];self.h1=0;self.header=0;self.notes=False;self.inline_style=False
@@ -33,7 +34,11 @@ def validate(root):
     pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]
     for p in pages:
         if not p.is_file():errors.append('missing page '+str(p));continue
-        problems,d=structural_errors(p.read_text(encoding='utf-8'));docs[p.resolve()]=d
+        source=p.read_text(encoding='utf-8')
+        problems,d=structural_errors(source);docs[p.resolve()]=d
+        if p.parent.name=='lectures':
+            for label in ('왜 중요한가','이 강의에서 얻을 수 있는 것'):
+                if label not in source:problems.append('missing learning introduction: '+label)
         errors.extend(p.name+': '+x for x in problems)
     for p,d in docs.items():
         for href in d.hrefs+d.styles+d.scripts:
@@ -44,6 +49,7 @@ def validate(root):
             if not target.is_file():errors.append(p.name+': missing target '+href);continue
             if u.fragment and target in docs and unquote(u.fragment) not in docs[target].ids:errors.append(p.name+': missing anchor '+href)
     home=(root/'index.html').read_text(encoding='utf-8')
+    if rows and home!=render(rows):errors.append('generated home differs from index.html')
     for row in rows:
         if home.count('data-video-id="'+row['id']+'"')!=1:errors.append('hub card mismatch '+row['id'])
     return errors

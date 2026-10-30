@@ -1,9 +1,9 @@
 /* Shared navigation and discovery. Lecture-specific copy/checkbox logic stays in its page. */
 (()=>{
   function revealAnchor(){
-    const id=decodeURIComponent(location.hash.slice(1));if(!id)return;
+    let id;try{id=decodeURIComponent(location.hash.slice(1))}catch{return}if(!id)return;
     const target=document.getElementById(id);if(!target)return;
-    for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+    for(let parent=target;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
     if(target.tagName==='SUMMARY')target.parentElement.open=true;
     target.scrollIntoView({block:'start'});
   }
