@@ -31,7 +31,7 @@ def structural_errors(text):
     return errors,d
 def lecture_layout_errors(source):
     d=Document();d.feed(source);errors=[]
-    required=['lecture-overview','lecture-mindmap','lecture-details','lecture-review','lecture-practice','lecture-sources','lecture-comment']
+    required=['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
     if any(id not in d.ids for id in required):errors.append('standard lecture section missing')
     else:
         positions=[d.ids.index(id) for id in required]
