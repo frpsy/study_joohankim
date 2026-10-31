@@ -79,3 +79,7 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
   .global-nav{flex-wrap:wrap;justify-content:flex-end;gap:4px}
   .global-nav a{white-space:normal;text-align:center}
 }
+@media (max-width:640px){
+  .settings-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:0 0 24px}
+  .settings-panel h2{margin-top:0}
+}
