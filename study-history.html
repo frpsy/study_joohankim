@@ -1,6 +1,6 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="내가 표시한 학습 완료, 복습 완료, 메모의 이력을 최근순으로 보는 페이지"><title>학습 이력 · 내면을 공부하는 시간</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><link rel="stylesheet" href="assets/site.css?v=20261031-mobile-nav"><script defer src="assets/site.js?v=20261030-layout"></script></head><body><a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html">내면을 공부하는 시간<small>강의 학습 아카이브</small></a><nav class="global-nav" aria-label="주요 메뉴"><a href="index.html">강의 모음</a><a href="concepts.html">용어와 개념</a><a href="study-history.html" aria-current="page">학습 이력</a></nav></div></header><div class="site-shell"><main id="main" class="study-main"><div class="page-hero"><span class="eyebrow">내 기록</span><h1>학습 이력</h1><p>학습 완료, 복습 완료, 메모를 바꾼 기록을 최근순으로 보여 줍니다. 기록은 로그인한 계정에만 보입니다.</p></div><section id="history-list" class="lecture-section"><div id="history-status" role="status" aria-live="polite"></div><ol id="history-items" class="history-items"></ol></section></main></div>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="내가 표시한 학습 완료, 복습 완료, 메모의 이력을 최근순으로 보는 페이지"><title>학습 이력 · 내면을 공부하는 시간</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><link rel="stylesheet" href="assets/site.css?v=20261031-account"><script defer src="assets/site.js?v=20261030-layout"></script></head><body><a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html">내면을 공부하는 시간<small>강의 학습 아카이브</small></a><nav class="global-nav" aria-label="주요 메뉴"><a href="index.html">강의 모음</a><a href="concepts.html">용어와 개념</a><a href="study-history.html" aria-current="page">학습 이력</a></nav></div></header><div class="site-shell"><main id="main" class="study-main"><div class="page-hero"><span class="eyebrow">내 기록</span><h1>학습 이력</h1><p>학습 완료, 복습 완료, 메모를 바꾼 기록을 최근순으로 보여 줍니다. 기록은 로그인한 계정에만 보입니다.</p></div><section id="history-list" class="lecture-section"><div id="history-status" role="status" aria-live="polite"></div><ol id="history-items" class="history-items"></ol></section></main></div>
 <script type="module">
-import { getDb, signInWithGoogle, onUserChange } from "./assets/firebase.js?v=20261031-progress";
+import { getDb, onUserChange } from "./assets/firebase.js?v=20261031-account";
 
 const status = document.getElementById("history-status");
 const list = document.getElementById("history-items");
@@ -69,28 +69,21 @@ async function load(user) {
 
 function renderSignedOut() {
   list.replaceChildren();
-  say("이력을 보려면 구글로 로그인해 주세요.");
-  if (!document.getElementById("history-login")) {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "btn";
-    b.id = "history-login";
-    b.textContent = "구글로 로그인";
-    b.addEventListener("click", async () => {
-      try {
-        await signInWithGoogle();
-      } catch {
-        say("로그인하지 못했습니다. 다시 시도해 주세요.", true);
-      }
-    });
-    status.after(b);
+  say("이력을 보려면 홈 화면의 설정에서 구글로 로그인해 주세요.");
+  if (!document.getElementById("history-home")) {
+    const a = document.createElement("a");
+    a.id = "history-home";
+    a.className = "btn";
+    a.href = "index.html#settings";
+    a.textContent = "홈에서 로그인하기";
+    status.after(a);
   }
 }
 
 onUserChange((user) => {
-  const btn = document.getElementById("history-login");
+  const home = document.getElementById("history-home");
   if (user) {
-    if (btn) btn.remove();
+    if (home) home.remove();
     load(user);
   } else {
     renderSignedOut();

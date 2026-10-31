@@ -1,5 +1,5 @@
 // 강의별 학습 기록: 학습 완료, 복습 완료, 개인 메모, 이력. 구글 로그인 후 본인 데이터만 저장합니다.
-import { getDb, signInWithGoogle, signOutUser, onUserChange } from "./firebase.js?v=20261031-progress";
+import { getDb, onUserChange } from "./firebase.js?v=20261031-account";
 
 const TITLE = "학습 기록";
 
@@ -38,18 +38,10 @@ async function mount(root) {
 
   function renderSignedOut() {
     body.replaceChildren(
-      el("p", {}, "로그인하면 학습 완료 표시와 메모를 기기와 상관없이 저장할 수 있습니다."),
-      el("button", { type: "button", class: "btn", id: "study-progress-login" }, "구글로 로그인")
+      el("p", {}, "로그인은 홈 화면의 설정에서 한 번만 하면 모든 강의에 적용됩니다."),
+      el("a", { class: "btn", href: "../index.html#settings" }, "홈에서 로그인하기")
     );
-    body.querySelector("#study-progress-login").addEventListener("click", async () => {
-      setStatus(status, "로그인 창을 여는 중입니다.");
-      try {
-        await signInWithGoogle();
-        setStatus(status, "");
-      } catch (err) {
-        setStatus(status, "로그인하지 못했습니다. 다시 시도해 주세요.", true);
-      }
-    });
+    setStatus(status, "");
   }
 
   async function renderSignedIn(user) {
