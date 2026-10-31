@@ -72,3 +72,6 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
   .history-item{padding:14px 0;border-bottom:1px solid var(--line)}
   .history-when{font-size:13px;color:var(--muted,#666)}
 }
+@media (max-width:640px){
+  .breadcrumb a,.time,.mindmap a,.mindmap-branch a,.topic-index a,.latest-entry a,.core a,details li a{min-height:44px;display:inline-flex;align-items:center}
+}
