@@ -94,3 +94,13 @@ class MindmapRegression(unittest.TestCase):
             first=next(iter(outlines));outlines[first]['root']='새 중심 개념'
             path.write_text(json.dumps(outlines,ensure_ascii=False))
             self.assertIn('generated mindmap differs: '+first,errors(root))
+
+
+class ExternalLinkRegression(unittest.TestCase):
+    def test_blank_target_links_have_noopener(self):
+        import re
+        root = Path(__file__).resolve().parents[1]
+        pages = [root / "index.html", root / "concepts.html", *sorted((root / "lectures").glob("*.html"))]
+        for page in pages:
+            for tag in re.findall(r"<a\b[^>]*target=\"_blank\"[^>]*>", page.read_text(encoding="utf-8")):
+                self.assertIn("noopener", tag, f"{page.name}: {tag[:80]}")
