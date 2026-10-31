@@ -30,7 +30,7 @@
     };
     const query=new URLSearchParams(location.search).get('q');if(query)input.value=query;
     input.addEventListener('input',filter);filter();
-    document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.value||'';filter();input.focus()}));
+    document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.value||'';filter();button.blur()}));
   });
   document.querySelectorAll('[data-copy-target]').forEach(button=>button.addEventListener('click',async()=>{
     const source=document.getElementById(button.dataset.copyTarget),status=document.getElementById('status');
