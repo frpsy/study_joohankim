@@ -70,7 +70,7 @@ class LectureLayoutRegression(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]
         source=(root/'lectures/ZCty0wvogDo.html').read_text()
         self.assertEqual(lecture_layout_errors(source),[])
-        self.assertIn('standard lecture section missing',lecture_layout_errors(source.replace('id="lecture-review"','id="missing-review"')))
+        self.assertIn('standard lecture section missing',lecture_layout_errors(source.replace('id="lecture-practice"','id="missing-practice"')))
 
     def test_copy_status_must_be_announced(self):
         from validate_site import lecture_layout_errors
