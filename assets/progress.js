@@ -1,5 +1,5 @@
 // 강의별 학습 기록: 학습 완료, 복습 완료, 개인 메모, 이력. 구글 로그인 후 본인 데이터만 저장합니다.
-import { getDb, onUserChange } from "./firebase.js?v=20261031-account";
+import { getDb, onUserChange } from "./firebase.js?v=20261031-review";
 
 const TITLE = "학습 기록";
 
@@ -65,7 +65,7 @@ async function mount(root) {
     memo.value = typeof note.text === "string" ? note.text : "";
     const save = el("button", { type: "button", class: "btn" }, "저장");
     const historyLink = el("a", { class: "btn secondary", href: "../study-history.html" }, "학습 이력 보기");
-    const logout = el("button", { type: "button", class: "btn secondary" }, "로그아웃");
+    const settings = el("a", { class: "btn secondary", href: "../index.html#settings" }, "계정 설정");
 
     body.replaceChildren(
       el("p", {}, `${user.displayName || user.email || "로그인됨"}`),
@@ -80,7 +80,7 @@ async function mount(root) {
     labels[0].replaceChildren(studyBox, document.createTextNode(" 학습 완료"));
     labels[1].replaceChildren(reviewBox, document.createTextNode(" 복습 완료"));
     const actions = body.querySelector(".actions");
-    actions.replaceChildren(save, historyLink, logout);
+    actions.replaceChildren(save, historyLink, settings);
 
     save.addEventListener("click", async () => {
       save.disabled = true;
@@ -109,7 +109,6 @@ async function mount(root) {
       }
     });
 
-    logout.addEventListener("click", () => signOutUser());
   }
 
   onUserChange((user) => {
