@@ -75,11 +75,11 @@ onUserChange((user) => {
   action.disabled = false;
   historyLink.hidden = !user;
   if (user) {
-    state.textContent = `${user.displayName || user.email} 님으로 로그인되어 있습니다. 학습 기록이 모든 강의에 저장됩니다.`;
+    state.textContent = `${user.displayName || user.email} 로그인됨`;
     action.textContent = "로그아웃";
     showBadges(user, token);
   } else {
-    state.textContent = "로그인하면 강의별 학습 완료·복습·메모를 저장하고 학습 이력을 볼 수 있습니다.";
+    state.textContent = "로그인하면 강의별 학습 완료·복습·메모를 저장합니다.";
     action.textContent = "구글로 로그인";
     clearBadges();
   }
