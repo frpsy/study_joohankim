@@ -75,3 +75,7 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
 @media (max-width:640px){
   .breadcrumb a,.time,.mindmap a,.mindmap-branch a,.topic-index a,.latest-entry a,.core a,details li a{min-height:44px;display:inline-flex;align-items:center}
 }
+@media (max-width:640px){
+  .global-nav{flex-wrap:wrap;justify-content:flex-end;gap:4px}
+  .global-nav a{white-space:normal;text-align:center}
+}
