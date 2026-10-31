@@ -5,8 +5,8 @@ const vm=require('node:vm');
 class Element {
   constructor(tag){this.tag=tag;this.children=[];this.dataset={};this.events={};this.classList={add(){}};this.value='';}
   setAttribute(k,v){this[k]=v;}
-  append(...nodes){this.children.push(...nodes);}
-  replaceChildren(...nodes){this.children=nodes;}
+  append(...nodes){this.children.push(...nodes);for(const n of nodes)if(typeof n==='object')n.parentElement=this;}
+  replaceChildren(...nodes){this.children=[];this.append(...nodes);}
   addEventListener(k,fn){this.events[k]=fn;}
   querySelectorAll(selector){return this.children.flatMap(n=>typeof n==='object'?[...(selector==='label.study-check'&&n.tag==='label'&&n.className==='study-check'?[n]:selector==='.actions'&&n.className==='actions'?[n]:[]),...n.querySelectorAll(selector)]:[]);}
   querySelector(s){return this.querySelectorAll(s)[0];}
@@ -26,7 +26,7 @@ async function setup(getDoc=async()=>empty){
 }
 test('failed reads expose retry only; successful retry restores stored memo',async()=>{
  let failed=true;const x=await setup(async()=>{if(failed)throw Error('read');return {exists:()=>true,data:()=>({text:'existing memo'})};});
- x.auth({uid:'a'});await tick();assert.equal(x.find('저장'),undefined);assert.ok(x.find('다시 불러오기'));
+ x.auth({uid:'a'});await tick();assert.equal(x.find('저장'),undefined);assert.ok(x.find('다시 불러오기'));assert.equal(x.root.all().find(n=>n.tag==='details').open,true);
  failed=false;x.find('다시 불러오기').events.click();await tick();assert.ok(x.find('저장'));assert.equal(x.root.all().find(n=>n.tag==='textarea').value,'existing memo');
 });
 test('late read cannot restore signed-out or previous-account form',async()=>{
