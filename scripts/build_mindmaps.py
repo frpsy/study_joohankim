@@ -22,6 +22,7 @@ def errors(root):
         if vid not in outlines:result.append('mindmap outline missing: '+vid);continue
         if not page.is_file():continue
         source=page.read_text(encoding='utf-8')
+        if 'data-layout="compact"' in source:continue
         if source.count(render(outlines[vid]))!=1:result.append('generated mindmap differs: '+vid)
     return result
 
@@ -32,6 +33,7 @@ def build(check=False):
     for vid,outline in outlines.items():
         p=R/'lectures'/f'{vid}.html'
         with p.open(encoding='utf-8',newline='') as f:source=f.read()
+        if 'data-layout="compact"' in source:continue
         rendered=render(outline)
         if START in source:
             pattern=re.compile(re.escape(START)+'.*?'+re.escape(END),re.S)

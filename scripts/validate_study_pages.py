@@ -44,6 +44,13 @@ def inspect(source,ledger,duration):
     for script in re.findall(r'<script[^>]*>(.*?)</script>',source,re.S):
         for target in re.findall(r"document\.querySelector\(\s*['\"]#([\w-]+)['\"]\s*\)",script):
             if target not in p.ids:errors.append('missing script target: '+target)
+    if ledger.get('layout')=='compact':
+        if 'data-layout="compact"' not in source:errors.append('compact layout missing')
+        if 'lecture-overview' not in p.ids or 'lecture-comment' not in p.ids:errors.append('compact section missing')
+        if p.images:errors.append('compact notes must not contain slide gallery')
+        for href in p.links:
+            if href.startswith('#') and href[1:] not in p.ids:errors.append('broken anchor: '+href)
+        return errors
     if len(p.images)!=ledger['image_count']:errors.append('image count changed')
     if any(not i.get('src') or not i.get('alt') for i in p.images):errors.append('image without source or alt')
     for href in p.links:
@@ -90,7 +97,7 @@ def main():
             print('FAIL: missing page '+vid);fail=True;continue
         source=page_path.read_text(encoding='utf-8')
         errors=inspect(source,ledger,ledger['duration_seconds'])
-        print(vid+': '+('; '.join(errors) if errors else f"PASS ({len(ledger['units'])} teaching units, {ledger['image_count']} images)"))
+        print(vid+': '+('; '.join(errors) if errors else ("PASS (compact notes; original source ledger retained)" if ledger.get("layout")=="compact" else f"PASS ({len(ledger['units'])} teaching units, {ledger['image_count']} images)")))
         fail|=bool(errors)
     for file in [root/'concepts.html']+[root/'lectures'/f"{json.loads(p.read_text(encoding='utf-8'))['video_id']}.html" for p in manifests]:
         if not file.is_file():

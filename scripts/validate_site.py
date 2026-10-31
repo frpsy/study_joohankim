@@ -31,7 +31,8 @@ def structural_errors(text):
     return errors,d
 def lecture_layout_errors(source):
     d=Document();d.feed(source);errors=[]
-    required=['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
+    compact='data-layout="compact"' in source
+    required=['lecture-overview','lecture-comment'] if compact else ['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
     if any(id not in d.ids for id in required):errors.append('standard lecture section missing')
     else:
         positions=[d.ids.index(id) for id in required]
@@ -39,13 +40,13 @@ def lecture_layout_errors(source):
     import re
     if 'data-copy-target=' not in source:errors.append('shared comment copy missing')
     if not re.search(r'<span[^>]*id="status"[^>]*role="status"[^>]*aria-live="polite"',source):errors.append('accessible copy status missing')
-    if 'data-expand-scope="#lecture-details"' not in source:errors.append('shared expand controls missing')
+    if not compact and 'data-expand-scope="#lecture-details"' not in source:errors.append('shared expand controls missing')
     return errors
 
 def validate(root):
     rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=[];docs={}
     if len({x['id'] for x in rows})!=len(rows):errors.append('duplicate video in registry')
-    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]+sorted((root/'summaries').glob('*.html'))
+    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]+sorted((root/'summaries').glob('*.html'))+sorted((root/'mini-courses').glob('*.html'))
     for p in pages:
         if not p.is_file():errors.append('missing page '+str(p));continue
         source=p.read_text(encoding='utf-8')
@@ -54,7 +55,7 @@ def validate(root):
             problems.extend(lecture_layout_errors(source))
             if 'id="why"' in source or '이 강의에서 얻을 수 있는 것' in source:problems.append('separate goals block reintroduced; merge it into the hero intro')
             m=re.search(r'</h1><p[^>]*>(.*?)</p>',source)
-            if not m or len(m.group(1))<150:problems.append('hero intro must state why it matters and what the lecture gives')
+            if 'data-layout="compact"' not in source and (not m or len(m.group(1))<150):problems.append('hero intro must state why it matters and what the lecture gives')
         errors.extend(p.name+': '+x for x in problems)
     for p,d in docs.items():
         for href in d.hrefs+d.styles+d.scripts:

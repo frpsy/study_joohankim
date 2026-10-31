@@ -178,3 +178,51 @@ html{scroll-padding-top:var(--anchor-offset,100px)}
  .lecture-section .topic>.tutor-unit{padding:0}
  .lecture h3{font-size:21px}
 }
+/* Compact lecture notes and mobile study home. */
+.compact-lecture{max-width:740px;margin:auto;padding-bottom:32px}
+.summary-tier{padding:18px 0;border-bottom:1px solid var(--line)}
+.summary-tier h3{margin:0 0 12px;font-size:18px}
+.summary-tier summary,.source-disclosure summary,.course-question summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}
+.summary-tier p{line-height:1.85}
+.legacy-anchor{display:block;scroll-margin-top:var(--anchor-offset,100px)}
+.compact-lecture pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.9;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.compact-lecture pre code{font:inherit}
+.mini-course section{margin:28px 0}
+.mini-course p{line-height:1.9;word-break:keep-all;overflow-wrap:anywhere}
+.course-question{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:28px 0}
+.source-disclosure{margin-top:18px;font-size:14px}
+@media(max-width:780px){
+ .site-shell{padding-left:20px;padding-right:20px}
+ .site-header-inner{padding:12px 20px;flex-wrap:wrap;align-items:center}
+ .site-brand{font-size:17px}
+ .site-brand small{display:none}
+ .global-nav{gap:2px;flex-wrap:nowrap}
+ .global-nav a{padding:10px 8px;font-size:12px;min-height:44px;display:flex;align-items:center;white-space:nowrap}
+ .mobile-hub{display:block;padding:12px 0 20px}
+ .mobile-hub .page-hero{padding:12px 0 16px}
+ .mobile-hub h1{font-size:28px;letter-spacing:-1px;line-height:1.3}
+ .mobile-hub .actions{display:flex;flex-wrap:wrap;gap:6px}
+ .mobile-hub .btn{min-height:44px;padding:10px 12px;font-size:14px}
+ .mobile-hub .latest-entry{margin-top:4px;padding:14px 16px;background:var(--tint);border:0;border-radius:12px}
+ .mobile-hub .latest-entry h2{font-size:17px;line-height:1.5;margin:6px 0}
+ .mobile-hub .latest-entry>a{font-size:13px;display:inline-flex;align-items:center;min-height:44px}
+ .lecture-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+ .lecture{padding:18px;border-radius:16px;min-width:0}
+ .lecture h3{font-size:20px;line-height:1.45;letter-spacing:-.5px;margin:10px 0}
+ .lecture p{font-size:14px;line-height:1.7;margin:8px 0 12px}
+ .lecture .meta{font-size:12px;gap:8px;flex-wrap:wrap}
+ .lecture .tags{gap:5px;margin-top:12px}
+ .lecture .tags span{font-size:11px;padding:3px 8px}
+ .lecture .read{font-size:13px;margin-top:14px}
+ .search-panel .search{font-size:16px;min-height:48px;border-radius:12px}
+ .filter-chips button{min-height:44px;padding:8px 12px}
+ .learning-route{margin-top:32px}
+ .learning-route li{padding:12px 0}
+ .learning-route li>a{display:block;padding:6px 0;min-height:44px;font-size:16px}
+ .learning-route li p{font-size:14px;margin:4px 0}
+ .compact-lecture h1,.mini-course h1{font-size:27px;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere}
+ .compact-lecture .actions{gap:8px;flex-wrap:wrap}
+ .summary-links{align-items:center;gap:12px}
+ .summary-links a{min-height:44px;display:inline-flex;align-items:center}
+}
+@media(max-width:360px){.site-header-inner{gap:0}.global-nav{width:100%;justify-content:space-between}.site-shell{padding-left:16px;padding-right:16px}}
