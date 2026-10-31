@@ -95,5 +95,12 @@
       "https://pubmed.ncbi.nlm.nih.gov/28407727/",
       "https://news.mit.edu/2020/with-these-neurons-extinguishing-fear-its-own-reward-0121"
     ]
+  },
+  "layout": "compact",
+  "compact_edit": {
+    "date": "2026-10-31",
+    "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
+    "timeline": "unchanged",
+    "original_images": "Retained in repository and Git history, removed from reading pages per user request."
   }
 }

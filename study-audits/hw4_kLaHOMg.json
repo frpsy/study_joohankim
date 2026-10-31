@@ -574,6 +574,12 @@
     "corrections": "7 images reassigned by topic rather than timestamp; unique slide explanations added",
     "scope": "18 captured screens, key research claims, sampled caption timestamps and completed manuscript; not an independent second full transcript reading"
   },
-  "slide_assignment": "explicit semantic mapping to research/definitions/secondary-harm/revenge-narrative rather than nearest time"
+  "slide_assignment": "explicit semantic mapping to research/definitions/secondary-harm/revenge-narrative rather than nearest time",
+  "layout": "compact",
+  "compact_edit": {
+    "date": "2026-10-31",
+    "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
+    "timeline": "unchanged",
+    "original_images": "Retained in repository and Git history, removed from reading pages per user request."
+  }
 }
-

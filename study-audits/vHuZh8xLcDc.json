@@ -112,5 +112,12 @@
       "답변으로 질문에 실제 답할 수 있는지"
     ],
     "new_primary_sources": []
+  },
+  "layout": "compact",
+  "compact_edit": {
+    "date": "2026-10-31",
+    "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
+    "timeline": "unchanged",
+    "original_images": "Retained in repository and Git history, removed from reading pages per user request."
   }
 }

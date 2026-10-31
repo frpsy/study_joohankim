@@ -72,5 +72,12 @@
     "자동 자막이라 고유명사·전문용어 오인식 가능(타라 브랙, 틸로파 등은 발음 기준으로 표기)",
     "강의가 인용한 시한부 환자 인터뷰 연구·확률 수치는 원문 미확인",
     "질의응답 2번 질문은 낭독 중 끊겨 정확한 질문 내용을 확인하지 못함"
-  ]
+  ],
+  "layout": "compact",
+  "compact_edit": {
+    "date": "2026-10-31",
+    "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
+    "timeline": "unchanged",
+    "original_images": "Retained in repository and Git history, removed from reading pages per user request."
+  }
 }

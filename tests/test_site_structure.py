@@ -36,7 +36,7 @@ class GeneratorRegression(unittest.TestCase):
             for name in ('index.html','concepts.html','lectures.json'):
                 shutil.copyfile(repo/name,root/name)
             home=root/'index.html'
-            home.write_text(home.read_text().replace('나의 강의 학습 노트','임의로 바꾼 제목'))
+            home.write_text(home.read_text().replace('나의 스터디 홈','임의로 바꾼 제목'))
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
@@ -70,7 +70,7 @@ class LectureLayoutRegression(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]
         source=(root/'lectures/ZCty0wvogDo.html').read_text()
         self.assertEqual(lecture_layout_errors(source),[])
-        self.assertIn('standard lecture section missing',lecture_layout_errors(source.replace('id="lecture-practice"','id="missing-practice"')))
+        self.assertIn('standard lecture section missing',lecture_layout_errors(source.replace('id="lecture-overview"','id="missing-overview"')))
 
     def test_copy_status_must_be_announced(self):
         from validate_site import lecture_layout_errors
@@ -93,6 +93,11 @@ class MindmapRegression(unittest.TestCase):
             outlines=json.loads(path.read_text())
             first=next(iter(outlines));outlines[first]['root']='새 중심 개념'
             path.write_text(json.dumps(outlines,ensure_ascii=False))
+            self.assertEqual(errors(root),[])  # compact pages deliberately omit mindmaps
+            from build_mindmaps import render
+            page=root/'lectures'/f'{first}.html'
+            old=json.loads((repo/'data/lecture_mindmaps.json').read_text())[first]
+            page.write_text(render(old))
             self.assertIn('generated mindmap differs: '+first,errors(root))
 
 

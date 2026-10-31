@@ -15,7 +15,7 @@ def render(row,data):
       f'<p class="summary-lead">{esc(data["lead"])}</p>{secs}'
       f'<h2>적용</h2><ul class="summary-list">{todo}</ul>'
       f'<aside class="summary-note" aria-label="읽을 때 유의할 점"><h2>유의할 점</h2><p>{esc(data["note"])}</p></aside>'
-      f'<nav class="summary-links" aria-label="관련 페이지"><a class="btn" href="{lec}">주제별 해설</a><a class="btn secondary" href="{lec}#lecture-comment">타임라인</a><a class="btn secondary" href="../index.html">강의 모음</a></nav>'
+      f'<nav class="summary-links" aria-label="관련 페이지"><a class="btn" href="{lec}">3단 요약</a><a class="btn secondary" href="{lec}#lecture-comment">타임라인</a><a class="btn secondary" href="../index.html">강의 모음</a></nav>'
       f'</article></main></div>')
     return page(f'{row["title"]} 5분 요약',body,base='../')
 def build(check=False):
