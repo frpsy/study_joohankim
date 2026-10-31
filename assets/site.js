@@ -1,5 +1,21 @@
 /* Shared navigation and discovery. Lecture-specific copy/checkbox logic stays in its page. */
 (()=>{
+  const header=document.querySelector('.site-header');
+  const sidebar=document.querySelector('.sidebar');
+  function syncNavigationSize(){
+    const headerHeight=header ? header.getBoundingClientRect().height : 0;
+    const mobile=window.matchMedia('(max-width:780px)').matches;
+    const sidebarHeight=mobile && sidebar ? sidebar.getBoundingClientRect().height : 0;
+    document.documentElement.style.setProperty('--header-height',headerHeight+'px');
+    document.documentElement.style.setProperty('--anchor-offset',(headerHeight+sidebarHeight+16)+'px');
+  }
+  syncNavigationSize();
+  window.addEventListener('resize',syncNavigationSize);
+  if('ResizeObserver' in window){
+    const sizes=new ResizeObserver(syncNavigationSize);
+    if(header)sizes.observe(header);
+    if(sidebar)sizes.observe(sidebar);
+  }
   function revealAnchor(){
     let id;try{id=decodeURIComponent(location.hash.slice(1))}catch{return}if(!id)return;
     const target=document.getElementById(id);if(!target)return;
@@ -27,6 +43,9 @@
       cards.forEach(card=>{const hay=(card.textContent+' '+card.dataset.search).toLocaleLowerCase();card.hidden=!words.every(word=>hay.includes(word));if(!card.hidden)shown++});
       if(count)count.textContent=shown+'개 '+input.dataset.noun;
       if(empty)empty.hidden=shown!==0;
+      document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>{
+        button.setAttribute('aria-pressed',String((button.dataset.value||'')===input.value.trim()));
+      });
     };
     const query=new URLSearchParams(location.search).get('q');if(query)input.value=query;
     input.addEventListener('input',filter);filter();

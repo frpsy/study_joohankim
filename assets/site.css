@@ -121,3 +121,60 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
 .summary-note h2{font-size:16px;margin:0 0 6px}
 .summary-note p{margin:0}
 .summary-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+
+/* Reading layout: one visual container per topic; measured sticky navigation. */
+html{scroll-padding-top:var(--anchor-offset,100px)}
+.sidebar{top:calc(var(--header-height,72px) + 16px);max-height:calc(100dvh - var(--header-height,72px) - 32px)}
+.search-panel{background:transparent;border:0;border-radius:0;padding:0;margin-bottom:16px}
+.search-panel label{font-size:13px;font-weight:500;margin-bottom:6px}
+.search-panel .search{padding:9px 12px}
+.search-summary{margin-top:6px}
+.filter-chips{gap:6px;margin:8px 0 0}
+.filter-chips button{border-color:transparent;padding:5px 10px;font-weight:400}
+.filter-chips button[aria-pressed=true]{background:var(--tint);border-color:var(--line);font-weight:650}
+.btn.secondary,button.secondary{background:transparent;border-color:transparent;border-radius:4px}
+.btn.secondary:hover,button.secondary:hover{background:var(--tint)}
+.toolbar{gap:14px;margin:8px 0 14px}
+.toolbar button{border:0;border-radius:0;padding:6px 0;font-weight:400}
+.toolbar button:hover{text-decoration:underline;filter:none}
+.page-hero{padding:24px 0 28px}
+.hub-hero{padding:20px 0;gap:28px}
+.hub-hero h1{font-size:32px}
+.latest-entry{padding:18px 20px;border-radius:10px;border-left-width:2px}
+.latest-entry h2{font-size:21px;margin:8px 0}
+.latest-entry p{margin:8px 0 12px}
+.section-heading{margin-bottom:14px}
+.lecture h3{font-size:22px;margin:12px 0 10px}
+.lecture-section .topic{border-radius:10px}
+.lecture-section .topic>summary{font-size:18px;font-weight:650;padding:16px 0}
+.lecture-section .topic>.tutor-unit{padding:0;border:0;border-radius:0;background:transparent;margin:0 0 20px}
+.tutor-unit h3{font-size:17px;font-weight:600}
+.tutor-unit h3:not(:first-child){margin-top:22px}
+.lecture-section .tutor-question,.lecture-section .qa details{padding:0;background:transparent;border-radius:0;border-bottom:1px solid var(--line);margin:12px 0}
+.tutor-question summary,.lecture-section .qa summary{font-size:15px;font-weight:500;padding:12px 0}
+.tutor-question p{padding-bottom:12px}
+.topic-slides>details{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0}
+.topic-slides>details>summary{font-size:15px;font-weight:500;padding:12px 0}
+.concept-grid .card{border-radius:10px}
+.concept-grid .card h2{font-size:19px;font-weight:650}
+@media(max-width:780px){
+ .site-header-inner{gap:8px}
+ .sidebar{top:var(--header-height,60px);max-height:none;padding:6px 0;margin-bottom:22px}
+ .sidebar a{font-size:13px;padding:8px 10px}
+ .hub-hero{padding:12px 0 16px;gap:12px}
+ .hub-hero h1{font-size:26px;margin:6px 0 10px}
+ .hub-hero .actions{margin:10px 0 0;gap:4px}
+ .latest-entry{padding:12px 14px}
+ .latest-entry h2{font-size:18px;margin:5px 0 8px}
+ .latest-entry .eyebrow{font-size:11px}
+ .filter-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+ .filter-chips button{flex-shrink:0;white-space:nowrap}
+ .search-panel{margin-bottom:12px}
+ .search-panel .search{padding:8px 12px}
+ .section-heading{margin-bottom:10px}
+ .page-hero{padding:18px 0 22px}
+ details.topic{padding:0 16px}
+ .lecture-section .topic>summary{font-size:17px}
+ .lecture-section .topic>.tutor-unit{padding:0}
+ .lecture h3{font-size:21px}
+}
