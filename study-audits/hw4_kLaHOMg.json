@@ -1,5 +1,6 @@
 {
   "video_id": "hw4_kLaHOMg",
+  "review_basis": "기존 기록 기준: 영상 파일과 유튜브 한국어 자동 자막의 00:00:13~01:35:27 구간을 세 구간으로 나누어 검토했다. 화면은 5초 간격과 변화 임계값 검사로 확인했고 전 구간 육안 확인은 아니다. 소리 기준 용어 교정은 확인하지 않았다(audio_term_correction_verified: false). 이번 작업(2026-10-31)에서는 이 항목만 보완했고 본문을 다시 대조하지는 않았다.",
   "source": "Windows lecture_forgiveness video.mp4 and current YouTube Korean automatic VTT",
   "description_read": true,
   "transcript_review_ranges": [
