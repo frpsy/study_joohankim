@@ -59,18 +59,8 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
   .global-nav a,.sidebar a,.actions a,.actions button,.btn,button,.read,.filter-chips button{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
   .global-nav a{padding:8px 12px}
   .sidebar a{padding:10px 14px}
-  .study-progress{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:0 0 28px}
-  .study-progress h2{margin-top:0}
   .study-progress .study-check,.study-progress label{min-height:44px;display:flex;align-items:center;gap:10px;margin:4px 0}
-  .study-progress input[type=checkbox]{width:22px;height:22px;flex-shrink:0}
   .study-progress textarea,input,textarea,select{font-size:16px;max-width:100%}
-  .study-progress textarea{width:100%;box-sizing:border-box;margin:6px 0 12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font:inherit}
-  .study-progress .actions{margin:12px 0 0}
-  .study-progress-status{min-height:1.5em;margin:10px 0 0;font-size:15px}
-  .study-progress-status[data-state=error]{color:#9b2c2c}
-  .history-items{list-style:none;margin:0;padding:0}
-  .history-item{padding:14px 0;border-bottom:1px solid var(--line)}
-  .history-when{font-size:13px;color:var(--muted,#666)}
 }
 @media (max-width:640px){
   .breadcrumb a,.time,.mindmap a,.mindmap-branch a,.topic-index a,.latest-entry a,.core a,details li a{min-height:44px;display:inline-flex;align-items:center}
@@ -79,7 +69,20 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
   .global-nav{flex-wrap:wrap;justify-content:flex-end;gap:4px}
   .global-nav a{white-space:normal;text-align:center}
 }
-@media (max-width:640px){
-  .settings-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:0 0 24px}
-  .settings-panel h2{margin-top:0}
-}
+/* 학습 기록·계정 설정·학습 이력 (모든 화면 공통) */
+.study-progress{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:0 0 28px}
+.study-progress h2{margin-top:0}
+.study-progress input[type=checkbox]{width:22px;height:22px;flex-shrink:0}
+.study-progress textarea{width:100%;box-sizing:border-box;margin:6px 0 12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font:inherit}
+.study-progress .actions{margin:12px 0 0}
+.study-progress-status{min-height:1.5em;margin:10px 0 0;font-size:15px}
+.study-progress-status[data-state=error]{color:#9b2c2c}
+.history-items{list-style:none;margin:0;padding:0}
+.history-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.history-when{font-size:13px;color:var(--muted,#666)}
+.study-progress label{display:flex;align-items:center;gap:10px;margin:4px 0}
+.settings-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:24px 0}
+.settings-panel h2{margin-top:0}
+.history-item a{font-weight:600}
+.progress-badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0}
+.progress-badges span{font-size:13px;padding:2px 10px;border-radius:999px;background:var(--tint);color:var(--green);border:1px solid var(--line)}
