@@ -116,3 +116,13 @@ class ExternalLinkRegression(unittest.TestCase):
             self.assertTrue(1800 <= len(body) <= 2800, (vid, len(body)))
             lecture = (root / "lectures" / f"{vid}.html").read_text(encoding="utf-8")
             self.assertIn(f"../summaries/{vid}.html", lecture)
+
+    def test_site_copy_has_no_honorific_endings(self):
+        import re
+        root = Path(__file__).resolve().parents[1]
+        pages = [root / "index.html", root / "concepts.html", root / "study-history.html", *sorted((root / "lectures").glob("*.html")), *sorted((root / "summaries").glob("*.html"))]
+        allowed = {"냐나뽀니까"}
+        for page in pages:
+            text = re.sub(r"<[^>]+>", "\n", page.read_text(encoding="utf-8"))
+            found = [w for w in re.findall(r"[가-힣]*(?:습니다|입니다|합니다|니까)", text) if w not in allowed]
+            self.assertEqual(found, [], page.name)

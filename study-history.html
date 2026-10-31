@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="내가 표시한 학습 완료, 복습 완료, 메모의 이력을 최근순으로 보는 페이지"><title>학습 이력 · 내면을 공부하는 시간</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><link rel="stylesheet" href="assets/site.css?v=20261031-summary"><script defer src="assets/site.js?v=20261031-chip"></script></head><body><a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html">내면을 공부하는 시간<small>강의 학습 아카이브</small></a><nav class="global-nav" aria-label="주요 메뉴"><a href="index.html">강의 모음</a><a href="concepts.html">용어와 개념</a><a href="study-history.html" aria-current="page">학습 이력</a></nav></div></header><div class="site-shell"><main id="main" class="study-main"><div class="page-hero"><span class="eyebrow">내 기록</span><h1>학습 이력</h1><p>학습 완료·복습 완료·메모 변경 기록입니다. 최근순으로 표시합니다.</p></div><section id="history-list" class="lecture-section"><div id="history-status" role="status" aria-live="polite"></div><ol id="history-items" class="history-items"></ol></section></main></div>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="내가 표시한 학습 완료, 복습 완료, 메모의 이력을 최근순으로 보는 페이지"><title>학습 이력 · 내면을 공부하는 시간</title><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><link rel="stylesheet" href="assets/site.css?v=20261031-summary"><script defer src="assets/site.js?v=20261031-plain"></script></head><body><a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html">내면을 공부하는 시간<small>강의 학습 아카이브</small></a><nav class="global-nav" aria-label="주요 메뉴"><a href="index.html">강의 모음</a><a href="concepts.html">용어와 개념</a><a href="study-history.html" aria-current="page">학습 이력</a></nav></div></header><div class="site-shell"><main id="main" class="study-main"><div class="page-hero"><span class="eyebrow">내 기록</span><h1>학습 이력</h1><p>학습 완료·복습 완료·메모 변경 기록이다. 최근순으로 표시한다.</p></div><section id="history-list" class="lecture-section"><div id="history-status" role="status" aria-live="polite"></div><ol id="history-items" class="history-items"></ol></section></main></div>
 <script type="module">
 import { getDb, onUserChange } from "./assets/firebase.js?v=20261031-review";
 
@@ -29,8 +29,8 @@ function fmt(ts) {
 function describe(entry, titles) {
   const kind = KIND[entry.kind] || "기록";
   let action;
-  if (entry.kind === "note") action = entry.value ? "메모를 작성했습니다" : "메모를 비웠습니다";
-  else action = entry.value ? "표시했습니다" : "해제했습니다";
+  if (entry.kind === "note") action = entry.value ? "메모를 작성했다" : "메모를 비웠다";
+  else action = entry.value ? "표시했다" : "해제했다";
   return { title: titles[entry.lectureId] || entry.lectureId, text: `${kind} ${action}`, href: `lectures/${entry.lectureId}.html` };
 }
 
@@ -46,7 +46,7 @@ async function load(user, token) {
     if (!current()) return;
     list.replaceChildren();
     if (snap.empty) {
-      say("기록이 없습니다.");
+      say("기록이 없다.");
       return;
     }
     for (const doc of snap.docs) {
@@ -68,13 +68,13 @@ async function load(user, token) {
     say(`최근 ${snap.size}건`);
   } catch (err) {
     if (!current()) return;
-    say("이력을 불러오지 못했습니다.", true);
+    say("이력을 불러오지 못했다.", true);
   }
 }
 
 function renderSignedOut() {
   list.replaceChildren();
-  say("홈의 설정에서 로그인하면 볼 수 있습니다.");
+  say("홈의 설정에서 로그인하면 볼 수 있다.");
   if (!document.getElementById("history-home")) {
     const a = document.createElement("a");
     a.id = "history-home";
