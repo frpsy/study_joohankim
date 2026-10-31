@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 기본은 모든 클라이언트 접근 차단. 접근 모델이 정해지면 컬렉션별 규칙을 추가한다.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
