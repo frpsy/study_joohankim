@@ -31,7 +31,7 @@ async function mount(root) {
   try {
     fire = await getDb();
   } catch (err) {
-    setStatus(status, "기록 기능을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.", true);
+    setStatus(status, "기록 기능을 불러오지 못했습니다. 잠시 후 다시 시도할 수 있습니다.", true);
     return;
   }
   const { db, fs } = fire;
@@ -44,7 +44,12 @@ async function mount(root) {
     setStatus(status, "");
   }
 
-  async function renderSignedIn(user) {
+  let generation = 0;
+
+  async function renderSignedIn(user, token) {
+    const current = () => token === generation;
+    body.replaceChildren();
+    setStatus(status, "기록을 불러오는 중입니다.");
     const progressRef = fs.doc(db, "studyUsers", user.uid, "progress", lectureId);
     const noteRef = fs.doc(db, "studyUsers", user.uid, "notes", lectureId);
     let progress = {};
@@ -54,8 +59,17 @@ async function mount(root) {
       progress = p.exists() ? p.data() : {};
       note = n.exists() ? n.data() : note;
     } catch (err) {
-      setStatus(status, "저장된 기록을 읽지 못했습니다.", true);
+      if (!current()) return;
+      setStatus(status, "저장된 기록을 읽지 못했습니다. 다시 불러오기가 필요합니다.", true);
+      const retry = el("button", { type: "button", class: "btn" }, "다시 불러오기");
+      retry.addEventListener("click", () => {
+        if (current()) renderSignedIn(user, ++generation);
+      });
+      body.replaceChildren(retry);
+      return;
     }
+    if (!current()) return;
+    setStatus(status, "");
 
     const studyBox = el("input", { type: "checkbox", id: "sp-study" });
     studyBox.checked = !!progress.study;
@@ -83,36 +97,42 @@ async function mount(root) {
     actions.replaceChildren(save, historyLink, settings);
 
     save.addEventListener("click", async () => {
+      if (!current()) return;
       save.disabled = true;
       setStatus(status, "저장하는 중입니다.");
       try {
         const nextProgress = { study: studyBox.checked, review: reviewBox.checked, updatedAt: fs.serverTimestamp() };
         const nextNote = { text: memo.value.slice(0, 5000), updatedAt: fs.serverTimestamp() };
-        const writes = [fs.setDoc(progressRef, nextProgress, { merge: true }), fs.setDoc(noteRef, nextNote, { merge: true })];
+        const batch = fs.writeBatch(db);
+        batch.set(progressRef, nextProgress, { merge: true });
+        batch.set(noteRef, nextNote, { merge: true });
         const log = [];
         if (!!progress.study !== studyBox.checked) log.push(["study", studyBox.checked]);
         if (!!progress.review !== reviewBox.checked) log.push(["review", reviewBox.checked]);
         if ((note.text || "") !== memo.value) log.push(["note", memo.value.length > 0]);
         for (const [kind, value] of log) {
-          writes.push(fs.addDoc(fs.collection(db, "studyUsers", user.uid, "history"), {
+          batch.set(fs.doc(fs.collection(db, "studyUsers", user.uid, "history")), {
             lectureId, kind, value, at: fs.serverTimestamp()
-          }));
+          });
         }
-        await Promise.all(writes);
+        await batch.commit();
+        if (!current()) return;
         progress = { study: nextProgress.study, review: nextProgress.review };
         note = { text: nextNote.text };
         setStatus(status, "저장했습니다.");
       } catch (err) {
-        setStatus(status, "저장하지 못했습니다. 잠시 후 다시 시도해 주세요.", true);
+        if (!current()) return;
+        setStatus(status, "저장하지 못했습니다. 잠시 후 다시 시도할 수 있습니다.", true);
       } finally {
-        save.disabled = false;
+        if (current()) save.disabled = false;
       }
     });
 
   }
 
   onUserChange((user) => {
-    if (user) renderSignedIn(user);
+    const token = ++generation;
+    if (user) renderSignedIn(user, token);
     else renderSignedOut();
   });
 }
