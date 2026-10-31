@@ -45,7 +45,7 @@ def lecture_layout_errors(source):
 def validate(root):
     rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=[];docs={}
     if len({x['id'] for x in rows})!=len(rows):errors.append('duplicate video in registry')
-    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]
+    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]+sorted((root/'columns').glob('*.html'))
     for p in pages:
         if not p.is_file():errors.append('missing page '+str(p));continue
         source=p.read_text(encoding='utf-8')
