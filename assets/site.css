@@ -70,12 +70,19 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
   .global-nav a{white-space:normal;text-align:center}
 }
 /* 학습 기록·계정 설정·학습 이력 (모든 화면 공통) */
-.study-progress{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:0 0 28px}
-.study-progress h2{margin-top:0}
+.study-progress{padding:0;margin:0 0 16px;font-size:14px}
+.study-record-disclosure{border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.study-record-disclosure>summary{padding:10px 0;min-height:44px;font-size:14px;line-height:24px}
+.study-progress-body{padding:0 0 10px}
+.study-progress-body .study-check{display:inline-flex;margin:0 20px 6px 0}
+.study-progress-body>label[for=sp-note]{font-size:13px;color:var(--muted)}
+.study-progress .btn{font-size:13px;padding:6px 12px}
+.study-progress .actions{gap:8px;flex-wrap:wrap}
 .study-progress input[type=checkbox]{width:22px;height:22px;flex-shrink:0}
 .study-progress textarea{width:100%;box-sizing:border-box;margin:6px 0 12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font:inherit}
 .study-progress .actions{margin:12px 0 0}
-.study-progress-status{min-height:1.5em;margin:10px 0 0;font-size:15px}
+.study-progress-status{margin:0 0 10px;font-size:13px}
+.study-progress-status:empty{display:none}
 .study-progress-status[data-state=error]{color:#9b2c2c}
 .history-items{list-style:none;margin:0;padding:0}
 .history-item{padding:14px 0;border-bottom:1px solid var(--line)}

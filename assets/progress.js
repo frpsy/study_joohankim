@@ -17,15 +17,26 @@ function el(tag, attrs = {}, text = "") {
 function setStatus(box, message, isError = false) {
   box.textContent = message;
   box.dataset.state = isError ? "error" : "ok";
+  if (isError && box.parentElement) box.parentElement.open = true;
 }
 
 async function mount(root) {
   const lectureId = root.dataset.lecture;
   root.classList.add("study-progress");
-  root.append(el("h2", {}, TITLE));
+  const disclosure = el("details", { class: "study-record-disclosure" });
+  const summary = el("summary", {}, TITLE);
+  disclosure.append(summary);
+  root.append(disclosure);
+  function showSummary(progress = {}, note = {}) {
+    const marks = [];
+    if (progress.study) marks.push("학습 완료");
+    if (progress.review) marks.push("복습 완료");
+    if (note.text) marks.push("메모");
+    summary.textContent = marks.length ? `${TITLE} · ${marks.join(" · ")}` : TITLE;
+  }
   const body = el("div", { class: "study-progress-body" });
   const status = el("p", { class: "study-progress-status", role: "status", "aria-live": "polite" });
-  root.append(body, status);
+  disclosure.append(body, status);
 
   let fire = null;
   try {
@@ -38,7 +49,6 @@ async function mount(root) {
 
   function renderSignedOut() {
     body.replaceChildren(
-      el("p", {}, "로그인은 홈 화면의 설정에서 한 번만 하면 모든 강의에 적용됩니다."),
       el("a", { class: "btn", href: "../index.html#settings" }, "홈에서 로그인하기")
     );
     setStatus(status, "");
@@ -71,18 +81,18 @@ async function mount(root) {
     if (!current()) return;
     setStatus(status, "");
 
+    showSummary(progress, note);
     const studyBox = el("input", { type: "checkbox", id: "sp-study" });
     studyBox.checked = !!progress.study;
     const reviewBox = el("input", { type: "checkbox", id: "sp-review" });
     reviewBox.checked = !!progress.review;
-    const memo = el("textarea", { id: "sp-note", rows: "4", maxlength: "5000", "aria-label": "개인 메모" });
+    const memo = el("textarea", { id: "sp-note", rows: "2", maxlength: "5000", "aria-label": "개인 메모" });
     memo.value = typeof note.text === "string" ? note.text : "";
     const save = el("button", { type: "button", class: "btn" }, "저장");
     const historyLink = el("a", { class: "btn secondary", href: "../study-history.html" }, "학습 이력 보기");
     const settings = el("a", { class: "btn secondary", href: "../index.html#settings" }, "계정 설정");
 
     body.replaceChildren(
-      el("p", {}, `${user.displayName || user.email || "로그인됨"}`),
       el("label", { class: "study-check", for: "sp-study" }, ""),
       el("label", { class: "study-check", for: "sp-review" }, ""),
       el("label", { for: "sp-note" }, "개인 메모"),
@@ -119,6 +129,7 @@ async function mount(root) {
         if (!current()) return;
         progress = { study: nextProgress.study, review: nextProgress.review };
         note = { text: nextNote.text };
+        showSummary(progress, note);
         setStatus(status, "저장했습니다.");
       } catch (err) {
         if (!current()) return;
@@ -132,6 +143,8 @@ async function mount(root) {
 
   onUserChange((user) => {
     const token = ++generation;
+    disclosure.open = false;
+    showSummary();
     if (user) renderSignedIn(user, token);
     else renderSignedOut();
   });
