@@ -1,6 +1,6 @@
 # 자막 인덱스
 
-`python scripts/subtitles.py index`로 자동 생성됩니다. 직접 수정하지 마세요.
+`python scripts/subtitles.py index`로 자동 생성된다. 직접 수정하지 마세요.
 
 전체 209개 / 요약 0개
 

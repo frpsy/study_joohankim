@@ -104,3 +104,25 @@ class ExternalLinkRegression(unittest.TestCase):
         for page in pages:
             for tag in re.findall(r"<a\b[^>]*target=\"_blank\"[^>]*>", page.read_text(encoding="utf-8")):
                 self.assertIn("noopener", tag, f"{page.name}: {tag[:80]}")
+
+    def test_summaries_match_source_and_use_plain_style(self):
+        from build_summaries import build
+        self.assertFalse(build(check=True))
+        root = Path(__file__).resolve().parents[1]
+        data = json.loads((root / "data" / "summaries.json").read_text(encoding="utf-8"))
+        for vid, item in data.items():
+            body = item["lead"] + "".join(p for s in item["sections"] for p in s["p"]) + item["note"]
+            self.assertNotRegex(body, r"(습니다|입니다|합니다|ㅂ니다)[.]", vid)
+            self.assertTrue(1800 <= len(body) <= 2800, (vid, len(body)))
+            lecture = (root / "lectures" / f"{vid}.html").read_text(encoding="utf-8")
+            self.assertIn(f"../summaries/{vid}.html", lecture)
+
+    def test_site_copy_has_no_honorific_endings(self):
+        import re
+        root = Path(__file__).resolve().parents[1]
+        pages = [root / "index.html", root / "concepts.html", root / "study-history.html", *sorted((root / "lectures").glob("*.html")), *sorted((root / "summaries").glob("*.html"))]
+        allowed = {"냐나뽀니까"}
+        for page in pages:
+            text = re.sub(r"<[^>]+>", "\n", page.read_text(encoding="utf-8"))
+            found = [w for w in re.findall(r"[가-힣]*(?:습니다|입니다|합니다|니까)", text) if w not in allowed]
+            self.assertEqual(found, [], page.name)

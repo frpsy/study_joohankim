@@ -2,7 +2,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlparse,unquote
-import json,sys
+import re,json,sys
 from build_library import render
 from build_mindmaps import errors as mindmap_errors
 class Document(HTMLParser):
@@ -45,15 +45,16 @@ def lecture_layout_errors(source):
 def validate(root):
     rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=[];docs={}
     if len({x['id'] for x in rows})!=len(rows):errors.append('duplicate video in registry')
-    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]
+    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]+sorted((root/'summaries').glob('*.html'))
     for p in pages:
         if not p.is_file():errors.append('missing page '+str(p));continue
         source=p.read_text(encoding='utf-8')
         problems,d=structural_errors(source);docs[p.resolve()]=d
         if p.parent.name=='lectures':
             problems.extend(lecture_layout_errors(source))
-            for label in ('왜 중요한가','이 강의에서 얻을 수 있는 것'):
-                if label not in source:problems.append('missing learning introduction: '+label)
+            if 'id="why"' in source or '이 강의에서 얻을 수 있는 것' in source:problems.append('separate goals block reintroduced; merge it into the hero intro')
+            m=re.search(r'</h1><p[^>]*>(.*?)</p>',source)
+            if not m or len(m.group(1))<150:problems.append('hero intro must state why it matters and what the lecture gives')
         errors.extend(p.name+': '+x for x in problems)
     for p,d in docs.items():
         for href in d.hrefs+d.styles+d.scripts:

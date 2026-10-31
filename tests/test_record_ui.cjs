@@ -40,7 +40,7 @@ test('progress, note and history commit together; failure can be retried',async(
  x.fail(false);await x.find('저장').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,4); // progress, note, study history, note history
 });
 test('late commit status cannot replace signed-out status',async()=>{
- const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장했습니다.'),undefined);assert.equal(x.find('저장'),undefined);
+ const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장했다.'),undefined);assert.equal(x.find('저장'),undefined);
 });
 test('home ignores a previous account badge response after logout',async()=>{
  const nodes=Object.fromEntries(['settings-toggle','settings','account-state','account-action','account-history'].map(id=>[id,new Element('div')]));
