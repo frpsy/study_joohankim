@@ -32,28 +32,42 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
 .lecture-section .topic{margin:14px 0}.lecture-section .topic>summary{font-size:19px}.lecture-section .topic>.box{border:0;border-radius:0;background:transparent;padding:0;margin:0}.lecture-section .topic>.tutor-unit{margin:0 0 20px;padding:18px;border-left:3px solid #7f966e;border-radius:0 10px 10px 0;background:#f0f3e8}.lecture-section .topic>p,.lecture-section .topic>div,.lecture-section .topic>figure{font-size:16px}.lecture-section .topic>h2{font-size:20px}.lecture-section .qa details{background:var(--paper);padding:0 14px}.lecture-section>div.panel{border:0;background:transparent;padding:0}.lecture-section [aria-hidden=true][id]{scroll-margin-top:20px}
 @media(max-width:780px){.lecture-goals{margin-bottom:24px}.lecture-section .topic>summary{font-size:17px}.lecture-goals h2{font-size:23px}}
 
-/* Balanced tree: centered connections, left-aligned content within equal branches. */
+/* Node-link mindmap: boxed nodes joined by lines, one accent color per branch (distinct from the plain contents list). */
 .mindmap{padding:8px 0 20px}
-.mindmap-root{position:relative;display:table;max-width:100%;margin:0 auto;padding:8px 16px;border:0;border-bottom:1px solid var(--green);border-radius:0;font-size:18px;font-weight:650;text-align:center}
-.mindmap-root::after{content:"";position:absolute;left:50%;bottom:-25px;height:24px;border-left:1px solid var(--line)}
-.mindmap-branches{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto auto;column-gap:24px;row-gap:8px;list-style:none;padding:0;margin:44px 0 0}
-.mindmap-branches::before{content:"";position:absolute;top:-20px;left:calc((100% - 72px)/8);right:calc((100% - 72px)/8);border-top:1px solid var(--line)}
-.mindmap-branch{position:relative;display:grid;grid-row:span 2;grid-template-rows:subgrid;padding:12px 0 0;border:0;border-top:1px solid var(--line);border-radius:0}
-.mindmap-branch::before{content:"";position:absolute;top:-21px;left:50%;height:20px;border-left:1px solid var(--line)}
-.mindmap-branch h3{font-size:16px;line-height:1.6;margin:0;text-align:left}
+.mindmap-branch{--c:#315b46;--bg:#e8eedf}
+.mindmap-branch:nth-child(2){--c:#3f6a86;--bg:#e3edf2}
+.mindmap-branch:nth-child(3){--c:#8a6a24;--bg:#f4ecd6}
+.mindmap-branch:nth-child(4){--c:#7a4f6a;--bg:#f1e5ee}
+.mindmap-root{position:relative;display:table;max-width:100%;margin:0 auto;padding:12px 26px;border:0;border-radius:999px;background:var(--green);color:#fff;font-size:18px;font-weight:700;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.mindmap-root::after{content:"";position:absolute;left:50%;top:100%;height:24px;border-left:2px solid var(--line)}
+.mindmap-branches{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto auto;column-gap:20px;row-gap:14px;list-style:none;padding:0;margin:46px 0 0}
+.mindmap-branches::before{content:"";position:absolute;top:-22px;left:calc((100% - 60px)/8);right:calc((100% - 60px)/8);border-top:2px solid var(--line)}
+.mindmap-branch{position:relative;display:grid;grid-row:span 2;grid-template-rows:subgrid;padding:0;border:0;border-radius:0}
+.mindmap-branch::before{content:"";position:absolute;top:-22px;left:50%;height:22px;border-left:2px solid var(--line)}
+.mindmap-branch h3{position:relative;font-size:16px;line-height:1.5;margin:0;padding:9px 12px;text-align:center;color:var(--c);background:var(--bg);border:2px solid var(--c);border-radius:12px}
+.mindmap-branch h3::after{content:"";position:absolute;left:50%;top:100%;height:14px;border-left:2px solid var(--c)}
 .mindmap-branch ul{align-self:start;list-style:none;padding:0;margin:0}
-.mindmap-branch li{padding:0 0 6px;font-size:14px;line-height:1.8}
+.mindmap-branch li{position:relative;padding:0 0 10px;margin:0;font-size:14px;line-height:1.5}
+.mindmap-branch li::after{content:"";position:absolute;left:50%;top:100%;height:10px;border-left:2px solid var(--c);opacity:.45}
 .mindmap-branch li:last-child{padding-bottom:0}
-.mindmap-branch a{text-decoration:none}
-.mindmap-branch a:hover{text-decoration:underline}
+.mindmap-branch li:last-child::after{display:none}
+.mindmap-branch a{display:block;padding:7px 10px;text-align:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--c);border-radius:10px}
+.mindmap-branch a:hover{background:var(--bg)}
 @media(max-width:1000px){
- .mindmap-root{display:block;text-align:left;font-size:17px}
- .mindmap-root::after{left:20px;bottom:-25px}
- .mindmap-branches{display:block;border-left:1px solid var(--line);margin:24px 0 0 20px;padding:0 0 0 20px}
+ .mindmap-root{display:block;text-align:left;font-size:17px;border-radius:14px}
+ .mindmap-root::after{left:22px}
+ .mindmap-branches{display:block;border-left:2px solid var(--line);margin:24px 0 0 22px;padding:0 0 0 22px}
  .mindmap-branches::before{display:none}
- .mindmap-branch{display:block;border:0;padding:0;margin:0 0 20px}
- .mindmap-branch::before{left:-21px;top:13px;width:12px;height:0;border-left:0;border-top:1px solid var(--line)}
- .mindmap-branch h3{margin:0 0 8px}
+ .mindmap-branch{display:block;margin:0 0 20px}
+ .mindmap-branch:last-child{margin-bottom:0}
+ .mindmap-branch::before{left:-24px;top:20px;width:22px;height:0;border-left:0;border-top:2px solid var(--line)}
+ .mindmap-branch h3{display:inline-block;text-align:left}
+ .mindmap-branch h3::after{display:none}
+ .mindmap-branch ul{margin:10px 0 0 18px;padding-left:16px;border-left:2px solid var(--c)}
+ .mindmap-branch li{padding:0 0 8px}
+ .mindmap-branch li::before{content:"";position:absolute;left:-16px;top:50%;width:14px;border-top:2px solid var(--c)}
+ .mindmap-branch li::after{display:none}
+ .mindmap-branch a{text-align:left}
 }
 @media (max-width:640px){
   .global-nav a,.sidebar a,.actions a,.actions button,.btn,button,.read,.filter-chips button{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
