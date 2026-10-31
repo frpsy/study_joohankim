@@ -8,7 +8,7 @@ def header(base='',active='lectures'):
 def footer(base=''):
     return f'<footer class="site-footer"><div class="site-footer-inner"><span>내면을 공부하는 시간 · 강의 학습</span><a href="{base}index.html">강의 모음으로</a><a href="{base}concepts.html">용어와 개념</a></div></footer>'
 def page(title,body,base='',active='lectures'):
-    return f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="강의가 중요한 이유와 배울 점을 먼저 읽고, 해설과 타임라인으로 학습하는 아카이브"><title>{html.escape(title)} · 내면을 공부하는 시간</title><link rel="icon" href="{base}assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{base}assets/apple-touch-icon.png"><link rel="stylesheet" href="{base}assets/site.css?v=20261031-column"><script defer src="{base}assets/site.js?v=20261031-chip"></script></head><body>{header(base,active)}{body}{footer(base)}</body></html>'
+    return f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="강의가 중요한 이유와 배울 점을 먼저 읽고, 해설과 타임라인으로 학습하는 아카이브"><title>{html.escape(title)} · 내면을 공부하는 시간</title><link rel="icon" href="{base}assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{base}assets/apple-touch-icon.png"><link rel="stylesheet" href="{base}assets/site.css?v=20261031-summary"><script defer src="{base}assets/site.js?v=20261031-chip"></script></head><body>{header(base,active)}{body}{footer(base)}</body></html>'
 def render(rows):
     # 목록의 순서는 개인 학습용 편집 순서. 날짜가 없는 강의에는 임의의 공개일을 만들지 않는다.
     latest=rows[0]
