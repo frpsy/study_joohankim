@@ -8,6 +8,7 @@ const state = document.getElementById("account-state");
 const action = document.getElementById("account-action");
 const historyLink = document.getElementById("account-history");
 let signedIn = false;
+let generation = 0;
 
 function openPanel(open) {
   panel.hidden = !open;
@@ -24,10 +25,10 @@ toggle.addEventListener("click", () => openPanel(panel.hidden));
 
 function errorMessage(err) {
   const code = err && err.code;
-  if (code === "auth/popup-blocked") return "팝업이 차단되었습니다. 브라우저에서 팝업을 허용한 뒤 다시 눌러 주세요.";
-  if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "로그인 창이 닫혔습니다. 다시 눌러 주세요.";
-  if (code === "auth/network-request-failed") return "인터넷 연결을 확인한 뒤 다시 시도해 주세요.";
-  return "처리하지 못했습니다. 잠시 후 다시 시도해 주세요.";
+  if (code === "auth/popup-blocked") return "팝업이 차단되었습니다. 브라우저에서 팝업을 허용한 뒤 다시 시도할 수 있습니다.";
+  if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "로그인 창이 닫혔습니다. 다시 로그인할 수 있습니다.";
+  if (code === "auth/network-request-failed") return "인터넷 연결을 확인한 뒤 다시 시도할 수 있습니다.";
+  return "처리하지 못했습니다. 잠시 후 다시 시도할 수 있습니다.";
 }
 
 action.addEventListener("click", async () => {
@@ -46,10 +47,11 @@ function clearBadges() {
   document.querySelectorAll(".lecture .progress-badges").forEach((node) => node.remove());
 }
 
-async function showBadges(user) {
+async function showBadges(user, token) {
   try {
     const { db, fs } = await getDb();
     const snap = await fs.getDocs(fs.collection(db, "studyUsers", user.uid, "progress"));
+    if (token !== generation) return;
     clearBadges();
     snap.forEach((doc) => {
       const data = doc.data();
@@ -67,13 +69,15 @@ async function showBadges(user) {
 }
 
 onUserChange((user) => {
+  const token = ++generation;
+  clearBadges();
   signedIn = !!user;
   action.disabled = false;
   historyLink.hidden = !user;
   if (user) {
     state.textContent = `${user.displayName || user.email} 님으로 로그인되어 있습니다. 학습 기록이 모든 강의에 저장됩니다.`;
     action.textContent = "로그아웃";
-    showBadges(user);
+    showBadges(user, token);
   } else {
     state.textContent = "로그인하면 강의별 학습 완료·복습·메모를 저장하고 학습 이력을 볼 수 있습니다.";
     action.textContent = "구글로 로그인";
