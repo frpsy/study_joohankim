@@ -107,17 +107,17 @@ details{border-bottom:1px solid var(--line)}summary{cursor:pointer;font-weight:6
 .history-item a{font-weight:600}
 .progress-badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0}
 .progress-badges span{font-size:13px;padding:2px 10px;border-radius:999px;background:var(--tint);color:var(--green);border:1px solid var(--line)}
-/* 칼럼: 한 번에 읽는 긴 글 */
-.column{max-width:720px;margin:0 auto;padding:8px 0 40px}
-.column-head{margin:12px 0 20px}
-.column-head h1{margin:6px 0 10px}
-.column-head .meta{margin:0;color:var(--muted)}
-.column h2{font-size:21px;margin:34px 0 10px}
-.column p{margin:0 0 16px}
-.column-summary{padding:16px 18px;background:var(--tint);border-left:3px solid var(--green);border-radius:0 12px 12px 0}
-.column-questions{padding-left:22px;margin:0 0 20px}
-.column-questions li{margin:0 0 6px}
-.column-note{margin:28px 0;padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:15px}
-.column-note h2{font-size:16px;margin:0 0 6px}
-.column-note p{margin:0}
-.column-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+/* 5분 요약 */
+.summary-page{max-width:720px;margin:0 auto;padding:8px 0 40px}
+.summary-head{margin:12px 0 20px}
+.summary-head h1{margin:6px 0 10px}
+.summary-head .meta{margin:0;color:var(--muted)}
+.summary-page h2{font-size:21px;margin:30px 0 10px}
+.summary-page p{margin:0 0 14px}
+.summary-lead{padding:16px 18px;background:var(--tint);border-left:3px solid var(--green);border-radius:0 12px 12px 0}
+.summary-list{padding-left:22px;margin:0 0 20px}
+.summary-list li{margin:0 0 6px}
+.summary-note{margin:28px 0;padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:15px}
+.summary-note h2{font-size:16px;margin:0 0 6px}
+.summary-note p{margin:0}
+.summary-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
