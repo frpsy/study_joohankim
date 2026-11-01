@@ -9,7 +9,9 @@
       "긍정 기억",
       "편도체",
       "정서 조절"
-    ]
+    ],
+    "creator": "김주환",
+    "kind": "lecture"
   },
   {
     "id": "vHuZh8xLcDc",
@@ -24,7 +26,9 @@
       "MBSR",
       "MBCT"
     ],
-    "filter_tag": "명상"
+    "filter_tag": "명상",
+    "creator": "김주환",
+    "kind": "lecture"
   },
   {
     "id": "xA-4G4z-1MM",
@@ -37,7 +41,9 @@
       "분노",
       "몸과 마음",
       "집착"
-    ]
+    ],
+    "creator": "김주환",
+    "kind": "lecture"
   },
   {
     "id": "ZCty0wvogDo",
@@ -50,7 +56,9 @@
       "집착",
       "선호",
       "오유지족"
-    ]
+    ],
+    "creator": "김주환",
+    "kind": "lecture"
   },
   {
     "id": "hw4_kLaHOMg",
@@ -63,7 +71,9 @@
       "자기용서",
       "자타긍정",
       "분노"
-    ]
+    ],
+    "creator": "김주환",
+    "kind": "lecture"
   },
   {
     "id": "QmOF0crdyRU",
@@ -77,6 +87,8 @@
       "보상 예측",
       "노력",
       "습관"
-    ]
+    ],
+    "creator": "Andrew Huberman",
+    "kind": "lecture"
   }
 ]
