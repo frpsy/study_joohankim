@@ -20,7 +20,7 @@ class CompactCourseChecks(unittest.TestCase):
   for vid,item in courses.items():
    self.assertEqual(len(item['three']),3)
    self.assertTrue(item['sections'])
-  self.assertFalse(any(str(x).startswith(('핵심 원리:', '훈련의 구분:', '실천 방향:')) for x in item['three']),vid)
+   self.assertFalse(any(str(x).startswith(('핵심 원리:', '훈련의 구분:', '실천 방향:')) for x in item['three']),vid)
    self.assertTrue(item['question'] and item['answer'])
    self.assertIn('원강의 기반 학습 해설', (R/'mini-courses'/f'{vid}.html').read_text())
   self.assertFalse(build(check=True))
