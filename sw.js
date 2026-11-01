@@ -1,6 +1,6 @@
 /* Fast, offline-tolerant navigation for public static study pages only.
    Firestore, authentication, cross-origin SDKs and mutable user data are NEVER cached. */
-const VERSION = '20261101-navigation-v1';
+const VERSION = '20261101-timeline-preview-v2';
 const CACHE = 'study-home-static-' + VERSION;
 const PREFIX = 'study-home-static-';
 const CORE = [
