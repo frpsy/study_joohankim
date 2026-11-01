@@ -18,8 +18,9 @@ class EditorialBrandContract(unittest.TestCase):
                 self.assertIn('<span class="brand-name">내면의 서재<small>강의 · 개념 · 복습</small></span>',html)
                 self.assertRegex(html,r'<img class="brand-symbol"[^>]+alt=""')
                 self.assertNotIn('내면을 공부하는 시간',html)
-                self.assertIn('site.css?v=20261102-footer-v8',html)
-                self.assertIn('site.js?v=20261102-footer-v8',html)
+                asset_version='20261102-footer-v8' if path.name=='index.html' else '20261101-editorial-v7'
+                self.assertIn('site.css?v='+asset_version,html)
+                self.assertIn('site.js?v='+asset_version,html)
                 self.assertEqual(len(re.findall(r'<h1(?:\s|>)',html)),1)
 
     def test_home_has_consistent_editorial_hierarchy_and_no_content_loss(self):
