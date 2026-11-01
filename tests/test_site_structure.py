@@ -30,6 +30,10 @@ class GeneratorRegression(unittest.TestCase):
         self.assertIn('data-kind="book"',mixed)
         self.assertIn('다른 저자',mixed)
         self.assertIn('2개 자료',mixed)
+        featured=render([row],[{**book,'featured':True}])
+        self.assertIn('대표 책',featured)
+        self.assertIn('href="books/sample.html">자료 읽기',featured)
+        with self.assertRaises(ValueError):render([row],[{**book,'featured':True},{**book,'id':'second','featured':True}])
         with self.assertRaises(ValueError):render([row],[{**book,'url':'https://untrusted.example/'}])
 
     def test_hand_edited_home_is_rejected(self):
