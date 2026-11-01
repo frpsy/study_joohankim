@@ -85,7 +85,7 @@ function renderSignedOut() {
   }
 }
 
-onUserChange((user) => {
+Promise.resolve(onUserChange((user) => {
   const token = ++generation;
   list.replaceChildren();
   const home = document.getElementById("history-home");
@@ -95,5 +95,5 @@ onUserChange((user) => {
   } else {
     renderSignedOut();
   }
-});
+})).catch(() => say("로그인 상태 확인 실패 · 네트워크 연결을 확인해 주세요.", true));
 </script></body></html>
