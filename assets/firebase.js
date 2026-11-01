@@ -5,6 +5,7 @@ import { firebaseConfig } from "./firebase-config.js";
 const SDK = "https://www.gstatic.com/firebasejs/10.14.1";
 let appReady = null;
 let authReady = null;
+let preparedAuth = null;
 let dbReady = null;
 
 function appInstance() {
@@ -18,8 +19,11 @@ function appInstance() {
 function authInstance() {
   if (!authReady) {
     authReady = Promise.all([appInstance(), import(`${SDK}/firebase-auth.js`)])
-      .then(([app, auth]) => ({ auth, authObj: auth.getAuth(app) }))
-      .catch(error => { authReady = null; throw error; });
+      .then(([app, auth]) => {
+        preparedAuth = { auth, authObj: auth.getAuth(app) };
+        return preparedAuth;
+      })
+      .catch(error => { authReady = null; preparedAuth = null; throw error; });
   }
   return authReady;
 }
@@ -33,9 +37,11 @@ function dbInstance() {
 }
 
 export async function getDb() { return dbInstance(); }
-export async function signInWithGoogle() {
-  const { auth, authObj } = await authInstance();
-  return auth.signInWithPopup(authObj, new auth.GoogleAuthProvider());
+export function signInWithGoogle() {
+  // Firebase SDK is prepared before the click. Invoke popup synchronously
+  // within the user gesture to prevent mobile Safari popup blocking.
+  if (!preparedAuth) return Promise.reject(Object.assign(new Error('Auth not ready'), { code: 'auth/not-ready' }));
+  return preparedAuth.auth.signInWithPopup(preparedAuth.authObj, new preparedAuth.auth.GoogleAuthProvider());
 }
 export async function signOutUser() {
   const { auth, authObj } = await authInstance();

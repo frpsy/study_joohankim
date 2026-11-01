@@ -43,11 +43,11 @@ test('late commit status cannot replace signed-out status',async()=>{
  const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장 완료'),undefined);assert.equal(x.find('저장'),undefined);
 });
 test('home ignores a previous account badge response after logout',async()=>{
- const nodes=Object.fromEntries(['settings-toggle','settings','account-state','account-action','account-history'].map(id=>[id,new Element('div')]));
+ const nodes=Object.fromEntries(['settings-toggle','settings','account-close','account-state','account-action','account-history'].map(id=>[id,new Element('div')]));
  let auth,resolve,rendered=0;
  const context={document:{getElementById:id=>nodes[id],querySelectorAll:()=>[]},location:{hash:''},window:{addEventListener(){}},getDb:async()=>({db:{},fs:{collection(){},getDocs:()=>new Promise(r=>resolve=r)}}),onUserChange:cb=>{auth=cb;},signInWithGoogle(){},signOutUser(){}};
  vm.runInNewContext(fs.readFileSync('assets/account.js','utf8').replace(/^import .*;\n/m,''),context);
- auth({uid:'a',displayName:'A'});await tick();auth(null);resolve({forEach(){rendered++;}});await tick();assert.equal(rendered,0);assert.equal(nodes['account-action'].textContent,'구글로 로그인');
+ auth({uid:'a',displayName:'A'});await tick();auth(null);resolve({forEach(){rendered++;}});await tick();assert.equal(rendered,0);assert.equal(nodes['account-action'].textContent,'Google로 로그인');
 });
 test('history ignores a previous account response after logout',async()=>{
  const nodes={'history-status':new Element('div'),'history-items':new Element('ol')};nodes['history-status'].after=()=>{};
@@ -55,4 +55,31 @@ test('history ignores a previous account response after logout',async()=>{
  const context={document:{getElementById:id=>nodes[id],createElement:t=>new Element(t)},fetch:async()=>({json:async()=>[]}),getDb:async()=>({db:{},fs:{collection(){},query(){},orderBy(){},limit(){},getDocs:()=>new Promise(r=>resolve=r)}}),onUserChange:cb=>{auth=cb;}};
  const html=fs.readFileSync('study-history.html','utf8');const source=html.match(/<script type="module">([\s\S]*?)<\/script>/)[1].replace(/^import .*;\n/m,'');
  vm.runInNewContext(source,context);auth({uid:'a'});await tick();auth(null);resolve({empty:false,docs:[{data:()=>({lectureId:'a',kind:'note',value:true})}],size:1});await tick();assert.equal(nodes['history-items'].children.length,0);assert.match(nodes['history-status'].textContent,/로그인/);
+});
+
+test('Google sign-in is called directly in the click and errors remain actionable',async()=>{
+ const nodes=Object.fromEntries(['settings-toggle','settings','account-close','account-state','account-action','account-history'].map(id=>[id,new Element('button')]));
+ nodes.settings.hidden=true;
+ nodes.settings.scrollIntoView=()=>{};
+ let auth,invoked=0,complete;
+ const promise=new Promise(resolve=>complete=resolve);
+ const context={
+   document:{getElementById:id=>nodes[id],querySelectorAll:()=>[]},
+   location:{hash:''},window:{addEventListener(){}},
+   getDb:async()=>({}),onUserChange:cb=>{auth=cb;},
+   signInWithGoogle:()=>{invoked++;return promise;},signOutUser:()=>Promise.resolve()
+ };
+ vm.runInNewContext(fs.readFileSync('assets/account.js','utf8').replace(/^import .*;\n/m,''),context);
+ auth(null);
+ nodes['account-action'].events.click();
+ assert.equal(invoked,1,'popup request must be invoked in the same click task');
+ assert.equal(nodes['account-action'].disabled,true);
+ complete();
+ await tick();
+ assert.equal(nodes['account-action'].disabled,false);
+ assert.equal(nodes['settings-toggle'].textContent,'로그인 · 계정');
+ nodes['settings-toggle'].events.click();
+ assert.equal(nodes['settings'].hidden,false);
+ nodes['account-close'].events.click();
+ assert.equal(nodes['settings'].hidden,true);
 });

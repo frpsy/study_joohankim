@@ -95,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.5');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.6');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
@@ -107,4 +107,42 @@ test('footer provides a refresh link when deployed manifest is newer',async({bro
   await expect(page.locator('.site-version')).toContainText('최신 v2099.01.01.1');
   await expect(page.locator('.site-version a')).toHaveAttribute('href',/refresh=2099.01.01.1/);
   await context.close();
+});
+
+test('account panel remains below hub title and has clear login and close controls',async({browser})=>{
+ const context=await browser.newContext({viewport:{width:390,height:844}});
+ const page=await context.newPage();
+ await page.route('**/assets/firebase.js*',route=>route.fulfill({status:200,contentType:'text/javascript',body:`
+    let observer;
+    export const getDb=async()=>({db:{},fs:{getDocs:async()=>({forEach(){}}),collection(){}}});
+    export function onUserChange(cb){observer=cb;cb(null);return Promise.resolve(()=>{});}
+    export function signInWithGoogle(){
+      document.documentElement.dataset.loginInvoked='yes';
+      observer({uid:'mock',displayName:'테스트'});
+      return Promise.resolve();
+    }
+    export function signOutUser(){observer(null);return Promise.resolve();}
+  `}));
+ await page.goto('/index.html');
+ await expect(page.getByRole('heading',{name:'나의 스터디 홈'})).toBeVisible();
+ await expect(page.locator('#settings')).toBeHidden();
+ const actions=page.locator('.hub-actions > *');
+ await expect(actions).toHaveCount(3);
+ await expect(actions.nth(0)).toHaveText('강의 고르기');
+ await expect(actions.nth(1)).toHaveText('미니강좌');
+ await expect(actions.nth(2)).toHaveText('로그인 · 계정');
+ await actions.nth(2).click();
+ await expect(page.locator('#settings')).toBeVisible();
+ await expect(page.locator('#account-action')).toBeEnabled();
+ const panelY=await page.locator('#settings').evaluate(el=>el.getBoundingClientRect().top + scrollY);
+ const titleY=await page.locator('.hub-hero h1').evaluate(el=>el.getBoundingClientRect().top + scrollY);
+ expect(panelY).toBeGreaterThan(titleY);
+ await page.locator('#account-action').click();
+ await expect(page.locator('html')).toHaveAttribute('data-login-invoked','yes');
+ await expect(page.locator('#account-action')).toHaveText('로그아웃');
+ await page.locator('#account-action').click();
+ await expect(page.locator('#account-action')).toHaveText('Google로 로그인');
+ await page.locator('#account-close').click();
+ await expect(page.locator('#settings')).toBeHidden();
+ await context.close();
 });

@@ -291,3 +291,24 @@ html{scroll-padding-top:var(--anchor-offset,100px)}
 .lecture-section pre.timeline-teaser code{font:inherit;white-space:inherit}
 .lecture-section .timeline-disclosure>summary{margin-top:2px}
 @media(max-width:780px){.lecture-section pre.timeline-teaser{font-size:12px;line-height:1.5;padding:10px}}
+
+/* Home: one primary route, one secondary learning route and one account control. */
+.hub-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hub-actions>.btn{min-height:44px}
+.hub-actions #settings-toggle{margin-left:auto}
+.settings-panel{max-width:520px;margin:14px 0 0;padding:18px;background:var(--surface)}
+.account-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.account-header h2{font-size:20px;margin:0}
+.account-header .account-close{min-height:40px;padding:6px 13px}
+.settings-panel #account-state{margin:10px 0;font-size:14px;line-height:1.6}
+.account-actions{margin:10px 0 0;gap:8px}
+.account-actions .btn{min-height:44px}
+.account-hint{margin:12px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:780px){
+  .hub-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
+  .hub-actions #settings-toggle{margin:0;grid-column:1/-1;justify-self:stretch}
+  .hub-actions>.btn{min-height:44px;text-align:center}
+  .settings-panel{padding:16px;margin:12px 0 0}
+  .account-actions{display:flex;flex-wrap:wrap}
+  .account-actions #account-action{min-width:160px}
+}
