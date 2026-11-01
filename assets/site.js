@@ -73,6 +73,15 @@
       resetTimer=setTimeout(()=>{button.textContent=originalLabel;if(status)status.textContent=''},2200);
     });
   });
+  document.querySelectorAll('[data-timeline-toggle]').forEach(button=>{
+    const source=document.getElementById(button.dataset.timelineToggle);
+    if(!source)return;
+    button.addEventListener('click',()=>{
+      const expanded=source.classList.toggle('is-expanded');
+      button.setAttribute('aria-expanded',String(expanded));
+      button.textContent=expanded?'접기':'전체 보기';
+    });
+  });
   document.querySelectorAll('[data-expand-scope]').forEach(button=>button.addEventListener('click',()=>{
     document.querySelectorAll(button.dataset.expandScope+' details').forEach(d=>d.open=button.dataset.expand==='true');
   }));
