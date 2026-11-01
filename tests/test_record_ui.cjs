@@ -59,6 +59,7 @@ test('history ignores a previous account response after logout',async()=>{
 
 test('Google sign-in is called directly in the click and errors remain actionable',async()=>{
  const nodes=Object.fromEntries(['settings-toggle','settings','account-close','account-state','account-action','account-history'].map(id=>[id,new Element('button')]));
+ nodes.settings.hidden=true;
  let auth,invoked=0,complete;
  const promise=new Promise(resolve=>complete=resolve);
  const context={
