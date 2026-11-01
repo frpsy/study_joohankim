@@ -127,7 +127,7 @@ class ExternalLinkRegression(unittest.TestCase):
         history = (root / "study-history.html").read_text(encoding="utf-8")
         home = (root / "index.html").read_text(encoding="utf-8")
         self.assertIn("강의에서 다룬 핵심 개념과 관련 해설", concepts)
-        self.assertIn("학습과 복습, 메모 변경 내역을 최근 기록부터 확인할 수 있습니다.", history)
+        self.assertIn("학습·복습 완료 기록을 최근순으로 확인할 수 있습니다.", history)
         self.assertNotIn("최근순으로 표시한다", history)
         self.assertNotIn("용어의 뜻을 확인하고 관련 강의 해설로 이동한다", concepts)
         self.assertIn("아직 기록 없음", history)
