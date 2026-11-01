@@ -18,7 +18,7 @@ class EditorialBrandContract(unittest.TestCase):
                 self.assertIn('<span class="brand-name">내면의 서재<small>강의 · 개념 · 복습</small></span>',html)
                 self.assertRegex(html,r'<img class="brand-symbol"[^>]+alt=""')
                 self.assertNotIn('내면을 공부하는 시간',html)
-                asset_version='20261101-editorial-v7'
+                asset_version='20261102-discovery-v8'
                 self.assertIn('site.css?v='+asset_version,html)
                 self.assertIn('site.js?v='+asset_version,html)
                 self.assertEqual(len(re.findall(r'<h1(?:\s|>)',html)),1)
@@ -27,7 +27,7 @@ class EditorialBrandContract(unittest.TestCase):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
         self.assertIn('읽고, 듣고, 연결하는<br class="hero-title-break"> 내면의 서재',html)
         self.assertIn('개인 학습 아카이브',html)
-        self.assertIn('최근 정리한 강의',html)
+        self.assertIn('대표 강의',html)
         self.assertEqual(html.count('class="lecture"'),6)
         self.assertIn('data-creator="Andrew Huberman"',html)
         self.assertIn('data-creator="김주환"',html)
@@ -41,12 +41,12 @@ class EditorialBrandContract(unittest.TestCase):
     def test_asset_and_manifest_versions_are_synchronized(self):
         import json
         manifest=json.loads((ROOT/'build-info.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['version'],'2026.11.02.3')
-        self.assertIn("const CLIENT_VERSION='2026.11.02.3'",(ROOT/'assets/site.js').read_text(encoding='utf-8'))
-        self.assertIn("const VERSION = '20261102-korean-leads-v10'",(ROOT/'sw.js').read_text(encoding='utf-8'))
+        self.assertEqual(manifest['version'],'2026.11.02.4')
+        self.assertIn("const CLIENT_VERSION='2026.11.02.4'",(ROOT/'assets/site.js').read_text(encoding='utf-8'))
+        self.assertIn("const VERSION = '20261102-discovery-v11'",(ROOT/'sw.js').read_text(encoding='utf-8'))
         builder=(ROOT/'scripts/build_library.py').read_text(encoding='utf-8')
         self.assertIn("SITE_NAME='내면의 서재'",builder)
-        self.assertIn("ASSET_VERSION='20261101-editorial-v7'",builder)
+        self.assertIn("ASSET_VERSION='20261102-discovery-v8'",builder)
 
 if __name__=='__main__':
     unittest.main()

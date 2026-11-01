@@ -38,18 +38,34 @@
     const target=document.querySelector(input.dataset.filterInput);if(!target)return;
     const cards=[...target.querySelectorAll('[data-search]')];
     const count=document.getElementById(input.dataset.count),empty=document.getElementById(input.dataset.empty);
-    const filter=()=>{
+    const clearButton=document.querySelector('[data-clear-for="'+input.id+'"]');
+    const persist=input.dataset.persistQuery==='true';
+    const filter=(saveURL=false)=>{
       const words=input.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);let shown=0;
       cards.forEach(card=>{const hay=(card.textContent+' '+card.dataset.search).toLocaleLowerCase();card.hidden=!words.every(word=>hay.includes(word));if(!card.hidden)shown++});
       if(count)count.textContent=shown+'개 '+input.dataset.noun;
       if(empty)empty.hidden=shown!==0;
+      if(clearButton)clearButton.hidden=!input.value;
+      if(saveURL && persist){
+        const url=new URL(location.href);
+        if(input.value.trim())url.searchParams.set('q',input.value);else url.searchParams.delete('q');
+        // Replacing this entry preserves the search when returning from a reading
+        // page, without adding a browser-history entry for every keystroke.
+        try{history.replaceState(history.state,'',url.href)}catch{}
+      }
       document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>{
         button.setAttribute('aria-pressed',String((button.dataset.value||'')===input.value.trim()));
       });
     };
     const query=new URLSearchParams(location.search).get('q');if(query)input.value=query;
-    input.addEventListener('input',filter);filter();
-    document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.value||'';filter();button.blur()}));
+    input.addEventListener('input',()=>filter(true));filter();
+    if(persist){
+      const restore=()=>{input.value=new URLSearchParams(location.search).get('q')||'';filter()};
+      window.addEventListener('pageshow',restore);
+      window.addEventListener('popstate',restore);
+    }
+    clearButton?.addEventListener('click',()=>{input.value='';filter(true);input.focus()});
+    document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.value||'';filter(true)}));
   });
   document.querySelectorAll('[data-copy-target]').forEach(button=>{
     const originalLabel=button.textContent.trim();
@@ -81,7 +97,7 @@
 
   // The label identifies the JavaScript actually loaded by this tab. A fresh,
   // uncached version manifest allows comparison with the currently deployed site.
-  const CLIENT_VERSION='2026.11.02.3';
+  const CLIENT_VERSION='2026.11.02.4';
   const siteScriptURL=document.currentScript?.src;
   const footer=document.querySelector('.site-footer-inner');
   if(footer && siteScriptURL){

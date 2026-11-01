@@ -469,3 +469,13 @@ main#main{min-width:0}
 .lecture .meta{display:flex;flex-wrap:wrap;align-items:center;column-gap:10px;row-gap:3px}
 .lecture .meta .creator{color:var(--green);font-weight:650;overflow-wrap:anywhere}
 @media(max-width:780px){.lecture .meta{column-gap:8px;row-gap:5px}.lecture .meta .creator{font-size:12px}}
+
+/* Compact learning flow and reversible catalog search. */
+.learning-flow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin:0 0 var(--space-6);padding:var(--space-3) 0;border-block:1px solid var(--line);font-size:var(--font-ui-size)}
+.learning-flow a{display:inline-flex;align-items:center;min-height:var(--tap-target);color:var(--green);text-decoration:none}
+.learning-flow a:hover{text-decoration:underline}
+.learning-flow>span{color:var(--muted)}
+.search-controls{display:flex;gap:var(--space-2);align-items:center}
+.search-controls .search{flex:1;min-width:0}
+.search-controls button{flex:none;min-height:var(--tap-target)}
+@media(max-width:360px){.learning-flow{gap:var(--space-1);font-size:12px}}

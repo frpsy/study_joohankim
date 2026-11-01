@@ -95,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.3');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.4');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
@@ -211,4 +211,28 @@ test('catalog searches by creator without losing video ID progress hooks',async(
   await expect(page.locator('#lecture-list .lecture:visible')).toHaveAttribute('data-video-id','QmOF0crdyRU');
   await page.locator('#search').fill('김주환');
   await expect(page.locator('#count')).toHaveText('5개 자료');
+});
+
+test('catalog restores a shared search and returns to it after reading',async({page})=>{
+  await page.goto('/index.html?q=Huberman&source=test#lectures');
+  await expect(page.locator('#search')).toHaveValue('Huberman');
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
+  await page.locator('#lecture-list .lecture:visible').click();
+  await page.goBack();
+  await expect(page.locator('#search')).toHaveValue('Huberman');
+  await expect(page.locator('#count')).toHaveText('1개 자료');
+  await page.locator('#search').fill('없는검색어');
+  await expect(page.locator('#empty')).toBeVisible();
+  await expect(page).toHaveURL(/q=/);
+  await page.locator('[data-clear-for="search"]').click();
+  await expect(page.locator('#search')).toBeFocused();
+  await expect(page.locator('#search')).toHaveValue('');
+  await expect(page.locator('#count')).toHaveText('6개 자료');
+  expect(new URL(page.url()).searchParams.has('q')).toBe(false);
+  expect(new URL(page.url()).searchParams.get('source')).toBe('test');
+  await page.locator('[data-filter-for="search"][data-value="수용"]').click();
+  expect(new URL(page.url()).searchParams.get('q')).toBe('수용');
+  await page.reload();
+  await expect(page.locator('#count')).toHaveText('1개 자료');
+  await expect(page.locator('[data-filter-for="search"][data-value="수용"]')).toHaveAttribute('aria-pressed','true');
 });
