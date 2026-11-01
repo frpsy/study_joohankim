@@ -46,6 +46,16 @@ def lecture_layout_errors(source):
 def validate(root):
     rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=[];docs={}
     if len({x['id'] for x in rows})!=len(rows):errors.append('duplicate video in registry')
+    materials=json.loads((root/'materials.json').read_text(encoding='utf-8')) if (root/'materials.json').exists() else []
+    if not isinstance(materials,list):errors.append('materials registry must be a list');materials=[]
+    valid_types={'book','paper','article','note'}
+    material_ids=set()
+    for item in materials:
+        if not isinstance(item,dict) or not {'id','kind','title','creator','url','tags'}.issubset(item):errors.append('invalid material record');continue
+        if item['id'] in material_ids or item['id'] in {row['id'] for row in rows}:errors.append('duplicate material id '+str(item['id']))
+        material_ids.add(item['id'])
+        if item['kind'] not in valid_types:errors.append('invalid material kind '+str(item['kind']))
+        if not isinstance(item['tags'],list):errors.append('invalid material tags '+str(item['id']))
     pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]+sorted((root/'summaries').glob('*.html'))+sorted((root/'mini-courses').glob('*.html'))
     for p in pages:
         if not p.is_file():errors.append('missing page '+str(p));continue
@@ -67,7 +77,13 @@ def validate(root):
             if u.fragment and target in docs and unquote(u.fragment) not in docs[target].ids:errors.append(p.name+': missing anchor '+href)
     if (root/'data/lecture_mindmaps.json').is_file():errors.extend(mindmap_errors(root))
     home=(root/'index.html').read_text(encoding='utf-8')
-    if rows and home!=render(rows):errors.append('generated home differs from index.html')
+    try:
+        generated=render(rows,materials)
+        if home!=generated:
+            errors.append('generated home differs from index.html')
+            first=next((i for i,(a,b) in enumerate(zip(generated,home)) if a!=b),min(len(generated),len(home)))
+            errors.append('first difference '+str(first)+' generated '+repr(generated[max(0,first-80):first+130])+' saved '+repr(home[max(0,first-80):first+130]))
+    except (ValueError,KeyError,TypeError) as exc:errors.append('invalid material registry: '+str(exc))
     for row in rows:
         if home.count('data-video-id="'+row['id']+'"')!=1:errors.append('hub card mismatch '+row['id'])
     return errors

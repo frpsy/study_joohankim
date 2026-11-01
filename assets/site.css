@@ -464,3 +464,8 @@ main#main{min-width:0}
   .site-footer-inner .footer-account-link{font-size:12px;min-height:44px;margin-left:auto}
 }
 @media(max-width:360px){.site-footer-account{width:calc(100% - 28px)}}
+
+/* Source-neutral catalog cards with clearly labeled creators. */
+.lecture .meta{display:flex;flex-wrap:wrap;align-items:center;column-gap:10px;row-gap:3px}
+.lecture .meta .creator{color:var(--green);font-weight:650;overflow-wrap:anywhere}
+@media(max-width:780px){.lecture .meta{column-gap:8px;row-gap:5px}.lecture .meta .creator{font-size:12px}}

@@ -10,12 +10,12 @@ def render(row,data):
     vid=row['id'];lec=f'../lectures/{vid}.html';t=esc(row['title'])
     secs=''.join(f'<h2>{esc(s["h"])}</h2>'+''.join(f'<p>{esc(p)}</p>' for p in s['p']) for s in data['sections'])
     todo=''.join(f'<li>{esc(x)}</li>' for x in data['takeaways'])
-    body=(f'<div class="site-shell"><nav class="breadcrumb" aria-label="현재 위치"><a href="../index.html">강의 모음</a><span aria-hidden="true">/</span><a href="{lec}">{t}</a><span aria-hidden="true">/</span><span>5분 요약</span></nav>'
-      f'<main id="main"><article class="summary-page"><header class="summary-head"><span class="eyebrow">5분 요약</span><h1>{t}</h1><p class="meta">{esc(row["date"])} · 원본 {esc(row["duration"])} · 읽는 시간 {READ_MINUTES}</p></header>'
+    body=(f'<div class="site-shell"><nav class="breadcrumb" aria-label="현재 위치"><a href="../index.html">자료 모음</a><span aria-hidden="true">/</span><a href="{lec}">{t}</a><span aria-hidden="true">/</span><span>5분 요약</span></nav>'
+      f'<main id="main"><article class="summary-page"><header class="summary-head"><span class="eyebrow">5분 요약</span><h1>{t}</h1><p class="meta">{esc(row["date"])} · {esc(row.get("creator","출처 미기재"))} · 원본 {esc(row["duration"])} · 읽는 시간 {READ_MINUTES}</p></header>'
       f'<p class="summary-lead">{esc(data["lead"])}</p>{secs}'
       f'<h2>적용</h2><ul class="summary-list">{todo}</ul>'
       f'<aside class="summary-note" aria-label="읽을 때 유의할 점"><h2>유의할 점</h2><p>{esc(data["note"])}</p></aside>'
-      f'<nav class="summary-links" aria-label="관련 페이지"><a class="btn" href="{lec}">3단 요약</a><a class="btn secondary" href="{lec}#lecture-comment">타임라인</a><a class="btn secondary" href="../index.html">강의 모음</a></nav>'
+      f'<nav class="summary-links" aria-label="관련 페이지"><a class="btn" href="{lec}">3단 요약</a><a class="btn secondary" href="{lec}#lecture-comment">타임라인</a><a class="btn secondary" href="../index.html">자료 모음</a></nav>'
       f'</article></main></div>')
     return page(f'{row["title"]} 5분 요약',body,base='../')
 def build(check=False):
