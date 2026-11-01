@@ -58,6 +58,12 @@ def build(check=False):
     if check:
         matches=target.read_text(encoding='utf-8')==result
         print('PASS: generated home matches index.html' if matches else 'FAIL: regenerate index.html with scripts/build_library.py')
+        if not matches:
+            current=target.read_text(encoding='utf-8')
+            first=next((i for i,(a,b) in enumerate(zip(result,current)) if a!=b),min(len(result),len(current)))
+            print('First mismatch at',first)
+            print('Expected:',repr(result[max(0,first-100):first+180]))
+            print('Actual:  ',repr(current[max(0,first-100):first+180]))
         return 0 if matches else 1
     target.write_text(result,encoding='utf-8')
     return 0
