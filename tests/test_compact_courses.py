@@ -13,8 +13,9 @@ class CompactCourseChecks(unittest.TestCase):
    self.assertEqual(html.unescape(text),record['timeline'])
    self.assertEqual(source.count('id="comment"'),1)
    self.assertEqual(source.count('data-copy-target="comment"'),1)
-   self.assertEqual(source.count('data-timeline-toggle="comment"'),1)
-   self.assertIn('class="timeline-preview"',source)
+   self.assertIn('<details class="timeline-disclosure">',source)
+   self.assertIn('<summary>전체 타임라인 보기</summary>',source)
+   self.assertNotIn('class="timeline-preview"',source)
    self.assertNotIn('<img ',source)
  def test_course_coverage_and_tiers(self):
   rows=json.loads((R/'lectures.json').read_text());courses=json.loads((R/'data/mini_courses.json').read_text())
