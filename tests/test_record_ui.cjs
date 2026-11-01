@@ -32,7 +32,7 @@ test('failed reads expose retry only; successful retry restores stored memo',asy
 test('late read cannot restore signed-out or previous-account form',async()=>{
  const pending=[];const x=await setup(()=>new Promise(resolve=>pending.push(resolve)));
  x.auth({uid:'a'});x.auth(null);pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({text:'private a'})}));await tick();assert.equal(x.find('저장'),undefined);
- x.auth({uid:'a'});const old=pending.splice(0);x.auth({uid:'b'});pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({text:'private b'})}));await tick();old.forEach(r=>r({exists:()=>true,data:()=>({text:'private a'})}));await tick();assert.equal(x.root.all().find(n=>n.tag==='textarea').value,'private b');
+ x.auth({uid:'a'});await tick();const old=pending.splice(0);x.auth({uid:'b'});await tick();pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({text:'private b'})}));await tick();old.forEach(r=>r({exists:()=>true,data:()=>({text:'private a'})}));await tick();assert.equal(x.root.all().find(n=>n.tag==='textarea').value,'private b');
 });
 test('progress, note and history commit together; failure can be retried',async()=>{
  const x=await setup();x.auth({uid:'a'});await tick();x.root.all().find(n=>n.tag==='textarea').value='memo';x.root.all().find(n=>n.id==='sp-study').checked=true;
