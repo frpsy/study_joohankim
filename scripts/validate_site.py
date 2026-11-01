@@ -78,7 +78,11 @@ def validate(root):
     if (root/'data/lecture_mindmaps.json').is_file():errors.extend(mindmap_errors(root))
     home=(root/'index.html').read_text(encoding='utf-8')
     try:
-        if home!=render(rows,materials):errors.append('generated home differs from index.html')
+        generated=render(rows,materials)
+        if home!=generated:
+            errors.append('generated home differs from index.html')
+            first=next((i for i,(a,b) in enumerate(zip(generated,home)) if a!=b),min(len(generated),len(home)))
+            errors.append('first difference '+str(first)+' generated '+repr(generated[max(0,first-80):first+130])+' saved '+repr(home[max(0,first-80):first+130]))
     except (ValueError,KeyError,TypeError) as exc:errors.append('invalid material registry: '+str(exc))
     for row in rows:
         if home.count('data-video-id="'+row['id']+'"')!=1:errors.append('hub card mismatch '+row['id'])
