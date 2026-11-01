@@ -130,7 +130,7 @@ class ExternalLinkRegression(unittest.TestCase):
         self.assertIn("학습·복습 완료 기록을 최근순으로 확인할 수 있습니다.", history)
         self.assertNotIn("최근순으로 표시한다", history)
         self.assertNotIn("용어의 뜻을 확인하고 관련 강의 해설로 이동한다", concepts)
-        self.assertIn("아직 기록 없음", history)
+        self.assertIn("아직 학습·복습 기록 없음", history)
         progress = (root / "assets/progress.js").read_text(encoding="utf-8")
         account = (root / "assets/account.js").read_text(encoding="utf-8")
         self.assertIn("저장 완료", progress)
