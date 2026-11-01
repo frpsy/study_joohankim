@@ -14,33 +14,39 @@ class Element {
 }
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 const empty={exists:()=>false};
-async function setup(getDoc=async()=>empty){
+async function setup(getDoc=async()=>empty,commitHook=async()=>{}){
  const root=new Element('root');root.dataset.lecture='test-video';
  let auth;let fail=false;let commits=0;const saved=[];
  const sdk={doc:(...args)=>args,collection:(...args)=>args,getDoc,serverTimestamp:()=>123,
-  writeBatch:()=>{const writes=[];return {set:(...args)=>writes.push(args),commit:async()=>{commits++;if(fail)throw Error('offline');saved.push(...writes);}};}};
+  writeBatch:()=>{const writes=[];return {set:(...args)=>writes.push(args),commit:async()=>{commits++;if(fail)throw Error('offline');await commitHook();saved.push(...writes);}};}};
  const context={document:{getElementById:()=>root,createElement:t=>new Element(t),createTextNode:t=>t},getDb:async()=>({db:{},fs:sdk}),onUserChange:cb=>{auth=cb;}};
  const source=fs.readFileSync('assets/progress.js','utf8').replace(/^import .*;\n/m,'');
  vm.runInNewContext(source,context);await tick();
  return {root,auth:u=>auth(u),find:text=>root.all().find(n=>n.textContent===text),fail:v=>fail=v,saved,commits:()=>commits};
 }
-test('failed progress reads allow retry without memo controls',async()=>{
+test('failed reads show retry instead of completion controls; no disclosure or checkbox',async()=>{
  let failed=true;const x=await setup(async()=>{if(failed)throw Error('read');return {exists:()=>true,data:()=>({study:true,review:false})};});
- x.auth({uid:'a'});await tick();assert.equal(x.find('저장'),undefined);assert.ok(x.find('다시 불러오기'));assert.equal(x.root.all().find(n=>n.tag==='details').open,true);
- failed=false;x.find('다시 불러오기').events.click();await tick();assert.ok(x.find('저장'));assert.equal(x.root.all().find(n=>n.id==='sp-study').checked,true);assert.equal(x.root.all().find(n=>n.tag==='textarea'),undefined);
+ x.auth({uid:'a'});await tick();assert.equal(x.find('학습 완료'),undefined);assert.ok(x.find('다시 불러오기'));
+ failed=false;x.find('다시 불러오기').events.click();await tick();assert.ok(x.find('학습 완료 ✓'));assert.ok(x.find('복습 완료'));
+ assert.equal(x.root.all().some(n=>['details','summary','input','textarea'].includes(n.tag)),false);assert.equal(x.find('저장'),undefined);
 });
-test('late read cannot restore signed-out or previous-account form',async()=>{
+test('late read cannot restore signed-out or previous-account buttons',async()=>{
  const pending=[];const x=await setup(()=>new Promise(resolve=>pending.push(resolve)));
- x.auth({uid:'a'});x.auth(null);pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({study:true,review:false})}));await tick();assert.equal(x.find('저장'),undefined);
- x.auth({uid:'a'});await tick();const old=pending.splice(0);x.auth({uid:'b'});await tick();pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({study:false,review:true})}));await tick();old.forEach(r=>r({exists:()=>true,data:()=>({study:true,review:false})}));await tick();assert.equal(x.root.all().find(n=>n.id==='sp-review').checked,true);assert.equal(x.root.all().find(n=>n.id==='sp-study').checked,false);
+ x.auth({uid:'a'});x.auth(null);pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({study:true,review:false})}));await tick();assert.equal(x.find('학습 완료'),undefined);
+ x.auth({uid:'a'});await tick();const old=pending.splice(0);x.auth({uid:'b'});await tick();pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({study:false,review:true})}));await tick();old.forEach(r=>r({exists:()=>true,data:()=>({study:true,review:false})}));await tick();assert.ok(x.find('복습 완료 ✓'));assert.ok(x.find('학습 완료'));assert.equal(x.find('학습 완료 ✓'),undefined);
 });
-test('progress and history commit together; no memo writes; failure can be retried',async()=>{
- const x=await setup();x.auth({uid:'a'});await tick();assert.equal(x.root.all().find(n=>n.tag==='textarea'),undefined);x.root.all().find(n=>n.id==='sp-study').checked=true;
- x.fail(true);await x.find('저장').events.click();assert.equal(x.saved.length,0);assert.equal(x.commits(),1);assert.equal(x.find('저장').disabled,false);
- x.fail(false);await x.find('저장').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,2);assert.ok(x.find('저장 완료'));assert.equal(x.saved.some(record=>record[0].includes('notes')),false); // progress and study history
+test('one click commits chosen status and history; failed save retains state and allows retry',async()=>{
+ const x=await setup();x.auth({uid:'a'});await tick();
+ x.fail(true);await x.find('학습 완료').events.click();assert.equal(x.saved.length,0);assert.equal(x.commits(),1);assert.equal(x.find('학습 완료').disabled,false);assert.equal(x.find('학습 완료 ✓'),undefined);
+ x.fail(false);await x.find('학습 완료').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,2);assert.ok(x.find('학습 완료 ✓'));assert.equal(x.saved.some(record=>record[0].includes('notes')),false);
+ assert.equal(x.saved[0][1].study,true);assert.equal('review' in x.saved[0][1],false);assert.equal(x.saved[1][1].kind,'study');assert.equal(x.saved[1][1].value,true);
+ await x.find('학습 완료 ✓').events.click();assert.ok(x.find('학습 완료'));assert.equal(x.saved[2][1].study,false);assert.equal(x.saved[3][1].value,false);
 });
-test('late commit status cannot replace signed-out status',async()=>{
- const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장 완료'),undefined);assert.equal(x.find('저장'),undefined);
+test('busy buttons prevent double writes and late commits cannot restore signed-out UI',async()=>{
+ let finish;const x=await setup(undefined,()=>new Promise(resolve=>finish=resolve));x.auth({uid:'a'});await tick();
+ const study=x.find('학습 완료'),review=x.find('복습 완료');const saving=study.events.click();
+ assert.equal(study.disabled,true);assert.equal(review.disabled,true);await review.events.click();await study.events.click();assert.equal(x.commits(),1);
+ x.auth(null);finish();await saving;assert.ok(x.find('로그인 후 학습 기록'));assert.equal(x.find('학습 완료 ✓'),undefined);assert.equal(x.find('학습 완료 저장됨'),undefined);
 });
 test('home ignores a previous account badge response after logout',async()=>{
  const nodes=Object.fromEntries(['settings-toggle','settings','account-close','account-state','account-action','account-history'].map(id=>[id,new Element('div')]));

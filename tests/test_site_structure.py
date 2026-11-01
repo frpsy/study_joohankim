@@ -143,7 +143,7 @@ class ExternalLinkRegression(unittest.TestCase):
         self.assertIn("아직 학습·복습 기록 없음", history)
         progress = (root / "assets/progress.js").read_text(encoding="utf-8")
         account = (root / "assets/account.js").read_text(encoding="utf-8")
-        self.assertIn("저장 완료", progress)
+        self.assertIn("저장 중", progress)
         self.assertNotIn("저장했다.", progress)
         self.assertIn("로그인이 취소되었습니다.", account)
         self.assertIn("검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택", home)
