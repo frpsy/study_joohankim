@@ -95,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.6');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.7');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
@@ -124,7 +124,7 @@ test('account panel remains below hub title and has clear login and close contro
     export function signOutUser(){observer(null);return Promise.resolve();}
   `}));
  await page.goto('/index.html');
- await expect(page.getByRole('heading',{name:'나의 스터디 홈'})).toBeVisible();
+ await expect(page.locator('.hub-hero h1')).toContainText('내면 공부');
  await expect(page.locator('#settings')).toBeHidden();
  const actions=page.locator('.hub-actions > *');
  await expect(actions).toHaveCount(3);
@@ -145,4 +145,52 @@ test('account panel remains below hub title and has clear login and close contro
  await page.locator('#account-close').click();
  await expect(page.locator('#settings')).toBeHidden();
  await context.close();
+});
+
+
+test('editorial library identity and reading hierarchy stay consistent',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  const page=await context.newPage();
+  for(const url of ['/index.html','/concepts.html','/study-history.html','/lectures/izYj8g-j00U.html']){
+    await page.goto(url);
+    await expect(page.locator('.site-brand .brand-name')).toContainText('내면의 서재');
+    await expect(page.locator('.brand-symbol')).toBeVisible();
+    expect(await page.locator('.brand-symbol').evaluate(el=>el.naturalWidth)).toBeGreaterThan(0);
+    await expect(page).toHaveTitle(/내면의 서재/);
+    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
+    expect(overflow,'no horizontal overflow at '+url).toBeLessThanOrEqual(1);
+  }
+  await page.goto('/index.html');
+  await expect(page.locator('.hub-hero h1')).toHaveText(/강의에서 시작하는\s*내면 공부/);
+  const compact=await page.evaluate(()=>{
+    const header=document.querySelector('.site-header').getBoundingClientRect();
+    const title=document.querySelector('.hub-hero h1').getBoundingClientRect();
+    const cards=[...document.querySelectorAll('.lecture')];
+    const items=[...document.querySelectorAll('.global-nav a')];
+    return {headerHeight:header.height,titleHeight:title.height,cardCount:cards.length,
+      menuTapHeight:Math.min(...items.map(el=>el.getBoundingClientRect().height))};
+  });
+  expect(compact.headerHeight).toBeLessThan(115);
+  expect(compact.titleHeight).toBeLessThan(95);
+  expect(compact.cardCount).toBe(6);
+  expect(compact.menuTapHeight).toBeGreaterThanOrEqual(44);
+  await page.locator('[data-filter-for="search"][data-value="명상"]').click();
+  await expect(page.locator('#count')).toHaveText('1개 강의');
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
+  await context.close();
+});
+
+test('desktop home presents a side-by-side editorial hero and readable cards',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:1280,height:800},reducedMotion:'reduce'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  const hero=await page.evaluate(()=>{
+    const title=document.querySelector('.hub-hero .page-hero').getBoundingClientRect();
+    const featured=document.querySelector('.latest-entry').getBoundingClientRect();
+    const card=document.querySelector('.lecture').getBoundingClientRect();
+    return {heroSideBySide:featured.left>title.right-12,cardWidth:card.width};
+  });
+  expect(hero.heroSideBySide).toBe(true);
+  expect(hero.cardWidth).toBeGreaterThan(350);
+  await context.close();
 });

@@ -36,7 +36,7 @@ class GeneratorRegression(unittest.TestCase):
             for name in ('index.html','concepts.html','lectures.json'):
                 shutil.copyfile(repo/name,root/name)
             home=root/'index.html'
-            home.write_text(home.read_text().replace('나의 스터디 홈','임의로 바꾼 제목'))
+            home.write_text(home.read_text().replace('강의에서 시작하는','임의로 바꾼 제목'))
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
