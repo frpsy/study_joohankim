@@ -13,7 +13,10 @@ let generation = 0;
 function openPanel(open) {
   panel.hidden = !open;
   toggle.setAttribute("aria-expanded", String(open));
-  if (open) panel.scrollIntoView({ block: "start" });
+  if (open) {
+    ensureAuth();
+    panel.scrollIntoView({ block: "start" });
+  }
 }
 function syncHash() {
   if (location.hash === "#settings") openPanel(true);
@@ -68,19 +71,33 @@ async function showBadges(user, token) {
   }
 }
 
-onUserChange((user) => {
-  const token = ++generation;
-  clearBadges();
-  signedIn = !!user;
-  action.disabled = false;
-  historyLink.hidden = !user;
-  if (user) {
-    state.textContent = `${user.displayName || user.email} 로그인됨`;
-    action.textContent = "로그아웃";
-    showBadges(user, token);
-  } else {
-    state.textContent = "학습·복습 상태와 개인 메모를 저장하려면 로그인하세요.";
-    action.textContent = "구글로 로그인";
+let authStarted = false;
+function ensureAuth() {
+  if (authStarted) return;
+  authStarted = true;
+  onUserChange((user) => {
+    const token = ++generation;
     clearBadges();
-  }
-});
+    signedIn = !!user;
+    action.disabled = false;
+    historyLink.hidden = !user;
+    if (user) {
+      state.textContent = `${user.displayName || user.email} 로그인됨`;
+      action.textContent = "로그아웃";
+      showBadges(user, token);
+    } else {
+      state.textContent = "학습·복습 상태와 개인 메모를 저장하려면 로그인하세요.";
+      action.textContent = "구글로 로그인";
+    }
+  }).catch(() => {
+    authStarted = false;
+    action.disabled = false;
+    state.textContent = "로그인 연결 실패 · 다시 시도해 주세요.";
+  });
+}
+// Auth is not required to view static study pages. Let initial content paint first.
+if (typeof window.requestIdleCallback === "function") {
+  window.requestIdleCallback(ensureAuth, { timeout: 1600 });
+} else {
+  ensureAuth();
+}
