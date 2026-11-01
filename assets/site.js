@@ -77,6 +77,38 @@
     document.querySelectorAll(button.dataset.expandScope+' details').forEach(d=>d.open=button.dataset.expand==='true');
   }));
 
+  // The label identifies the JavaScript actually loaded by this tab. A fresh,
+  // uncached version manifest allows comparison with the currently deployed site.
+  const CLIENT_VERSION='2026.11.01.4';
+  const siteScriptURL=document.currentScript?.src;
+  const footer=document.querySelector('.site-footer-inner');
+  if(footer && siteScriptURL){
+    const versionBox=document.createElement('span');
+    versionBox.className='site-version';
+    versionBox.setAttribute('role','status');
+    versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 버전 확인 중';
+    footer.append(versionBox);
+    const manifestURL=new URL('../build-info.json',siteScriptURL);
+    manifestURL.searchParams.set('check',String(Date.now()));
+    fetch(manifestURL.href,{cache:'no-store'})
+      .then(response=>{if(!response.ok)throw new Error('Version check unavailable');return response.json()})
+      .then(info=>{
+        if(typeof info.version!=='string')throw new Error('Invalid version');
+        if(info.version===CLIENT_VERSION){
+          versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 배포 확인';
+        }else{
+          versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 v'+info.version+' · ';
+          const refresh=document.createElement('a');
+          const url=new URL(location.href);
+          url.searchParams.set('refresh',info.version);
+          refresh.href=url.href;
+          refresh.textContent='새 버전 열기';
+          versionBox.append(refresh);
+        }
+      })
+      .catch(()=>{versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 배포 미확인'});
+  }
+
   // Cache only public same-origin study pages and common assets. Other origins
   // (Firebase Auth / Firestore) are deliberately outside the worker's scope.
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
