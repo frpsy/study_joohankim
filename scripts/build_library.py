@@ -16,8 +16,8 @@ def render(rows):
     for tag in dict.fromkeys(row.get('filter_tag', row['tags'][0]) for row in rows):
         label=html.escape(tag, quote=True)
         chips+=f'<button data-filter-for="search" data-value="{label}">{label}</button>'
-    learning=['vHuZh8xLcDc','izYj8g-j00U','hw4_kLaHOMg','ZCty0wvogDo','QmOF0crdyRU']
-    reasons=['명상 전통과 훈련의 차이를 이해한다.','긍정 기억을 구체적으로 떠올리며 정서 조절을 공부한다.','용서와 책임 추궁을 구별한다.','사실을 인정하면서도 행동할 수 있음을 이해한다.','원함과 즐거움을 구별하고 행동의 단서를 살핀다.']
+    learning=['vHuZh8xLcDc','izYj8g-j00U','xA-4G4z-1MM','hw4_kLaHOMg','ZCty0wvogDo','QmOF0crdyRU']
+    reasons=['명상 전통과 훈련의 차이를 이해한다.','긍정 기억을 구체적으로 떠올리며 정서 조절을 공부한다.','몸의 긴장과 두려움·집착의 관계를 살핀다.','용서와 책임 추궁을 구별한다.','사실을 인정하면서도 행동할 수 있음을 이해한다.','원함과 즐거움을 구별하고 행동의 단서를 살핀다.']
     by_id={row['id']:row for row in rows}
     steps=''.join(f'<li><a href="mini-courses/{vid}.html">{html.escape(by_id[vid]["title"])}</a><p>{reason}</p></li>' for vid,reason in zip(learning,reasons) if vid in by_id)
     path=f'<section class="learning-route" aria-labelledby="learning-route-title"><h2 id="learning-route-title">미니강좌</h2><ol>{steps}</ol></section>' if steps else ''

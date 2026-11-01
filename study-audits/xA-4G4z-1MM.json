@@ -1,0 +1,81 @@
+{
+  "video_id": "xA-4G4z-1MM",
+  "layout": "compact",
+  "duration_seconds": 3877,
+  "image_count": 0,
+  "review_basis": "DownSub 한국어 자동 생성 SRT 1,436큐 전체를 순서대로 읽음. 원문 00:00:00.960–01:04:38.160, 텍스트 파일 8–1443행. 댓글 시각은 원문 큐 시작을 초 단위로 내림해 표기. 원본 유튜브 제목·채널·설명란 전체·공개일·길이 대조. 슬라이드 화면 전체 및 음성 직접 대조는 수행하지 않음.",
+  "transcript": {
+    "path": "authors/Joohan Kim/subtitles/timed/xA-4G4z-1MM.ko.srt",
+    "source": "DownSub public SRT download",
+    "language": "ko",
+    "is_generated": true,
+    "cue_count": 1436,
+    "first_start": 0.96,
+    "last_end": 3878.16,
+    "status": "downloaded; timing and full text reviewed",
+    "sha256": "d0e8d2a211d9ef77ba968ec2f2e303e702bb608380d64f448eb5e04ebe18b438",
+    "tail_note": "마지막 큐 종료가 플레이어 길이보다 1.16초 늦음. 원본 SRT 보존. 마지막 발화는 강의 종료 안내."
+  },
+  "units": [
+    {
+      "id": "anxiety-1",
+      "source_start": 0,
+      "source_end": 759,
+      "topic": "lesson-1",
+      "basis": "자막 순차 전체 읽기 및 해당 설명 대조",
+      "target": "mini-courses/xA-4G4z-1MM.html#lesson-1"
+    },
+    {
+      "id": "anxiety-2",
+      "source_start": 759,
+      "source_end": 1486,
+      "topic": "lesson-2",
+      "basis": "자막 순차 전체 읽기 및 해당 설명 대조",
+      "target": "mini-courses/xA-4G4z-1MM.html#lesson-2"
+    },
+    {
+      "id": "anxiety-3",
+      "source_start": 1486,
+      "source_end": 2121,
+      "topic": "lesson-3",
+      "basis": "자막 순차 전체 읽기 및 해당 설명 대조",
+      "target": "mini-courses/xA-4G4z-1MM.html#lesson-3"
+    },
+    {
+      "id": "anxiety-4",
+      "source_start": 2121,
+      "source_end": 2822,
+      "topic": "lesson-4",
+      "basis": "자막 순차 전체 읽기 및 해당 설명 대조",
+      "target": "mini-courses/xA-4G4z-1MM.html#lesson-4"
+    },
+    {
+      "id": "anxiety-5",
+      "source_start": 2822,
+      "source_end": 3527,
+      "topic": "lesson-5",
+      "basis": "자막 순차 전체 읽기 및 해당 설명 대조",
+      "target": "mini-courses/xA-4G4z-1MM.html#lesson-5"
+    },
+    {
+      "id": "anxiety-6",
+      "source_start": 3527,
+      "source_end": 3877,
+      "topic": "lesson-6",
+      "basis": "자막 순차 전체 읽기 및 해당 설명 대조",
+      "target": "mini-courses/xA-4G4z-1MM.html#lesson-6"
+    }
+  ],
+  "limitations": [
+    "자동 자막 고유명사·용어 오인식 가능. 용어는 문맥으로 교정하고 원본 보존.",
+    "이 영상은 본강의로 바로 시작하며 명상 실습은 포함하지 않음.",
+    "강사의 소화 에너지 30%, 면역·뇌 기능 정지, 암 발생 단정, 모든 불안장애의 운동 부족 원인론을 확립된 사실로 인용하지 않음."
+  ],
+  "checks": {
+    "source_text": "all 1436 cues read sequentially; 8–1443 lines",
+    "description": "YouTube full description read; publication 2023-09-24",
+    "timeline": "all listed seconds derived from original cue starts; floor to integer seconds",
+    "tests": "27 unit tests passed; validate_site.py and validate_study_pages.py passed",
+    "screen_review": "not performed; no screenshots represented as lecture source"
+  }
+}
