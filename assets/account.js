@@ -75,7 +75,7 @@ let authStarted = false;
 function ensureAuth() {
   if (authStarted) return;
   authStarted = true;
-  onUserChange((user) => {
+  Promise.resolve(onUserChange((user) => {
     const token = ++generation;
     clearBadges();
     signedIn = !!user;
@@ -89,7 +89,7 @@ function ensureAuth() {
       state.textContent = "학습·복습 상태와 개인 메모를 저장하려면 로그인하세요.";
       action.textContent = "구글로 로그인";
     }
-  }).catch(() => {
+  })).catch(() => {
     authStarted = false;
     action.disabled = false;
     state.textContent = "로그인 연결 실패 · 다시 시도해 주세요.";
