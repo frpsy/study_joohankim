@@ -97,7 +97,7 @@
 
   // The label identifies the JavaScript actually loaded by this tab. A fresh,
   // uncached version manifest allows comparison with the currently deployed site.
-  const CLIENT_VERSION='2026.11.02.4';
+  const CLIENT_VERSION='2026.11.02.5';
   const siteScriptURL=document.currentScript?.src;
   const footer=document.querySelector('.site-footer-inner');
   if(footer && siteScriptURL){

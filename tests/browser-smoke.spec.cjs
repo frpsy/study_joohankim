@@ -95,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.4');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.5');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
@@ -236,3 +236,34 @@ test('catalog restores a shared search and returns to it after reading',async({p
   await expect(page.locator('#count')).toHaveText('1개 자료');
   await expect(page.locator('[data-filter-for="search"][data-value="수용"]')).toHaveAttribute('aria-pressed','true');
 });
+
+for(const width of [360,1280]){
+ test('study status is saved directly with two plain buttons at '+width+'px',async({browser})=>{
+  const context=await browser.newContext({viewport:{width,height:844}});
+  const page=await context.newPage();
+  // A deterministic SDK fixture exercises the UI without using a real account.
+  await page.route('**/assets/firebase.js?*',route=>route.fulfill({contentType:'text/javascript',body:`
+   export function onUserChange(cb){cb({uid:'test-user'})}
+   export async function getDb(){return {db:{},fs:{
+    doc:(...args)=>args,collection:(...args)=>args,serverTimestamp:()=>1,
+    getDoc:async()=>({exists:()=>true,data:()=>({study:true,review:false})}),
+    writeBatch:()=>({set(){},commit:()=>new Promise(resolve=>setTimeout(resolve,100))})
+   }}}
+  `}));
+  await page.goto('/lectures/izYj8g-j00U.html');
+  const widget=page.locator('#study-progress');
+  await expect(widget.locator('details,summary,input')).toHaveCount(0);
+  await expect(widget.getByRole('button')).toHaveCount(2);
+  await expect(widget.getByRole('button',{name:'학습 완료 취소',exact:true})).toHaveText('학습 완료 ✓');
+  const review=widget.getByRole('button',{name:'복습 완료',exact:true});
+  await expect(review).toBeVisible();
+  expect(await review.evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+  await review.click();
+  await expect(widget.getByRole('status')).toHaveText('복습 완료 저장됨');
+  await expect(widget.getByRole('button',{name:'복습 완료 취소',exact:true})).toHaveText('복습 완료 ✓');
+  await widget.getByRole('button',{name:'학습 완료 취소',exact:true}).click();
+  await expect(widget.getByRole('button',{name:'학습 완료',exact:true})).toHaveText('학습 완료');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)).toBeLessThanOrEqual(1);
+  await context.close();
+ });
+}
