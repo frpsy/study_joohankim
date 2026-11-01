@@ -6,7 +6,7 @@ class KoreanLeads(unittest.TestCase):
   data=json.loads((R/'data/mini_courses.json').read_text())
   for vid,record in data.items():
    lead=record['lead']
-   self.assertEqual(len(re.findall(r'[.!?](?=\\s|$)',lead)),1,vid)
+   self.assertEqual(sum(lead.count(c) for c in '.!?'),1,vid)
    self.assertTrue(lead.endswith('다.'),vid)
    for folder in ('lectures','mini-courses'):
     self.assertIn(lead,(R/folder/f'{vid}.html').read_text(),vid)
