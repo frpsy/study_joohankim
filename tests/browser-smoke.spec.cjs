@@ -124,7 +124,7 @@ test('account panel remains below hub title and has clear login and close contro
     export function signOutUser(){observer(null);return Promise.resolve();}
   `}));
  await page.goto('/index.html');
- await expect(page.getByRole('heading',{name:'나의 스터디 홈'})).toBeVisible();
+ await expect(page.locator('.hub-hero h1')).toContainText('내면 공부');
  await expect(page.locator('#settings')).toBeHidden();
  const actions=page.locator('.hub-actions > *');
  await expect(actions).toHaveCount(3);
