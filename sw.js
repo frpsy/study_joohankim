@@ -45,7 +45,7 @@ self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     // Explicit reloads always check the network first to get recently published content.
-    if (request.cache === 'reload') {
+    if (request.cache === 'reload' || new URL(request.url).searchParams.has('refresh')) {
       const fresh = await update(cache, request);
       if (fresh) return fresh;
     }
