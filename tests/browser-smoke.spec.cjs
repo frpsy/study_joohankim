@@ -85,3 +85,21 @@ test('main tabs load from static cache without a network connection',async({brow
   }
   await context.close();
 });
+
+test('footer shows actual loaded version and checks deployed version separately',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844}});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.4');
+  await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
+  await context.close();
+});
+test('footer provides a refresh link when deployed manifest is newer',async({browser})=>{
+  const context=await browser.newContext();
+  const page=await context.newPage();
+  await page.route('**/build-info.json*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({version:'2099.01.01.1'})}));
+  await page.goto('/index.html');
+  await expect(page.locator('.site-version')).toContainText('최신 v2099.01.01.1');
+  await expect(page.locator('.site-version a')).toHaveAttribute('href',/refresh=2099.01.01.1/);
+  await context.close();
+});
