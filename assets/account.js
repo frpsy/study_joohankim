@@ -25,10 +25,10 @@ toggle.addEventListener("click", () => openPanel(panel.hidden));
 
 function errorMessage(err) {
   const code = err && err.code;
-  if (code === "auth/popup-blocked") return "팝업이 차단되었다. 브라우저에서 팝업을 허용한 뒤 다시 시도할 수 있다.";
-  if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "로그인 창이 닫혔다. 다시 로그인할 수 있다.";
-  if (code === "auth/network-request-failed") return "인터넷 연결을 확인한 뒤 다시 시도할 수 있다.";
-  return "처리하지 못했다. 잠시 후 다시 시도할 수 있다.";
+  if (code === "auth/popup-blocked") return "로그인 팝업이 차단되었습니다. 브라우저 설정에서 팝업을 허용해 주세요.";
+  if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "로그인이 취소되었습니다. 다시 시도해 주세요.";
+  if (code === "auth/network-request-failed") return "네트워크 연결을 확인하고 다시 시도해 주세요.";
+  return "로그인 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.";
 }
 
 action.addEventListener("click", async () => {
@@ -79,7 +79,7 @@ onUserChange((user) => {
     action.textContent = "로그아웃";
     showBadges(user, token);
   } else {
-    state.textContent = "로그인하면 강의별 학습 완료·복습·메모를 저장한다.";
+    state.textContent = "학습·복습 상태와 개인 메모를 저장하려면 로그인하세요.";
     action.textContent = "구글로 로그인";
     clearBadges();
   }

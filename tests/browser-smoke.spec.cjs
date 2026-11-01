@@ -11,7 +11,7 @@ for(const viewport of sizes){
     const page=await context.newPage();
     const pageErrors=[];
     page.on('pageerror',e=>pageErrors.push(e.message));
-    for(const url of ['/index.html','/lectures/izYj8g-j00U.html#lecture-comment','/mini-courses/izYj8g-j00U.html']){
+    for(const url of ['/index.html','/concepts.html','/study-history.html','/lectures/izYj8g-j00U.html#lecture-comment','/mini-courses/izYj8g-j00U.html','/summaries/izYj8g-j00U.html']){
       await page.goto(url);
       await expect(page.locator('main')).toBeVisible();
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
