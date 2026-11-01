@@ -15,6 +15,8 @@ class CompactCourseChecks(unittest.TestCase):
    self.assertEqual(source.count('data-copy-target="comment"'),1)
    self.assertIn('<details class="timeline-disclosure">',source)
    self.assertIn('<summary>전체 타임라인 보기</summary>',source)
+   self.assertIn('class="timeline-teaser"',source)
+   self.assertIn(html.escape("\\n".join(record["timeline"].splitlines()[:3])),source)
    self.assertNotIn('class="timeline-preview"',source)
    self.assertNotIn('<img ',source)
  def test_course_coverage_and_tiers(self):
