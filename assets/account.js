@@ -18,7 +18,7 @@ function openPanel(open) {
   toggle.setAttribute("aria-expanded", String(open));
   if (open) {
     ensureAuth();
-    panel.scrollIntoView({ block:"start", behavior:"auto" });
+    panel.scrollIntoView({ block:"nearest", behavior:"auto" });
   } else {
     toggle.focus?.({preventScroll:true});
   }
@@ -49,7 +49,8 @@ function setReady(user) {
   authReady = true;
   action.disabled = false;
   action.textContent = user ? "로그아웃" : "Google로 로그인";
-  toggle.textContent = user ? "내 계정" : "로그인 · 계정";
+  toggle.textContent = "계정";
+  toggle.setAttribute("aria-label", user ? "내 계정 관리" : "로그인 및 계정 관리");
   historyLink.hidden = !user;
   state.textContent = user
     ? (user.displayName || user.email || "사용자") + " · 로그인됨"
