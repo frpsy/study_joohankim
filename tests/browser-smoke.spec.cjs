@@ -22,17 +22,17 @@ for(const viewport of sizes){
     await expect(button).toBeVisible();
     const minHeight=await button.evaluate(el=>parseFloat(getComputedStyle(el).minHeight));
     expect(minHeight).toBeGreaterThanOrEqual(44);
-    const preview=page.locator('#comment');
-    const toggle=page.locator('[data-timeline-toggle="comment"]');
-    await expect(toggle).toHaveAttribute('aria-expanded','false');
-    await expect(toggle).toHaveText('전체 보기');
-    expect(await preview.evaluate(el=>el.getBoundingClientRect().height)).toBeLessThanOrEqual(viewport.width<=780?125:149);
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-expanded','true');
-    await expect(toggle).toHaveText('접기');
-    expect(await preview.evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThan(150);
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-expanded','false');
+    const disclosure=page.locator('details.timeline-disclosure');
+    await expect(disclosure).not.toHaveAttribute('open');
+    await expect(disclosure.locator('summary')).toHaveText('전체 타임라인 보기');
+    await expect(page.locator('#comment')).toBeHidden();
+    expect(await disclosure.evaluate(el=>el.getBoundingClientRect().height)).toBeLessThan(55);
+    await disclosure.locator('summary').click();
+    await expect(disclosure).toHaveAttribute('open');
+    await expect(page.locator('#comment')).toBeVisible();
+    await disclosure.locator('summary').click();
+    await expect(disclosure).not.toHaveAttribute('open');
+    await expect(page.locator('#comment')).toBeHidden();
     const source=await page.locator('#comment').textContent();
     await button.click();
     await expect(button).toHaveText('복사 완료 ✓');
@@ -83,5 +83,23 @@ test('main tabs load from static cache without a network connection',async({brow
     await expect(page.locator('.global-nav a[aria-current="page"]')).toHaveText(title);
     await expect(page.locator('main')).toBeVisible();
   }
+  await context.close();
+});
+
+test('footer shows actual loaded version and checks deployed version separately',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844}});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.4');
+  await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
+  await context.close();
+});
+test('footer provides a refresh link when deployed manifest is newer',async({browser})=>{
+  const context=await browser.newContext();
+  const page=await context.newPage();
+  await page.route('**/build-info.json*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({version:'2099.01.01.1'})}));
+  await page.goto('/index.html');
+  await expect(page.locator('.site-version')).toContainText('최신 v2099.01.01.1');
+  await expect(page.locator('.site-version a')).toHaveAttribute('href',/refresh=2099.01.01.1/);
   await context.close();
 });

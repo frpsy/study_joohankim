@@ -1,6 +1,6 @@
 /* Fast, offline-tolerant navigation for public static study pages only.
    Firestore, authentication, cross-origin SDKs and mutable user data are NEVER cached. */
-const VERSION = '20261101-timeline-preview-v2';
+const VERSION = '20261101-native-timeline-v3';
 const CACHE = 'study-home-static-' + VERSION;
 const PREFIX = 'study-home-static-';
 const CORE = [
@@ -45,7 +45,7 @@ self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     // Explicit reloads always check the network first to get recently published content.
-    if (request.cache === 'reload') {
+    if (request.cache === 'reload' || new URL(request.url).searchParams.has('refresh')) {
       const fresh = await update(cache, request);
       if (fresh) return fresh;
     }

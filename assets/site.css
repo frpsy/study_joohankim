@@ -274,3 +274,14 @@ html{scroll-padding-top:var(--anchor-offset,100px)}
 .lecture-section pre.timeline-preview.is-expanded{max-height:none;overflow:auto}
 .lecture-section .timeline-toggle{min-height:var(--tap-target);border:1px solid var(--line);border-radius:var(--radius-control);padding:9px 14px;background:transparent;color:var(--green);font-size:14px}
 @media(max-width:780px){.lecture-section pre.timeline-preview{max-height:124px}.lecture-section .timeline-toggle{font-size:13px;padding:9px 12px}}
+
+/* Native closed details: a collapsed timeline never reserves the long pre height. */
+.lecture-section details.timeline-disclosure{margin:6px 0 0;border:0}
+.lecture-section .timeline-disclosure>summary{display:list-item;list-style:revert;margin:0;padding:10px 4px;min-height:44px;color:var(--green);font-size:14px;font-weight:550}
+.lecture-section .timeline-disclosure>pre{margin:4px 0 0;max-height:none;overflow:auto}
+@media(max-width:780px){.lecture-section .timeline-disclosure>summary{font-size:13px}}
+
+/* Small release information; no extra panels or fixed overlays. */
+.site-version{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.site-version a{color:var(--green);margin-left:3px;text-decoration:underline}
+@media(max-width:780px){.site-version{width:100%;font-size:11px}}
