@@ -37,10 +37,10 @@ test('late read cannot restore signed-out or previous-account form',async()=>{
 test('progress, note and history commit together; failure can be retried',async()=>{
  const x=await setup();x.auth({uid:'a'});await tick();x.root.all().find(n=>n.tag==='textarea').value='memo';x.root.all().find(n=>n.id==='sp-study').checked=true;
  x.fail(true);await x.find('저장').events.click();assert.equal(x.saved.length,0);assert.equal(x.commits(),1);assert.equal(x.find('저장').disabled,false);
- x.fail(false);await x.find('저장').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,4); // progress, note, study history, note history
+ x.fail(false);await x.find('저장').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,4);assert.ok(x.find('저장 완료')); // progress, note, study history, note history
 });
 test('late commit status cannot replace signed-out status',async()=>{
- const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장했다.'),undefined);assert.equal(x.find('저장'),undefined);
+ const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장 완료'),undefined);assert.equal(x.find('저장'),undefined);
 });
 test('home ignores a previous account badge response after logout',async()=>{
  const nodes=Object.fromEntries(['settings-toggle','settings','account-state','account-action','account-history'].map(id=>[id,new Element('div')]));
