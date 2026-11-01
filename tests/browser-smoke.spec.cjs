@@ -22,6 +22,17 @@ for(const viewport of sizes){
     await expect(button).toBeVisible();
     const minHeight=await button.evaluate(el=>parseFloat(getComputedStyle(el).minHeight));
     expect(minHeight).toBeGreaterThanOrEqual(44);
+    const preview=page.locator('#comment');
+    const toggle=page.locator('[data-timeline-toggle="comment"]');
+    await expect(toggle).toHaveAttribute('aria-expanded','false');
+    await expect(toggle).toHaveText('전체 보기');
+    expect(await preview.evaluate(el=>el.getBoundingClientRect().height)).toBeLessThanOrEqual(viewport.width<=780?125:149);
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded','true');
+    await expect(toggle).toHaveText('접기');
+    expect(await preview.evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThan(150);
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded','false');
     const source=await page.locator('#comment').textContent();
     await button.click();
     await expect(button).toHaveText('복사 완료 ✓');
