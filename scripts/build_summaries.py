@@ -4,6 +4,7 @@ from pathlib import Path
 import html,json,sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from build_library import page,R
+from editorial_copy import effective_summaries
 READ_MINUTES='약 5분'
 def esc(x):return html.escape(x,quote=False)
 def render(row,data):
@@ -20,7 +21,7 @@ def render(row,data):
     return page(f'{row["title"]} 5분 요약',body,base='../')
 def build(check=False):
     rows={r['id']:r for r in json.loads((R/'lectures.json').read_text(encoding='utf-8'))}
-    data=json.loads((R/'data/summaries.json').read_text(encoding='utf-8'));issues=[]
+    data=effective_summaries(R);issues=[]
     for vid in rows:
         if vid not in data:issues.append('요약 누락: '+vid)
     for vid in data:
