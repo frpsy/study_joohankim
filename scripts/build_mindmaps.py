@@ -19,10 +19,10 @@ def errors(root):
     result=[]
     for row in registry:
         vid=row['id'];page=root/'lectures'/f'{vid}.html'
-        if vid not in outlines:result.append('mindmap outline missing: '+vid);continue
         if not page.is_file():continue
         source=page.read_text(encoding='utf-8')
         if 'data-layout="compact"' in source:continue
+        if vid not in outlines:result.append('mindmap outline missing: '+vid);continue
         if source.count(render(outlines[vid]))!=1:result.append('generated mindmap differs: '+vid)
     return result
 
