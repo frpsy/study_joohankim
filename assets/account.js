@@ -86,7 +86,7 @@ function ensureAuth() {
       action.textContent = "로그아웃";
       showBadges(user, token);
     } else {
-      state.textContent = "학습·복습 상태와 개인 메모를 저장하려면 로그인하세요.";
+      state.textContent = "학습·복습 완료 상태를 저장하려면 로그인하세요.";
       action.textContent = "구글로 로그인";
     }
   })).catch(() => {
