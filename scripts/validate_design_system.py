@@ -24,6 +24,11 @@ TOKENS = {
     "--site-max-width": "1160px",
     "--tap-target": "44px",
     "--button-pad-y": "9px", "--button-pad-x": "15px",
+    "--brand-ink": "#213b30",
+    "--brand-soft": "#edf2e9",
+    "--brand-outline": "#dbe5da",
+    "--reading-measure": "720px",
+    "--card-shadow": "0 2px 12px rgba(32,55,43,.035)",
 }
 CSS_CONTRACT = (
     "font:var(--font-body-size)/var(--line-height-body)",
