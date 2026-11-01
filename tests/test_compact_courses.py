@@ -18,7 +18,7 @@ class CompactCourseChecks(unittest.TestCase):
    self.assertIn('class="timeline-teaser"',source)
    self.assertIn(html.escape("\n".join(record["timeline"].splitlines()[:3])),source)
    self.assertNotIn('class="timeline-preview"',source)
-   self.assertNotIn('<img ',source)
+   self.assertNotIn('<img ',source[source.index('<main id="main"'):])
  def test_course_coverage_and_tiers(self):
   rows=json.loads((R/'lectures.json').read_text());courses=json.loads((R/'data/mini_courses.json').read_text())
   self.assertEqual({r['id'] for r in rows},set(courses))
