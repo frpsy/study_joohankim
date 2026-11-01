@@ -23,8 +23,14 @@ class GeneratorRegression(unittest.TestCase):
         self.assertIn('data-value="새 주제"',source)
         self.assertIn('A &lt; B &amp; C',source)
         self.assertNotIn('<em>문장</em>',source)
-        self.assertIn('1개 강의',source)
+        self.assertIn('1개 자료',source)
         self.assertNotIn('<time',source)
+        book={'id':'sample-book','kind':'book','title':'사유의 기술','creator':'다른 저자','description':'책 메모','tags':['철학'],'url':'books/sample.html'}
+        mixed=render([row],[book])
+        self.assertIn('data-kind="book"',mixed)
+        self.assertIn('다른 저자',mixed)
+        self.assertIn('2개 자료',mixed)
+        with self.assertRaises(ValueError):render([row],[{**book,'url':'https://untrusted.example/'}])
 
     def test_hand_edited_home_is_rejected(self):
         import shutil
@@ -36,7 +42,7 @@ class GeneratorRegression(unittest.TestCase):
             for name in ('index.html','concepts.html','lectures.json'):
                 shutil.copyfile(repo/name,root/name)
             home=root/'index.html'
-            home.write_text(home.read_text().replace('강의에서 시작하는','임의로 바꾼 제목'))
+            home.write_text(home.read_text().replace('읽고, 듣고, 연결하는','임의로 바꾼 제목'))
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
