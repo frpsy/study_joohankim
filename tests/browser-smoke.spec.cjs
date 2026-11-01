@@ -25,6 +25,11 @@ for(const viewport of sizes){
     const disclosure=page.locator('details.timeline-disclosure');
     await expect(disclosure).not.toHaveAttribute('open');
     await expect(disclosure.locator('summary')).toHaveText('전체 타임라인 보기');
+    const teaser=page.locator('.timeline-teaser');
+    await expect(teaser).toBeVisible();
+    const lines=(await teaser.textContent()).split('\n');
+    expect(lines).toHaveLength(3);
+    expect(lines).toEqual((await page.locator('#comment').textContent()).split('\n').slice(0,3));
     await expect(page.locator('#comment')).toBeHidden();
     expect(await disclosure.evaluate(el=>el.getBoundingClientRect().height)).toBeLessThan(55);
     await disclosure.locator('summary').click();
@@ -90,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.4');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.5');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });

@@ -1,4 +1,4 @@
-// 강의별 학습 기록: 학습 완료, 복습 완료, 개인 메모, 이력. 구글 로그인 후 본인 데이터만 저장한다.
+// 강의별 학습 기록: 학습 완료, 복습 완료, 이력. 구글 로그인 후 본인 데이터만 저장한다.
 import { getDb, onUserChange } from "./firebase.js?v=20261031-review";
 
 const TITLE = "학습 기록";
@@ -27,11 +27,10 @@ async function mount(root) {
   const summary = el("summary", {}, TITLE);
   disclosure.append(summary);
   root.append(disclosure);
-  function showSummary(progress = {}, note = {}) {
+  function showSummary(progress = {}) {
     const marks = [];
     if (progress.study) marks.push("학습 완료");
     if (progress.review) marks.push("복습 완료");
-    if (note.text) marks.push("메모");
     summary.textContent = marks.length ? `${TITLE} · ${marks.join(" · ")}` : TITLE;
   }
   const body = el("div", { class: "study-progress-body" });
@@ -62,13 +61,10 @@ async function mount(root) {
     }
     if (!current()) return;
     const progressRef = fs.doc(db, "studyUsers", user.uid, "progress", lectureId);
-    const noteRef = fs.doc(db, "studyUsers", user.uid, "notes", lectureId);
     let progress = {};
-    let note = { text: "" };
     try {
-      const [p, n] = await Promise.all([fs.getDoc(progressRef), fs.getDoc(noteRef)]);
+      const p = await fs.getDoc(progressRef);
       progress = p.exists() ? p.data() : {};
-      note = n.exists() ? n.data() : note;
     } catch (err) {
       if (!current()) return;
       setStatus(status, "저장된 기록을 읽지 못했습니다. ‘다시 불러오기’를 눌러 주세요.", true);
@@ -82,13 +78,11 @@ async function mount(root) {
     if (!current()) return;
     setStatus(status, "");
 
-    showSummary(progress, note);
+    showSummary(progress);
     const studyBox = el("input", { type: "checkbox", id: "sp-study" });
     studyBox.checked = !!progress.study;
     const reviewBox = el("input", { type: "checkbox", id: "sp-review" });
     reviewBox.checked = !!progress.review;
-    const memo = el("textarea", { id: "sp-note", rows: "2", maxlength: "5000", "aria-label": "개인 메모" });
-    memo.value = typeof note.text === "string" ? note.text : "";
     const save = el("button", { type: "button", class: "btn" }, "저장");
     const historyLink = el("a", { class: "btn secondary", href: "../study-history.html" }, "학습 이력 보기");
     const settings = el("a", { class: "btn secondary", href: "../index.html#settings" }, "계정 설정");
@@ -96,8 +90,6 @@ async function mount(root) {
     body.replaceChildren(
       el("label", { class: "study-check", for: "sp-study" }, ""),
       el("label", { class: "study-check", for: "sp-review" }, ""),
-      el("label", { for: "sp-note" }, "개인 메모"),
-      memo,
       el("div", { class: "actions" }, ""),
     );
     // 체크박스는 label 안에 넣어 접근성을 맞춘다
@@ -113,14 +105,11 @@ async function mount(root) {
       setStatus(status, "저장 중");
       try {
         const nextProgress = { study: studyBox.checked, review: reviewBox.checked, updatedAt: fs.serverTimestamp() };
-        const nextNote = { text: memo.value.slice(0, 5000), updatedAt: fs.serverTimestamp() };
         const batch = fs.writeBatch(db);
         batch.set(progressRef, nextProgress, { merge: true });
-        batch.set(noteRef, nextNote, { merge: true });
         const log = [];
         if (!!progress.study !== studyBox.checked) log.push(["study", studyBox.checked]);
         if (!!progress.review !== reviewBox.checked) log.push(["review", reviewBox.checked]);
-        if ((note.text || "") !== memo.value) log.push(["note", memo.value.length > 0]);
         for (const [kind, value] of log) {
           batch.set(fs.doc(fs.collection(db, "studyUsers", user.uid, "history")), {
             lectureId, kind, value, at: fs.serverTimestamp()
@@ -129,8 +118,7 @@ async function mount(root) {
         await batch.commit();
         if (!current()) return;
         progress = { study: nextProgress.study, review: nextProgress.review };
-        note = { text: nextNote.text };
-        showSummary(progress, note);
+        showSummary(progress);
         setStatus(status, "저장 완료");
       } catch (err) {
         if (!current()) return;

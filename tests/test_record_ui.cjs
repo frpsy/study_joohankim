@@ -24,20 +24,20 @@ async function setup(getDoc=async()=>empty){
  vm.runInNewContext(source,context);await tick();
  return {root,auth:u=>auth(u),find:text=>root.all().find(n=>n.textContent===text),fail:v=>fail=v,saved,commits:()=>commits};
 }
-test('failed reads expose retry only; successful retry restores stored memo',async()=>{
- let failed=true;const x=await setup(async()=>{if(failed)throw Error('read');return {exists:()=>true,data:()=>({text:'existing memo'})};});
+test('failed progress reads allow retry without memo controls',async()=>{
+ let failed=true;const x=await setup(async()=>{if(failed)throw Error('read');return {exists:()=>true,data:()=>({study:true,review:false})};});
  x.auth({uid:'a'});await tick();assert.equal(x.find('저장'),undefined);assert.ok(x.find('다시 불러오기'));assert.equal(x.root.all().find(n=>n.tag==='details').open,true);
- failed=false;x.find('다시 불러오기').events.click();await tick();assert.ok(x.find('저장'));assert.equal(x.root.all().find(n=>n.tag==='textarea').value,'existing memo');
+ failed=false;x.find('다시 불러오기').events.click();await tick();assert.ok(x.find('저장'));assert.equal(x.root.all().find(n=>n.id==='sp-study').checked,true);assert.equal(x.root.all().find(n=>n.tag==='textarea'),undefined);
 });
 test('late read cannot restore signed-out or previous-account form',async()=>{
  const pending=[];const x=await setup(()=>new Promise(resolve=>pending.push(resolve)));
- x.auth({uid:'a'});x.auth(null);pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({text:'private a'})}));await tick();assert.equal(x.find('저장'),undefined);
- x.auth({uid:'a'});await tick();const old=pending.splice(0);x.auth({uid:'b'});await tick();pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({text:'private b'})}));await tick();old.forEach(r=>r({exists:()=>true,data:()=>({text:'private a'})}));await tick();assert.equal(x.root.all().find(n=>n.tag==='textarea').value,'private b');
+ x.auth({uid:'a'});x.auth(null);pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({study:true,review:false})}));await tick();assert.equal(x.find('저장'),undefined);
+ x.auth({uid:'a'});await tick();const old=pending.splice(0);x.auth({uid:'b'});await tick();pending.splice(0).forEach(r=>r({exists:()=>true,data:()=>({study:false,review:true})}));await tick();old.forEach(r=>r({exists:()=>true,data:()=>({study:true,review:false})}));await tick();assert.equal(x.root.all().find(n=>n.id==='sp-review').checked,true);assert.equal(x.root.all().find(n=>n.id==='sp-study').checked,false);
 });
-test('progress, note and history commit together; failure can be retried',async()=>{
- const x=await setup();x.auth({uid:'a'});await tick();x.root.all().find(n=>n.tag==='textarea').value='memo';x.root.all().find(n=>n.id==='sp-study').checked=true;
+test('progress and history commit together; no memo writes; failure can be retried',async()=>{
+ const x=await setup();x.auth({uid:'a'});await tick();assert.equal(x.root.all().find(n=>n.tag==='textarea'),undefined);x.root.all().find(n=>n.id==='sp-study').checked=true;
  x.fail(true);await x.find('저장').events.click();assert.equal(x.saved.length,0);assert.equal(x.commits(),1);assert.equal(x.find('저장').disabled,false);
- x.fail(false);await x.find('저장').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,4);assert.ok(x.find('저장 완료')); // progress, note, study history, note history
+ x.fail(false);await x.find('저장').events.click();assert.equal(x.commits(),2);assert.equal(x.saved.length,2);assert.ok(x.find('저장 완료'));assert.equal(x.saved.some(record=>record[0].includes('notes')),false); // progress and study history
 });
 test('late commit status cannot replace signed-out status',async()=>{
  const x=await setup();x.auth({uid:'a'});await tick();const saving=x.find('저장').events.click();x.auth(null);await saving;assert.equal(x.find('저장 완료'),undefined);assert.equal(x.find('저장'),undefined);

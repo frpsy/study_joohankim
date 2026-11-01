@@ -65,6 +65,8 @@
         button.textContent='복사 완료 ✓';
         if(status)status.textContent='복사됨';
       }catch{
+        const disclosure=source.closest?.('details');
+        if(disclosure)disclosure.open=true;
         const selection=window.getSelection(),range=document.createRange();
         range.selectNodeContents(source);selection.removeAllRanges();selection.addRange(range);
         button.textContent='텍스트 선택됨';
@@ -79,7 +81,7 @@
 
   // The label identifies the JavaScript actually loaded by this tab. A fresh,
   // uncached version manifest allows comparison with the currently deployed site.
-  const CLIENT_VERSION='2026.11.01.4';
+  const CLIENT_VERSION='2026.11.01.5';
   const siteScriptURL=document.currentScript?.src;
   const footer=document.querySelector('.site-footer-inner');
   if(footer && siteScriptURL){

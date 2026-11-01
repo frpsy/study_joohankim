@@ -285,3 +285,9 @@ html{scroll-padding-top:var(--anchor-offset,100px)}
 .site-version{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .site-version a{color:var(--green);margin-left:3px;text-decoration:underline}
 @media(max-width:780px){.site-version{width:100%;font-size:11px}}
+
+/* Three source lines are always visible; full timeline remains native-collapsed. */
+.lecture-section pre.timeline-teaser{margin:10px 0 0;max-height:none;overflow:visible;white-space:pre-wrap;font-size:13px;line-height:1.55;padding:10px 12px}
+.lecture-section pre.timeline-teaser code{font:inherit;white-space:inherit}
+.lecture-section .timeline-disclosure>summary{margin-top:2px}
+@media(max-width:780px){.lecture-section pre.timeline-teaser{font-size:12px;line-height:1.5;padding:10px}}
