@@ -137,6 +137,6 @@ class ExternalLinkRegression(unittest.TestCase):
         self.assertNotIn("저장했다.", progress)
         self.assertIn("로그인이 취소되었습니다.", account)
         self.assertIn("검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택", home)
-        self.assertIn("로그인 상태 확인 중", home)
+        self.assertIn("로그인 연결 중", home)
         self.assertNotIn("메모를 작성했다", history)
 
