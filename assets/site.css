@@ -444,3 +444,23 @@ main#main{min-width:0}
   .lecture,.global-nav a{transition:none}
   .lecture:hover{transform:none}
 }
+
+/* Footer-only account: learning controls are the only hero actions. */
+.hub-actions{display:flex!important;flex-wrap:wrap;align-items:center;gap:9px!important}
+.hub-actions>.btn{flex:0 1 auto}
+.site-footer-inner .footer-account-link{display:inline-flex;align-items:center;justify-content:center;min-width:58px;min-height:44px;background:transparent;border:0;border-radius:9px;padding:9px 12px;color:var(--muted);font-size:12px;font-weight:550;line-height:1.4;cursor:pointer}
+.site-footer-inner .footer-account-link:hover,.site-footer-inner .footer-account-link[aria-expanded=true]{background:var(--brand-soft);color:var(--brand-ink);filter:none}
+.site-footer-account{width:min(1080px,calc(100% - 48px));margin:0 auto 22px}
+.site-footer-account-inner{display:flex;justify-content:flex-end}
+.site-footer-account .settings-panel{width:min(100%,440px);max-width:440px;margin:0;padding:17px 19px;border-radius:14px;box-shadow:none}
+.site-footer-account .account-header h2{font-size:19px}
+.site-footer-account .account-hint{font-size:12px}
+@media(max-width:780px){
+  .hub-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
+  .hub-actions>.btn{width:100%;min-height:44px}
+  .site-footer-account{width:calc(100% - 32px);margin-bottom:18px}
+  .site-footer-account-inner{display:block}
+  .site-footer-account .settings-panel{width:100%;max-width:none;padding:15px}
+  .site-footer-inner .footer-account-link{font-size:12px;min-height:44px;margin-left:auto}
+}
+@media(max-width:360px){.site-footer-account{width:calc(100% - 28px)}}
