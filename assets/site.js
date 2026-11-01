@@ -51,12 +51,28 @@
     input.addEventListener('input',filter);filter();
     document.querySelectorAll('[data-filter-for="'+input.id+'"]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.value||'';filter();button.blur()}));
   });
-  document.querySelectorAll('[data-copy-target]').forEach(button=>button.addEventListener('click',async()=>{
-    const source=document.getElementById(button.dataset.copyTarget),status=document.getElementById('status');
-    if(!source||!status)return;
-    try{await navigator.clipboard.writeText(source.textContent);status.textContent='복사했다.'}
-    catch{const range=document.createRange();range.selectNodeContents(source);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);status.textContent='텍스트를 선택했다. 선택한 내용을 직접 복사할 수 있다.'}
-  }));
+  document.querySelectorAll('[data-copy-target]').forEach(button=>{
+    const originalLabel=button.textContent.trim();
+    let resetTimer;
+    button.addEventListener('click',async()=>{
+      const source=document.getElementById(button.dataset.copyTarget);
+      const status=button.parentElement.querySelector('[role="status"]')||document.getElementById('status');
+      if(!source)return;
+      clearTimeout(resetTimer);
+      try{
+        if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');
+        await navigator.clipboard.writeText(source.textContent);
+        button.textContent='복사 완료 ✓';
+        if(status)status.textContent='복사됨';
+      }catch{
+        const selection=window.getSelection(),range=document.createRange();
+        range.selectNodeContents(source);selection.removeAllRanges();selection.addRange(range);
+        button.textContent='텍스트 선택됨';
+        if(status)status.textContent='선택한 내용을 직접 복사해 주세요.';
+      }
+      resetTimer=setTimeout(()=>{button.textContent=originalLabel;if(status)status.textContent=''},2200);
+    });
+  });
   document.querySelectorAll('[data-expand-scope]').forEach(button=>button.addEventListener('click',()=>{
     document.querySelectorAll(button.dataset.expandScope+' details').forEach(d=>d.open=button.dataset.expand==='true');
   }));
