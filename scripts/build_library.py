@@ -48,6 +48,12 @@ def render(rows, materials=None):
         cards+=f'<a class="lecture" data-kind="{kind}" data-search="{searchable}" href="{html.escape(url,quote=True)}"><div class="meta"><span>{type_names[kind]}</span><span class="creator">{creator}</span></div><h3>{html.escape(item["title"])}</h3><p>{html.escape(item.get("description",""))}</p><div class="tags">{tags}</div><span class="read">자료 읽기 →</span></a>'
     total=len(rows)+len(materials)
     featured=(f'<aside class="panel latest-entry" aria-label="최근 정리한 자료"><span class="eyebrow">{"최근 정리한 강의 · "+latest["date"].replace("-",".") if latest.get("date") else "최근 정리한 강의"}</span><h2>{html.escape(latest["title"])}</h2><a href="lectures/{latest["id"]}.html#overview">핵심 요약부터 읽기 →</a></aside>' if latest else '')
+    selected=[item for item in materials if item.get('featured')]
+    if len(selected)>1:raise ValueError('대표 자료는 하나만 선택할 수 있습니다')
+    if selected:
+        item=selected[0]
+        type_label=type_names[item['kind']]
+        featured=f'<aside class="panel latest-entry" aria-label="대표 학습 자료"><span class="eyebrow">대표 {type_label}</span><h2>{html.escape(item["title"])}</h2><a href="{html.escape(item["url"],quote=True)}">자료 읽기 →</a></aside>'
     body=f'''<div class="site-shell"><div class="hub-hero mobile-hub"><div class="page-hero"><span class="eyebrow hero-eyebrow">개인 학습 아카이브</span><h1>읽고, 듣고, 연결하는<br class="hero-title-break"> 내면의 서재</h1><p class="hero-description">강연과 책, 연구를 통해 배운 내용을 연결하고 오래 남기는 개인 학습 공간</p><div class="actions hub-actions"><a class="btn" href="#lectures">자료 살펴보기</a><a class="btn secondary" href="#learning-route-title">미니강좌</a></div></div>{featured}</div><main id="main"><section id="lectures"><div class="section-heading"><h2>자료 모음</h2><span class="meta">나의 학습 자료</span></div><div class="search-panel"><label for="search">주제·강연자·저자로 찾기</label><input class="search" id="search" type="search" placeholder="주제, 이름, 키워드 검색…" data-filter-input="#lecture-list" data-count="count" data-empty="empty" data-noun="자료"><div class="filter-chips">{chips}</div><p class="search-summary" id="count" aria-live="polite">{total}개 자료</p></div><div class="lecture-grid" id="lecture-list">{cards}</div><p class="empty" id="empty" hidden>검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택</p></section>{path}</main></div>'''
     body+='<script type="module" src="assets/account.js?v=20261101-auth-fix"></script>'
     return page('자료 모음',body,account=True)
