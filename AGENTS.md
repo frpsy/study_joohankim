@@ -64,3 +64,8 @@
 - `댓글용 타임라인`의 본문은 CSS 높이 조절이 아닌 **HTML 기본 닫힌 `details`** 안에 넣는다. 기본 화면에는 타임라인 원문을 렌더링 공간으로 펼치지 않는다.
 - '전체 타임라인 보기'를 눌렀을 때만 펼친다. '복사'는 details의 열림 여부와 관계없이 전체 `pre#comment`의 원문을 복사한다.
 - Service Worker 캐시 버전을 변경하고 배포 확인 시 구형 HTML·JS 캐시의 영향도 검증한다.
+
+## 화면 버전 확인 및 갱신
+- 모든 페이지 하단의 `화면 v...`는 실제 로딩된 `assets/site.js`의 `CLIENT_VERSION`이다. `build-info.json`을 `cache:'no-store'`로 별도 읽어 현재 배포 버전과 비교한다. 다르면 `새 버전 열기` 링크를 제공한다.
+- 사용자에게 보이는 UI 수정 시 `assets/site.js`의 `CLIENT_VERSION`과 `build-info.json.version`을 반드시 같은 새 값으로 갱신한다. 캐시 구조가 바뀌면 `sw.js VERSION`도 함께 갱신한다.
+- `tests/browser-smoke.spec.cjs`에서 실제 버전 표시, 최신 확인, 구버전 발견 시 새로고침 링크를 검증한다. 버전은 최종 GitHub Actions 배포 성공과 별개이며 화면에 표시됐다는 이유만으로 배포 성공을 단정하지 않는다.
