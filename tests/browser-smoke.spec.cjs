@@ -33,3 +33,44 @@ for(const viewport of sizes){
     await context.close();
   });
 }
+
+test('mobile header and card spacing remain compact',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  const info=await page.evaluate(()=>{
+    const header=document.querySelector('.site-header');
+    const card=document.querySelector('.lecture');
+    const read=card.querySelector('.read');
+    const color=getComputedStyle(header).backgroundColor;
+    const bottom=header.getBoundingClientRect().height;
+    return {color,headerHeight:bottom,cardHeight:card.getBoundingClientRect().height,readMargin:parseFloat(getComputedStyle(read).marginTop)};
+  });
+  expect(info.color,'header must be opaque').toMatch(/^rgb\(/);
+  expect(info.headerHeight,'mobile navigation should stay compact').toBeLessThan(115);
+  expect(info.cardHeight,'cards should not stretch with empty space').toBeLessThan(400);
+  expect(info.readMargin,'link spacing should not be auto').toBeLessThanOrEqual(14);
+  await context.close();
+});
+
+test('main tabs load from static cache without a network connection',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'allow',reducedMotion:'reduce'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  await page.waitForFunction(async()=>{
+    const registration=await navigator.serviceWorker.ready;
+    if(!navigator.serviceWorker.controller || !registration.active)return false;
+    const names=await caches.keys();
+    const name=names.find(n=>n.startsWith('study-home-static-'));
+    if(!name)return false;
+    const cache=await caches.open(name);
+    return (await Promise.all(['./index.html','./concepts.html','./study-history.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
+  },null,{timeout:15000});
+  await context.setOffline(true);
+  for(const [url,title] of [['/concepts.html','용어와 개념'],['/study-history.html','학습 이력'],['/index.html','강의 모음']]){
+    await page.goto(url,{waitUntil:'domcontentloaded'});
+    await expect(page.locator('.global-nav a[aria-current="page"]')).toHaveText(title);
+    await expect(page.locator('main')).toBeVisible();
+  }
+  await context.close();
+});

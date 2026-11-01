@@ -76,4 +76,14 @@
   document.querySelectorAll('[data-expand-scope]').forEach(button=>button.addEventListener('click',()=>{
     document.querySelectorAll(button.dataset.expandScope+' details').forEach(d=>d.open=button.dataset.expand==='true');
   }));
+
+  // Cache only public same-origin study pages and common assets. Other origins
+  // (Firebase Auth / Firestore) are deliberately outside the worker's scope.
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    const assetScript = document.currentScript;
+    if (assetScript?.src) {
+      const workerURL = new URL('../sw.js', assetScript.src);
+      navigator.serviceWorker.register(workerURL.href).catch(() => {});
+    }
+  }
 })();
