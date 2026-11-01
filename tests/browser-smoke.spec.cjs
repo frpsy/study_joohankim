@@ -83,7 +83,7 @@ test('main tabs load from static cache without a network connection',async({brow
     return (await Promise.all(['./index.html','./concepts.html','./study-history.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
   },null,{timeout:15000});
   await context.setOffline(true);
-  for(const [url,title] of [['/concepts.html','용어와 개념'],['/study-history.html','학습 이력'],['/index.html','강의 모음']]){
+  for(const [url,title] of [['/concepts.html','용어와 개념'],['/study-history.html','학습 이력'],['/index.html','자료 모음']]){
     await page.goto(url,{waitUntil:'domcontentloaded'});
     await expect(page.locator('.global-nav a[aria-current="page"]')).toHaveText(title);
     await expect(page.locator('main')).toBeVisible();
@@ -124,11 +124,11 @@ test('footer account is unobtrusive and login/close still work',async({browser})
     export function signOutUser(){observer(null);return Promise.resolve();}
   `}));
  await page.goto('/index.html');
- await expect(page.locator('.hub-hero h1')).toContainText('내면 공부');
+ await expect(page.locator('.hub-hero h1')).toContainText('내면의 서재');
  await expect(page.locator('#settings')).toBeHidden();
  const actions=page.locator('.hub-actions > *');
  await expect(actions).toHaveCount(2);
- await expect(actions.nth(0)).toHaveText('강의 고르기');
+ await expect(actions.nth(0)).toHaveText('자료 살펴보기');
  await expect(actions.nth(1)).toHaveText('미니강좌');
  await expect(page.locator('.hub-hero #settings-toggle')).toHaveCount(0);
  const entry=page.locator('.site-footer-inner #settings-toggle');
@@ -166,7 +166,7 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
     expect(overflow,'no horizontal overflow at '+url).toBeLessThanOrEqual(1);
   }
   await page.goto('/index.html');
-  await expect(page.locator('.hub-hero h1')).toHaveText(/강의에서 시작하는\s*내면 공부/);
+  await expect(page.locator('.hub-hero h1')).toHaveText(/읽고, 듣고, 연결하는\s*내면의 서재/);
   const compact=await page.evaluate(()=>{
     const header=document.querySelector('.site-header').getBoundingClientRect();
     const title=document.querySelector('.hub-hero h1').getBoundingClientRect();
@@ -180,7 +180,7 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
   expect(compact.cardCount).toBe(6);
   expect(compact.menuTapHeight).toBeGreaterThanOrEqual(44);
   await page.locator('[data-filter-for="search"][data-value="명상"]').click();
-  await expect(page.locator('#count')).toHaveText('1개 강의');
+  await expect(page.locator('#count')).toHaveText('1개 자료');
   await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
   await context.close();
 });
@@ -198,4 +198,17 @@ test('desktop home presents a side-by-side editorial hero and readable cards',as
   expect(hero.heroSideBySide).toBe(true);
   expect(hero.cardWidth).toBeGreaterThan(350);
   await context.close();
+});
+
+test('catalog searches by creator without losing video ID progress hooks',async({page})=>{
+  await page.goto('/index.html');
+  const items=page.locator('#lecture-list .lecture');
+  await expect(items).toHaveCount(6);
+  await expect(page.locator('[data-creator="Andrew Huberman"]')).toHaveCount(1);
+  await page.locator('#search').fill('Huberman');
+  await expect(page.locator('#count')).toHaveText('1개 자료');
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveAttribute('data-video-id','QmOF0crdyRU');
+  await page.locator('#search').fill('김주환');
+  await expect(page.locator('#count')).toHaveText('5개 자료');
 });
