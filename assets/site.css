@@ -236,3 +236,35 @@ html{scroll-padding-top:var(--anchor-offset,100px)}
 .lecture-section pre{max-width:100%;box-sizing:border-box;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;letter-spacing:normal;tab-size:2}
 .lecture-section pre code{white-space:inherit;letter-spacing:normal;word-spacing:normal;font-variant-ligatures:none}
 @media(max-width:780px){.lecture-section pre{font-size:13px;line-height:1.75;padding:12px;overflow-x:auto}.lecture-section [data-copy-target]{font-size:13px;padding:10px 14px}.lecture-section .actions [role="status"]{font-size:12px}}
+
+/* 2026-11 mobile: one compact, opaque header; no bleed-through on scroll. */
+.site-header{background:var(--paper);box-shadow:0 1px 0 var(--line)}
+@media(max-width:780px){
+  body{line-height:1.65}
+  .site-shell,.site-header-inner,.site-footer-inner{width:calc(100% - 32px);padding-left:0;padding-right:0}
+  .site-header-inner{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:5px;min-height:0;padding-top:10px;padding-bottom:7px}
+  .site-brand{font-size:16px;line-height:1.35;white-space:normal}
+  .global-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px;align-items:stretch;justify-content:initial;flex-wrap:nowrap}
+  .global-nav a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 4px;font-size:13px;line-height:1.3;white-space:nowrap;border-radius:10px}
+  .global-nav a[aria-current=page]{font-weight:650}
+  .page-hero{padding:18px 0 22px}
+  .hub-hero{padding:10px 0 20px}
+  .lecture-grid{gap:12px;align-items:start}
+  .lecture{height:auto;min-height:0;padding:18px 18px 16px}
+  .lecture h3{font-size:20px;line-height:1.35;margin:11px 0 9px;letter-spacing:-.035em}
+  .lecture p{font-size:14px;line-height:1.55;margin:0 0 10px}
+  .lecture .meta{margin:0;line-height:1.5}
+  .lecture .tags{margin:8px 0 3px;gap:6px}
+  .lecture .read{margin-top:8px;padding:4px 0 0;align-self:flex-start;line-height:1.5}
+  .concept-grid .card{padding:18px}
+  .concept-grid .card p{line-height:1.65}
+  .summary-page p,.mini-course p{line-height:1.7}
+  .sidebar{top:var(--header-height,88px)}
+}
+@media(max-width:360px){
+  .site-shell,.site-header-inner,.site-footer-inner{width:calc(100% - 28px);padding-left:0;padding-right:0}
+  .global-nav{width:100%;justify-content:initial}
+  .site-header-inner{gap:4px}
+  .global-nav a{font-size:12px;padding-inline:2px}
+  .lecture{padding:16px}
+}
