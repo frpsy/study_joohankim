@@ -95,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.01.7');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.1');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
@@ -109,7 +109,7 @@ test('footer provides a refresh link when deployed manifest is newer',async({bro
   await context.close();
 });
 
-test('account panel remains below hub title and has clear login and close controls',async({browser})=>{
+test('footer account is unobtrusive and login/close still work',async({browser})=>{
  const context=await browser.newContext({viewport:{width:390,height:844}});
  const page=await context.newPage();
  await page.route('**/assets/firebase.js*',route=>route.fulfill({status:200,contentType:'text/javascript',body:`
@@ -127,16 +127,21 @@ test('account panel remains below hub title and has clear login and close contro
  await expect(page.locator('.hub-hero h1')).toContainText('내면 공부');
  await expect(page.locator('#settings')).toBeHidden();
  const actions=page.locator('.hub-actions > *');
- await expect(actions).toHaveCount(3);
+ await expect(actions).toHaveCount(2);
  await expect(actions.nth(0)).toHaveText('강의 고르기');
  await expect(actions.nth(1)).toHaveText('미니강좌');
- await expect(actions.nth(2)).toHaveText('로그인 · 계정');
- await actions.nth(2).click();
+ await expect(page.locator('.hub-hero #settings-toggle')).toHaveCount(0);
+ const entry=page.locator('.site-footer-inner #settings-toggle');
+ await expect(entry).toHaveText('계정');
+ await expect(entry).toBeVisible();
+ expect(await entry.evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+ await entry.click();
+ await expect(entry).toHaveAttribute('aria-expanded','true');
  await expect(page.locator('#settings')).toBeVisible();
  await expect(page.locator('#account-action')).toBeEnabled();
  const panelY=await page.locator('#settings').evaluate(el=>el.getBoundingClientRect().top + scrollY);
- const titleY=await page.locator('.hub-hero h1').evaluate(el=>el.getBoundingClientRect().top + scrollY);
- expect(panelY).toBeGreaterThan(titleY);
+ const footerY=await page.locator('.site-footer').evaluate(el=>el.getBoundingClientRect().top + scrollY);
+ expect(panelY).toBeGreaterThan(footerY);
  await page.locator('#account-action').click();
  await expect(page.locator('html')).toHaveAttribute('data-login-invoked','yes');
  await expect(page.locator('#account-action')).toHaveText('로그아웃');
