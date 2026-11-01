@@ -1,0 +1,60 @@
+name: Study home quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check PR impact analysis
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: python3 scripts/check_pr_impact.py
+      - name: Check design contract, source links and generated output
+        run: |
+          python3 scripts/validate_design_system.py
+          python3 scripts/validate_site.py
+          python3 scripts/build_library.py --check
+          python3 scripts/build_summaries.py --check
+          python3 scripts/build_compact_lectures.py --check
+      - name: Run Python and Node regressions
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          node --test tests/test_*.cjs
+  browser:
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright browser
+        run: |
+          npm install --no-save --no-audit --no-fund @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Check phone and desktop layouts and clipboard
+        run: npx playwright test --config=tests/playwright.config.cjs
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failure-evidence
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
