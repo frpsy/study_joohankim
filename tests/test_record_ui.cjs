@@ -77,7 +77,7 @@ test('Google sign-in is called directly in the click and errors remain actionabl
  complete();
  await tick();
  assert.equal(nodes['account-action'].disabled,false);
- assert.equal(nodes['settings-toggle'].textContent,'로그인 · 계정');
+ assert.equal(nodes['settings-toggle'].textContent,'계정');
  nodes['settings-toggle'].events.click();
  assert.equal(nodes['settings'].hidden,false);
  nodes['account-close'].events.click();
