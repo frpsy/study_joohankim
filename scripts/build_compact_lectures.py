@@ -2,6 +2,7 @@
 from pathlib import Path
 import html,json,sys
 from build_library import page,R
+from editorial_copy import effective_summaries
 E=html.escape
 def load(name):return json.loads((R/'data'/name).read_text(encoding='utf-8'))
 def render(row,record,mini,summary):
@@ -17,7 +18,7 @@ def render(row,record,mini,summary):
  body=f'''<div class="site-shell"><nav class="breadcrumb" aria-label="현재 위치"><a href="../index.html">자료 모음</a><span>/</span><a href="../lectures/{vid}.html">강의 노트</a><span>/</span><span>미니강좌</span></nav><main id="main"><article class="summary-page mini-course"><header class="summary-head"><span class="eyebrow">미니강좌 · 약 4분</span><h1>{E(mini['title'])}</h1><p class="meta">원강의: {title} · {E(row.get("creator","출처 미기재"))}</p></header><p class="summary-lead">{E(mini['lead'])}</p>{sections}<details class="course-question"><summary>{E(mini['question'])}</summary><p>{E(mini['answer'])}</p></details><p class="meta">원강의 기반 학습 해설 · [보충]은 추가 예시</p><nav class="summary-links" aria-label="학습 탐색"><a class="btn" href="../lectures/{vid}.html">3단 요약</a><a class="btn secondary" href="../lectures/{vid}.html#lecture-comment">원본 타임라인</a><a class="btn secondary" href="../index.html">자료 모음</a></nav></article></main></div>'''
  return lecture,page(mini['title'],body,base='../')
 def build(check=False):
- records=load('lecture_compact.json');minis=load('mini_courses.json');summaries=load('summaries.json');issues=[]
+ records=load('lecture_compact.json');minis=load('mini_courses.json');summaries=effective_summaries(R);issues=[]
  for row in json.loads((R/'lectures.json').read_text(encoding='utf-8')):
   vid=row['id'];outputs=render(row,records[vid],minis[vid],summaries[vid])
   for folder,content in zip(('lectures','mini-courses'),outputs):
