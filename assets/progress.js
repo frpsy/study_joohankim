@@ -38,15 +38,6 @@ async function mount(root) {
   const status = el("p", { class: "study-progress-status", role: "status", "aria-live": "polite" });
   disclosure.append(body, status);
 
-  let fire = null;
-  try {
-    fire = await getDb();
-  } catch (err) {
-    setStatus(status, "학습 기록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.", true);
-    return;
-  }
-  const { db, fs } = fire;
-
   function renderSignedOut() {
     body.replaceChildren(
       el("a", { class: "btn", href: "../index.html#settings" }, "홈에서 로그인하기")
@@ -60,6 +51,16 @@ async function mount(root) {
     const current = () => token === generation;
     body.replaceChildren();
     setStatus(status, "학습 기록 불러오는 중");
+    // An anonymous reader never downloads Firestore. Authenticated records load
+    // only when a valid session has been resolved.
+    let db, fs;
+    try {
+      ({ db, fs } = await getDb());
+    } catch {
+      if (current()) setStatus(status, "학습 기록 연결 실패 · 다시 열어 주세요.", true);
+      return;
+    }
+    if (!current()) return;
     const progressRef = fs.doc(db, "studyUsers", user.uid, "progress", lectureId);
     const noteRef = fs.doc(db, "studyUsers", user.uid, "notes", lectureId);
     let progress = {};
@@ -141,13 +142,29 @@ async function mount(root) {
 
   }
 
-  onUserChange((user) => {
-    const token = ++generation;
-    disclosure.open = false;
-    showSummary();
-    if (user) renderSignedIn(user, token);
-    else renderSignedOut();
+  let authStarted = false;
+  function startAuth() {
+    if (authStarted) return;
+    authStarted = true;
+    Promise.resolve(onUserChange((user) => {
+      const token = ++generation;
+      if (!user) disclosure.open = false;
+      showSummary();
+      if (user) renderSignedIn(user, token);
+      else renderSignedOut();
+    })).catch(() => {
+      authStarted = false;
+      setStatus(status, "로그인 상태 확인 실패 · 기록을 다시 열어 주세요.", true);
+    });
+  }
+  disclosure.addEventListener("toggle", () => {
+    if (disclosure.open) startAuth();
   });
+  if (typeof window !== "undefined" && typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(startAuth, { timeout: 1800 });
+  } else {
+    startAuth();
+  }
 }
 
 const root = document.getElementById("study-progress");
