@@ -26,7 +26,8 @@ class EditorialBrandContract(unittest.TestCase):
     def test_home_has_consistent_editorial_hierarchy_and_no_content_loss(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
         self.assertIn('<h1>내면의 서재</h1>',html)
-        self.assertIn('개인 학습 아카이브',html)
+        self.assertNotIn('개인 학습 아카이브',html)
+        self.assertNotIn('나의 학습 자료',html)
         self.assertIn('대표 강의',html)
         self.assertEqual(html.count('class="lecture"'),6)
         self.assertIn('data-creator="Andrew Huberman"',html)
