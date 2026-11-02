@@ -129,13 +129,12 @@ test('footer account is unobtrusive and login/close still work',async({browser})
     export function signOutUser(){observer(null);return Promise.resolve();}
   `}));
  await page.goto('/index.html');
- await expect(page.locator('.hub-hero h1')).toContainText('내면의 서재');
+ await expect(page.locator('.home-overview-heading h1')).toHaveText('학습 자료');
  await expect(page.locator('#settings')).toBeHidden();
- const actions=page.locator('.hub-actions > *');
- await expect(actions).toHaveCount(2);
- await expect(actions.nth(0)).toHaveText('자료 살펴보기');
- await expect(actions.nth(1)).toHaveText('미니강좌');
- await expect(page.locator('.hub-hero #settings-toggle')).toHaveCount(0);
+ const courseLink=page.locator('.home-course-link');
+ await expect(courseLink).toHaveText('미니강좌 보기 →');
+ await expect(courseLink).toHaveAttribute('href','#learning-route-title');
+ await expect(page.locator('.home-overview #settings-toggle')).toHaveCount(0);
  const entry=page.locator('.site-footer-inner #settings-toggle');
  await expect(entry).toHaveText('계정');
  await expect(entry).toBeVisible();
@@ -171,11 +170,11 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
     expect(overflow,'no horizontal overflow at '+url).toBeLessThanOrEqual(1);
   }
   await page.goto('/index.html');
-  await expect(page.locator('.hub-hero h1')).toHaveText('내면의 서재');
+  await expect(page.locator('.home-overview-heading h1')).toHaveText('학습 자료');
   const compact=await page.evaluate(()=>{
     const header=document.querySelector('.site-header').getBoundingClientRect();
-    const title=document.querySelector('.hub-hero h1').getBoundingClientRect();
-    const cards=[...document.querySelectorAll('.lecture')];
+    const title=document.querySelector('.home-overview-heading h1').getBoundingClientRect();
+    const cards=[...document.querySelectorAll('#home-catalog [data-kind]')];
     const items=[...document.querySelectorAll('.global-nav a')];
     return {headerHeight:header.height,titleHeight:title.height,cardCount:cards.length,
       menuTapHeight:Math.min(...items.map(el=>el.getBoundingClientRect().height))};
@@ -195,8 +194,8 @@ test('desktop home presents a side-by-side editorial hero and readable cards',as
   const page=await context.newPage();
   await page.goto('/index.html');
   const hero=await page.evaluate(()=>{
-    const title=document.querySelector('.hub-hero .page-hero').getBoundingClientRect();
-    const featured=document.querySelector('.latest-entry').getBoundingClientRect();
+    const title=document.querySelector('.home-overview-heading').getBoundingClientRect();
+    const featured=document.querySelector('.home-feature').getBoundingClientRect();
     const card=document.querySelector('.lecture').getBoundingClientRect();
     return {heroSideBySide:featured.left>title.right-12,cardWidth:card.width};
   });
@@ -208,7 +207,7 @@ test('desktop home presents a side-by-side editorial hero and readable cards',as
 test('catalog searches by creator without losing video ID progress hooks',async({page})=>{
   await page.goto('/index.html');
   const items=page.locator('#lecture-list .lecture');
-  await expect(items).toHaveCount(expectedLibraryCount);
+  await expect(items).toHaveCount(expectedLibraryCount-1);
   await expect(page.locator('[data-creator="Andrew Huberman"]')).toHaveCount(1);
   await page.locator('#search').fill('Huberman');
   await expect(page.locator('#count')).toHaveText('1개 자료');
@@ -272,3 +271,18 @@ for(const width of [360,1280]){
   await context.close();
  });
 }
+
+test('featured lecture opens the actual reading page without a duplicate list card',async({page})=>{
+  await page.goto('/index.html');
+  const feature=page.locator('.home-feature');
+  await expect(feature).toHaveCount(1);
+  await expect(feature).toHaveAttribute('href','lectures/affirmation-20261101.html');
+  await expect(page.locator('#lecture-list [data-video-id="affirmation-20261101"]')).toHaveCount(0);
+  await expect(page.locator('#count')).toHaveText(expectedLibraryCount+'개 자료');
+  await page.locator('#search').fill('자기확언');
+  await expect(page.locator('#count')).toHaveText('1개 자료');
+  await expect(feature).toBeVisible();
+  await feature.click();
+  await expect(page).toHaveURL(/\/lectures\/affirmation-20261101\.html$/);
+  await expect(page.locator('#lecture-overview')).toBeVisible();
+});

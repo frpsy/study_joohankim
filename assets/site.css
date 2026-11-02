@@ -465,3 +465,33 @@ main#main{min-width:0}
 .search-controls{display:flex;gap:var(--space-2);align-items:center}
 .search-controls .search{flex:1;min-width:0}
 .search-controls button{flex:none;min-height:var(--tap-target)}
+
+/* Home: one editorial title and directly clickable featured lecture. */
+.home-overview{display:grid;grid-template-columns:minmax(0,.54fr) minmax(0,1.46fr);gap:22px;align-items:stretch;margin:24px 0 22px}
+.home-overview-heading{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:13px;min-width:0}
+.home-overview-heading h1{margin:0;color:var(--brand-ink);font-size:clamp(28px,3.5vw,41px);letter-spacing:-.058em;line-height:1.25}
+.home-course-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:14px;font-weight:650;text-decoration:none;text-underline-offset:4px}
+.home-course-link:hover{text-decoration:underline}
+.home-feature{display:flex;flex-direction:column;gap:7px;min-width:0;min-height:208px;padding:24px 27px;border:1px solid var(--brand-outline);border-radius:19px;background:var(--brand-soft);color:var(--ink);text-decoration:none;transition:border-color .16s ease,background-color .16s ease}
+.home-feature:hover{border-color:#aac2ad;background:#e6efe4}
+.home-feature .eyebrow{font-size:12px;letter-spacing:.035em}
+.home-feature h2{margin:5px 0 2px;font-size:clamp(21px,2.3vw,26px);line-height:1.4;letter-spacing:-.045em;font-weight:720;text-wrap:pretty;overflow-wrap:anywhere}
+.home-feature p{margin:0 0 8px;color:var(--muted);font-size:14px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home-feature-action{display:inline-flex;align-items:center;margin-top:auto;min-height:32px;font-size:14px;font-weight:700;color:var(--green)}
+.home-main .search-panel{margin:0 0 18px}
+.home-main .search-panel label{font-size:16px;line-height:1.4;font-weight:700;margin-bottom:10px}
+.home-main #lectures{margin-bottom:42px}
+@media(max-width:780px){
+ .home-overview{grid-template-columns:minmax(0,1fr);gap:12px;margin:17px 0 17px}
+ .home-overview-heading{flex-direction:row;align-items:center;justify-content:space-between;gap:8px}
+ .home-overview-heading h1{font-size:26px;line-height:1.25}
+ .home-course-link{font-size:13px;white-space:nowrap;flex:none}
+ .home-feature{min-height:0;padding:19px 20px 15px;border-radius:17px;gap:5px}
+ .home-feature h2{font-size:21px;line-height:1.39;margin:5px 0 2px}
+ .home-feature p{font-size:13px;line-height:1.55;margin:0 0 6px}
+ .home-feature-action{font-size:13px;min-height:32px}
+ .home-main .search-panel{padding:15px 16px 13px;border-radius:16px}
+ .home-main .search-panel label{font-size:15px;margin-bottom:8px}
+}
+@media(max-width:360px){.home-overview-heading h1{font-size:24px}.home-course-link{font-size:12px}.home-feature{padding:17px}}
+@media(prefers-reduced-motion:reduce){.home-feature{transition:none}}
