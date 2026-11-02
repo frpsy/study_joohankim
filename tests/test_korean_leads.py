@@ -7,7 +7,7 @@ from pathlib import Path
 R = Path(__file__).resolve().parents[1]
 from sys import path as syspath
 syspath.insert(0, str(R/'scripts'))
-from editorial_copy import effective_summaries
+from content_registry import effective_summaries
 
 
 class KoreanLeads(unittest.TestCase):
