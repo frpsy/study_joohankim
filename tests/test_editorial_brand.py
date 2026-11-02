@@ -37,13 +37,15 @@ class EditorialBrandContract(unittest.TestCase):
         self.assertNotIn('id="settings-toggle"',html.split('<main id="main">')[0])
         for marker in ('id="settings-toggle"','id="search"','id="learning-route-title"','id="account-action"'):
             self.assertIn(marker,html)
+        self.assertNotIn('class="hero-description"',html)
+        self.assertNotIn('class="learning-flow"',html)
 
     def test_asset_and_manifest_versions_are_synchronized(self):
         import json
         manifest=json.loads((ROOT/'build-info.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['version'],'2026.11.02.6')
-        self.assertIn("const CLIENT_VERSION='2026.11.02.6'",(ROOT/'assets/site.js').read_text(encoding='utf-8'))
-        self.assertIn("const VERSION = '20261102-feedback-v13'",(ROOT/'sw.js').read_text(encoding='utf-8'))
+        self.assertEqual(manifest['version'],'2026.11.02.7')
+        self.assertIn("const CLIENT_VERSION='2026.11.02.7'",(ROOT/'assets/site.js').read_text(encoding='utf-8'))
+        self.assertIn("const VERSION = '20261102-home-cleanup-v14'",(ROOT/'sw.js').read_text(encoding='utf-8'))
         builder=(ROOT/'scripts/build_library.py').read_text(encoding='utf-8')
         self.assertIn("SITE_NAME='내면의 서재'",builder)
         self.assertIn("ASSET_VERSION='20261102-feedback-v10'",builder)
