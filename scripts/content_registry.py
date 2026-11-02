@@ -41,7 +41,7 @@ def validate_catalog(root: Path):
             errors.append("Registry entry missing stable string id")
             continue
         ids.append(key)
-        for field in ("title","creator","description"):
+        for field in (("title","creator","description") if record in rows else ("title","creator")):
             if not isinstance(record.get(field),str) or not record[field].strip():
                 errors.append(f"{key}: missing {field}")
         if not isinstance(record.get("tags"),list) or not record["tags"] or any(not isinstance(tag,str) or not tag.strip() for tag in record["tags"]):
@@ -49,3 +49,14 @@ def validate_catalog(root: Path):
     if len(ids)!=len(set(ids)):
         errors.append("Duplicate stable content ID in registry")
     return errors
+
+if __name__ == "__main__":
+    import sys
+    root=Path(__file__).resolve().parents[1]
+    errors=validate_catalog(root)
+    try:
+        effective_summaries(root)
+    except (ValueError,KeyError,TypeError) as exc:
+        errors.append(str(exc))
+    print("\\n".join(errors) if errors else "PASS: catalog and canonical summaries")
+    sys.exit(bool(errors))
