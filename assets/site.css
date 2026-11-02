@@ -587,3 +587,32 @@ html[data-standalone="true"] .site-footer-inner{padding-left:env(safe-area-inset
 @media(prefers-reduced-motion:reduce){
  .theme-toggle{transition:none}
 }
+
+/* Appearance is a secondary preference: keep the header clean. */
+.site-footer-inner .theme-toggle{
+ order:99;
+ flex:0 0 auto;
+ min-width:0;
+ min-height:44px;
+ padding:10px 4px;
+ margin-left:auto;
+ border:0;
+ border-radius:4px;
+ background:transparent;
+ color:var(--muted);
+ font-size:11px;
+ font-weight:500;
+ letter-spacing:0;
+ box-shadow:none;
+ opacity:.85;
+}
+.site-footer-inner .theme-toggle:hover{opacity:1;color:var(--ink);background:transparent;text-decoration:underline}
+.site-footer-inner .theme-toggle:focus-visible{opacity:1;outline:2px solid var(--focus-color);outline-offset:2px}
+.site-footer-inner .site-version{order:50}
+@media(max-width:780px){
+ .site-header-inner{grid-template-columns:minmax(0,1fr)}
+ .site-header-inner .site-brand{grid-column:1;grid-row:1}
+ .site-header-inner .global-nav{grid-column:1;grid-row:2}
+ .site-footer-inner .theme-toggle{margin-left:auto}
+}
+@media print{.site-footer-inner .theme-toggle{display:none}}

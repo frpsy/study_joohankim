@@ -105,3 +105,31 @@ test('service worker caches lecture library and app shell for offline reading',a
   }
   await context.close();
 });
+
+test('appearance control is quiet and only at bottom of every page',async({browser})=>{
+ for(const width of [360,390,768,1280]){
+  const context=await browser.newContext({viewport:{width,height:844},colorScheme:'dark'});
+  const page=await context.newPage();
+  for(const url of ['/index.html','/concepts.html','/lectures/affirmation-20261101.html','/offline.html']){
+   await page.goto(url);
+   await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(0);
+   await expect(page.locator('.site-footer-inner [data-theme-toggle]')).toHaveCount(1);
+   const styles=await page.locator('.site-footer-inner [data-theme-toggle]').evaluate(el=>({
+     font:parseFloat(getComputedStyle(el).fontSize),
+     border:getComputedStyle(el).borderTopWidth,
+     height:el.getBoundingClientRect().height,
+     bottom:el.getBoundingClientRect().bottom,
+     footer:el.closest('footer').getBoundingClientRect().bottom
+   }));
+   expect(styles.font).toBeLessThanOrEqual(12);
+   expect(styles.border).toBe('0px');
+   expect(styles.height).toBeGreaterThanOrEqual(44);
+   expect(styles.bottom).toBeLessThanOrEqual(styles.footer);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+  }
+  await page.goto('/index.html');
+  await page.locator('.site-footer-inner [data-theme-toggle]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+  await context.close();
+ }
+});
