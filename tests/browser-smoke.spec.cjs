@@ -7,6 +7,7 @@ const kimLectureCount=studyLectures.filter(x=>x.creator==='김주환').length;
 const sizes=[
   {width:360,height:780},
   {width:390,height:844},
+  {width:768,height:900},
   {width:1280,height:800},
 ];
 
@@ -226,7 +227,7 @@ test('featured lecture opens the actual reading page without a duplicate list ca
 });
 
 test('mobile lecture summary uses clear type hierarchy and reader-facing labels',async({browser})=>{
-  for(const width of [360,390,1280]){
+  for(const width of [360,390,768,1280]){
     const context=await browser.newContext({viewport:{width,height:844}});
     const page=await context.newPage();
     await page.goto('/lectures/affirmation-20261101.html');
