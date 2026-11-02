@@ -1,0 +1,21 @@
+{
+  "content_id": "affirmation-20261101",
+  "source_title": "내가 나에게 하는 말이 나를 살린다 | 부두 데스와 자기확언의 뇌과학",
+  "creator": "김주환",
+  "published_date": "2026-11-01",
+  "caption_type": "Korean auto-generated SRT supplied by user",
+  "caption_segments": 3219,
+  "caption_first": "00:00:00",
+  "caption_last": "02:32:49",
+  "main_lecture_start": "00:35:11",
+  "source_video_id": null,
+  "source_url_verified": false,
+  "checks": {
+    "subtitle": "Entire timestamped transcript parsed and major sections cross-checked; not a sentence-by-sentence manual correction.",
+    "timeline": "Major markers cross-checked against SRT timestamps.",
+    "research": "Cannon (1942), Creswell et al. (2005), Cascio et al. (2016), Cohen et al. (2006) referenced with limits of interpretation.",
+    "slides": "No original video slide comparison available.",
+    "publication": "Internal stable content ID used to avoid fabricated YouTube links."
+  },
+  "follow_up": "When original 11-character YouTube video ID is verified, set lectures.json video_url without changing the stable content id to retain progress."
+}
