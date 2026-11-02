@@ -4,7 +4,7 @@ from pathlib import Path
 import html,json,sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from build_library import page,R
-from editorial_copy import effective_summaries
+from content_registry import effective_summaries
 READ_MINUTES='약 5분'
 def esc(x):return html.escape(x,quote=False)
 def render(row,data):
