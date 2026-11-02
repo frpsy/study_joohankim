@@ -45,8 +45,8 @@ test('one click commits chosen status and history; failed save retains state and
 test('busy buttons prevent double writes and late commits cannot restore signed-out UI',async()=>{
  let finish;const x=await setup(undefined,()=>new Promise(resolve=>finish=resolve));x.auth({uid:'a'});await tick();
  const study=x.find('학습 완료'),review=x.find('복습 완료');const saving=study.events.click();
- assert.equal(study.disabled,true);assert.equal(review.disabled,true);await review.events.click();await study.events.click();assert.equal(x.commits(),1);
- x.auth(null);finish();await saving;assert.ok(x.find('로그인 후 학습 기록'));assert.equal(x.find('학습 완료 ✓'),undefined);assert.equal(x.find('학습 완료 저장됨'),undefined);
+ assert.equal(study.disabled,true);assert.equal(review.disabled,true);assert.equal(study.textContent,"저장 중…");assert.equal(x.root["aria-busy"],"true");await review.events.click();await study.events.click();assert.equal(x.commits(),1);
+ x.auth(null);finish();await saving;assert.ok(x.find('로그인 후 학습 기록'));assert.equal(x.root['aria-busy'],'false');assert.equal(x.find('학습 완료 ✓'),undefined);assert.equal(x.find('학습 완료 저장됨'),undefined);
 });
 test('home ignores a previous account badge response after logout',async()=>{
  const nodes=Object.fromEntries(['settings-toggle','settings','account-close','account-state','account-action','account-history'].map(id=>[id,new Element('div')]));
