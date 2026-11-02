@@ -12,8 +12,10 @@ for folder in ('lectures', 'mini-courses', 'summaries'):
 class EditorialBrandContract(unittest.TestCase):
     def test_all_page_titles_and_wordmarks_use_the_new_brand(self):
         self.assertGreaterEqual(len(PAGES), 21)
-        builder = (ROOT/'scripts/build_library.py').read_text(encoding='utf-8')
-        asset_version = re.search(r"ASSET_VERSION='([^']+)'", builder).group(1)
+        from sys import path as py_path
+        py_path.insert(0,str(ROOT/'scripts'))
+        from build_library import ASSET_VERSION
+        asset_version=ASSET_VERSION
         for path in PAGES:
             with self.subTest(page=str(path.relative_to(ROOT))):
                 html = path.read_text(encoding='utf-8')
@@ -53,12 +55,12 @@ class EditorialBrandContract(unittest.TestCase):
         manifest = json.loads((ROOT/'build-info.json').read_text(encoding='utf-8'))
         self.assertRegex(manifest['version'], r'^\d{4}\.\d{2}\.\d{2}\.\d+$')
         script = (ROOT/'assets/site.js').read_text(encoding='utf-8')
-        self.assertIn("const CLIENT_VERSION='"+manifest['version']+"'", script)
+        self.assertIn("new URL(siteScriptURL).searchParams.get('v')", script)
+        self.assertIn("workerURL.searchParams.set('v'", script)
         worker = (ROOT/'sw.js').read_text(encoding='utf-8')
-        self.assertRegex(worker, r"const VERSION = '[^']+'")
-        builder = (ROOT/'scripts/build_library.py').read_text(encoding='utf-8')
-        self.assertIn("SITE_NAME='내면의 서재'", builder)
-        self.assertRegex(builder, r"ASSET_VERSION='[^']+'")
+        self.assertIn("new URL(self.location.href).searchParams.get('v')", worker)
+        from build_library import ASSET_VERSION
+        self.assertEqual(ASSET_VERSION, manifest['version'])
 
 if __name__ == '__main__':
     unittest.main()
