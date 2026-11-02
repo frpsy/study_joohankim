@@ -28,7 +28,7 @@ def validate_catalog(root: Path):
     """Return actionable validation errors for the hand-edited source records."""
     errors=[]
     rows=load_json(root/"lectures.json")
-    materials=load_json(root/"materials.json")
+    materials=load_json(root/"materials.json") if (root/"materials.json").exists() else []
     if not isinstance(rows,list) or not isinstance(materials,list):
         return ["Lectures and materials registries must be arrays"]
     ids=[]
