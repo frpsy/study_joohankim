@@ -95,7 +95,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.6');
+  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.7');
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
