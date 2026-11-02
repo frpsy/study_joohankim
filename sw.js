@@ -20,7 +20,12 @@ async function update(cache, request) {
   try {
     const response = await fetch(request);
     if (response.ok && response.type === 'basic') {
-      await cache.put(request, response.clone());
+      // Ignore refresh/version query parameters in the stored HTML key, so the
+      // next offline visit never resurrects an older page from an old cache entry.
+      const key = request.mode === 'navigate'
+        ? new Request(new URL(request.url).origin + new URL(request.url).pathname)
+        : request;
+      await cache.put(key, response.clone());
     }
     return response;
   } catch { return null; }
