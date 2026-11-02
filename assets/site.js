@@ -97,7 +97,7 @@
 
   // The label identifies the JavaScript actually loaded by this tab. A fresh,
   // uncached version manifest allows comparison with the currently deployed site.
-  const CLIENT_VERSION='2026.11.02.12';
+  const CLIENT_VERSION='2026.11.02.13';
   const siteScriptURL=document.currentScript?.src;
   const footer=document.querySelector('.site-footer-inner');
   if(footer && siteScriptURL){
@@ -128,7 +128,7 @@
   }
 
   // Cache only public same-origin study pages and common assets. Other origins
-  // (Firebase Auth / Firestore) are deliberately outside the worker's scope.
+  // No account or record storage is required for public reading.
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
     const assetScript = document.currentScript;
     if (assetScript?.src) {

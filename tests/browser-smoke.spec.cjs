@@ -16,7 +16,7 @@ for(const viewport of sizes){
     const page=await context.newPage();
     const pageErrors=[];
     page.on('pageerror',e=>pageErrors.push(e.message));
-    for(const url of ['/index.html','/concepts.html','/study-history.html','/lectures/izYj8g-j00U.html#lecture-comment','/mini-courses/izYj8g-j00U.html','/summaries/izYj8g-j00U.html']){
+    for(const url of ['/index.html','/concepts.html','/lectures/izYj8g-j00U.html#lecture-comment','/mini-courses/izYj8g-j00U.html','/summaries/izYj8g-j00U.html']){
       await page.goto(url);
       await expect(page.locator('main')).toBeVisible();
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
@@ -85,10 +85,10 @@ test('main tabs load from static cache without a network connection',async({brow
     const name=names.find(n=>n.startsWith('study-home-static-'));
     if(!name)return false;
     const cache=await caches.open(name);
-    return (await Promise.all(['./index.html','./concepts.html','./study-history.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
+    return (await Promise.all(['./index.html','./concepts.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
   },null,{timeout:15000});
   await context.setOffline(true);
-  for(const [url,title] of [['/concepts.html','용어와 개념'],['/study-history.html','학습 이력'],['/index.html','자료 모음']]){
+  for(const [url,title] of [['/concepts.html','용어와 개념'],['/index.html','자료 모음']]){
     await page.goto(url,{waitUntil:'domcontentloaded'});
     await expect(page.locator('.global-nav a[aria-current="page"]')).toHaveText(title);
     await expect(page.locator('main')).toBeVisible();
@@ -114,53 +114,22 @@ test('footer provides a refresh link when deployed manifest is newer',async({bro
   await context.close();
 });
 
-test('footer account is unobtrusive and login/close still work',async({browser})=>{
- const context=await browser.newContext({viewport:{width:390,height:844}});
- const page=await context.newPage();
- await page.route('**/assets/firebase.js*',route=>route.fulfill({status:200,contentType:'text/javascript',body:`
-    let observer;
-    export const getDb=async()=>({db:{},fs:{getDocs:async()=>({forEach(){}}),collection(){}}});
-    export function onUserChange(cb){observer=cb;cb(null);return Promise.resolve(()=>{});}
-    export function signInWithGoogle(){
-      document.documentElement.dataset.loginInvoked='yes';
-      observer({uid:'mock',displayName:'테스트'});
-      return Promise.resolve();
-    }
-    export function signOutUser(){observer(null);return Promise.resolve();}
-  `}));
+test('login, record saving, and history UI are absent',async({page})=>{
  await page.goto('/index.html');
- await expect(page.locator('.home-overview-heading h1')).toHaveText('학습 자료');
- await expect(page.locator('#settings')).toBeHidden();
- const courseLink=page.locator('.home-course-link');
- await expect(courseLink).toHaveText('미니강좌 보기 →');
- await expect(courseLink).toHaveAttribute('href','#learning-route-title');
- await expect(page.locator('.home-overview #settings-toggle')).toHaveCount(0);
- const entry=page.locator('.site-footer-inner #settings-toggle');
- await expect(entry).toHaveText('계정');
- await expect(entry).toBeVisible();
- expect(await entry.evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
- await entry.click();
- await expect(entry).toHaveAttribute('aria-expanded','true');
- await expect(page.locator('#settings')).toBeVisible();
- await expect(page.locator('#account-action')).toBeEnabled();
- const panelY=await page.locator('#settings').evaluate(el=>el.getBoundingClientRect().top + scrollY);
- const footerY=await page.locator('.site-footer').evaluate(el=>el.getBoundingClientRect().top + scrollY);
- expect(panelY).toBeGreaterThan(footerY);
- await page.locator('#account-action').click();
- await expect(page.locator('html')).toHaveAttribute('data-login-invoked','yes');
- await expect(page.locator('#account-action')).toHaveText('로그아웃');
- await page.locator('#account-action').click();
- await expect(page.locator('#account-action')).toHaveText('Google로 로그인');
- await page.locator('#account-close').click();
- await expect(page.locator('#settings')).toBeHidden();
- await context.close();
+ for(const selector of ['#settings','#settings-toggle','#account-action','#account-history','#study-progress']){
+  await expect(page.locator(selector)).toHaveCount(0);
+ }
+ await expect(page.getByRole('link',{name:'학습 이력'})).toHaveCount(0);
+ await page.goto('/lectures/affirmation-20261101.html');
+ await expect(page.locator('#study-progress')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:/학습 완료|복습 완료/})).toHaveCount(0);
+ await expect(page.locator('#lecture-overview')).toBeVisible();
 });
-
 
 test('editorial library identity and reading hierarchy stay consistent',async({browser})=>{
   const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
   const page=await context.newPage();
-  for(const url of ['/index.html','/concepts.html','/study-history.html','/lectures/izYj8g-j00U.html']){
+  for(const url of ['/index.html','/concepts.html','/lectures/izYj8g-j00U.html']){
     await page.goto(url);
     await expect(page.locator('.site-brand .brand-name')).toContainText('내면의 서재');
     await expect(page.locator('.brand-symbol')).toBeVisible();
@@ -240,37 +209,6 @@ test('catalog restores a shared search and returns to it after reading',async({p
   await expect(page.locator('#count')).toHaveText('1개 자료');
   await expect(page.locator('[data-filter-for="search"][data-value="수용"]')).toHaveAttribute('aria-pressed','true');
 });
-
-for(const width of [360,1280]){
- test('study status is saved directly with two plain buttons at '+width+'px',async({browser})=>{
-  const context=await browser.newContext({viewport:{width,height:844}});
-  const page=await context.newPage();
-  // A deterministic SDK fixture exercises the UI without using a real account.
-  await page.route('**/assets/firebase.js?*',route=>route.fulfill({contentType:'text/javascript',body:`
-   export function onUserChange(cb){cb({uid:'test-user'})}
-   export async function getDb(){return {db:{},fs:{
-    doc:(...args)=>args,collection:(...args)=>args,serverTimestamp:()=>1,
-    getDoc:async()=>({exists:()=>true,data:()=>({study:true,review:false})}),
-    writeBatch:()=>({set(){},commit:()=>new Promise(resolve=>setTimeout(resolve,100))})
-   }}}
-  `}));
-  await page.goto('/lectures/izYj8g-j00U.html');
-  const widget=page.locator('#study-progress');
-  await expect(widget.locator('details,summary,input')).toHaveCount(0);
-  await expect(widget.getByRole('button')).toHaveCount(2);
-  await expect(widget.getByRole('button',{name:'학습 완료 취소',exact:true})).toHaveText('학습 완료 ✓');
-  const review=widget.getByRole('button',{name:'복습 완료',exact:true});
-  await expect(review).toBeVisible();
-  expect(await review.evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
-  await review.click();
-  await expect(widget.getByRole('status')).toHaveText('복습 완료 저장됨');
-  await expect(widget.getByRole('button',{name:'복습 완료 취소',exact:true})).toHaveText('복습 완료 ✓');
-  await widget.getByRole('button',{name:'학습 완료 취소',exact:true}).click();
-  await expect(widget.getByRole('button',{name:'학습 완료',exact:true})).toHaveText('학습 완료');
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth)).toBeLessThanOrEqual(1);
-  await context.close();
- });
-}
 
 test('featured lecture opens the actual reading page without a duplicate list card',async({page})=>{
   await page.goto('/index.html');

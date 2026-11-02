@@ -5,7 +5,7 @@ import re
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = [ROOT/'index.html', ROOT/'concepts.html', ROOT/'study-history.html']
+PAGES = [ROOT/'index.html', ROOT/'concepts.html']
 for folder in ('lectures', 'mini-courses', 'summaries'):
     PAGES.extend(sorted((ROOT/folder).glob('*.html')))
 
@@ -18,7 +18,7 @@ class EditorialBrandContract(unittest.TestCase):
             with self.subTest(page=str(path.relative_to(ROOT))):
                 html = path.read_text(encoding='utf-8')
                 self.assertIn('<title>내면의 서재 · ', html)
-                self.assertIn('<span class="brand-name">내면의 서재<small>강의 · 개념 · 복습</small></span>', html)
+                self.assertIn('<span class="brand-name">내면의 서재<small>강의 · 개념 · 미니강좌</small></span>', html)
                 self.assertRegex(html, r'<img class="brand-symbol"[^>]+alt=""')
                 self.assertNotIn('내면을 공부하는 시간', html)
                 self.assertIn('site.css?v='+asset_version, html)
@@ -41,11 +41,10 @@ class EditorialBrandContract(unittest.TestCase):
         self.assertIn('href="lectures/affirmation-20261101.html"><span class="eyebrow">대표 강의</span>', html)
         self.assertIn('data-creator="Andrew Huberman"', html)
         self.assertIn('data-creator="김주환"', html)
-        self.assertEqual(html.count('id="settings-toggle"'), 1)
-        self.assertIn('class="footer-account-link" id="settings-toggle"', html)
-        self.assertIn('class="site-footer-account"', html)
-        self.assertNotIn('id="settings-toggle"', html.split('<main id="main" class="home-main">')[0])
-        for marker in ('id="settings-toggle"', 'id="search"', 'id="learning-route-title"', 'id="account-action"'):
+        self.assertNotIn('study-history.html', html)
+        self.assertNotIn('id="settings-toggle"', html)
+        self.assertNotIn('id="account-action"', html)
+        for marker in ('id="search"', 'id="learning-route-title"'):
             self.assertIn(marker, html)
         self.assertNotIn('class="hero-description"', html)
         self.assertNotIn('class="learning-flow"', html)

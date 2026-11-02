@@ -134,19 +134,12 @@ class ExternalLinkRegression(unittest.TestCase):
     def test_ui_explanations_do_not_repeat_declarative_endings(self):
         root = Path(__file__).resolve().parents[1]
         concepts = (root / "concepts.html").read_text(encoding="utf-8")
-        history = (root / "study-history.html").read_text(encoding="utf-8")
         home = (root / "index.html").read_text(encoding="utf-8")
         self.assertIn("강의에서 다룬 핵심 개념과 관련 해설", concepts)
-        self.assertIn("학습·복습 완료 기록을 최근순으로 확인할 수 있습니다.", history)
-        self.assertNotIn("최근순으로 표시한다", history)
-        self.assertNotIn("용어의 뜻을 확인하고 관련 강의 해설로 이동한다", concepts)
-        self.assertIn("아직 학습·복습 기록 없음", history)
-        progress = (root / "assets/progress.js").read_text(encoding="utf-8")
-        account = (root / "assets/account.js").read_text(encoding="utf-8")
-        self.assertIn("저장 중", progress)
-        self.assertNotIn("저장했다.", progress)
-        self.assertIn("로그인이 취소되었습니다.", account)
         self.assertIn("검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택", home)
-        self.assertIn("로그인 연결 중", home)
-        self.assertNotIn("메모를 작성했다", history)
+        self.assertNotIn("study-history.html", home)
+        self.assertNotIn("account.js", home)
+        self.assertNotIn("settings-toggle", home)
+        self.assertNotIn("study-progress", home)
+
 
