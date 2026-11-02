@@ -1,0 +1,37 @@
+{
+  "checked_at_utc": "2026-11-02T02:01:53.126304+00:00",
+  "channel_id": "UCYNnQhFGE-EP0HrWRxMGUaw",
+  "video_id": "oD5-nTDCKPg",
+  "video_url": "https://www.youtube.com/watch?v=oD5-nTDCKPg",
+  "video_title": "내가 나에게 하는 말이 나를 살린다 | 부두 데스와 자기확언의 뇌과학",
+  "source": "yt_dlp_official_channel_streams",
+  "errors": [
+    "RSS: HTTP Error 404: Not Found"
+  ],
+  "public_pages": {
+    "https://frpsy.github.io/study_joohankim/": {
+      "status": 200,
+      "contains_lecture_title": true,
+      "contains_new_version": true,
+      "content_length": 8365
+    },
+    "https://frpsy.github.io/study_joohankim/lectures/affirmation-20261101.html": {
+      "status": 200,
+      "contains_lecture_title": true,
+      "contains_new_version": true,
+      "content_length": 8314
+    },
+    "https://frpsy.github.io/study_joohankim/mini-courses/affirmation-20261101.html": {
+      "status": 200,
+      "contains_lecture_title": true,
+      "contains_new_version": true,
+      "content_length": 5138
+    },
+    "https://frpsy.github.io/study_joohankim/summaries/affirmation-20261101.html": {
+      "status": 200,
+      "contains_lecture_title": true,
+      "contains_new_version": true,
+      "content_length": 4804
+    }
+  }
+}
