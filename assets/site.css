@@ -326,7 +326,6 @@ body{letter-spacing:-.012em}
 .hub-hero .page-hero{max-width:700px}
 .hub-hero .hero-eyebrow{font-size:12px;letter-spacing:.075em}
 .hub-hero .page-hero h1{margin:10px 0 12px;font-size:clamp(32px,3.8vw,47px);line-height:1.24;letter-spacing:-.062em;font-weight:760;text-wrap:balance}
-.hub-hero .hero-description{max-width:38ch;font-size:15px;line-height:1.72;color:var(--muted);margin:0 0 20px;word-break:keep-all}
 .hub-actions{gap:9px;margin:0;align-items:center}
 .hub-actions>.btn{min-height:44px;padding:10px 17px;font-size:14px;border-radius:11px;font-weight:600}
 .hub-actions .btn.secondary{background:transparent}
@@ -395,7 +394,6 @@ main#main{min-width:0}
   .hub-hero.mobile-hub{display:grid;grid-template-columns:minmax(0,1fr);padding:23px 0 26px;gap:18px}
   .hub-hero.mobile-hub .page-hero{padding:0}
   .hub-hero.mobile-hub .page-hero h1{font-size:clamp(29px,7.6vw,34px);line-height:1.25;letter-spacing:-.06em;margin:9px 0 9px}
-  .hub-hero .hero-description{font-size:14px;line-height:1.65;margin:0 0 16px;max-width:42ch}
   .hub-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important;margin:0}
   .hub-actions>.btn{font-size:13px;min-height:44px;padding:9px 8px}
   .hub-actions #settings-toggle{grid-column:1/-1;margin:0;justify-self:stretch}
@@ -464,12 +462,6 @@ main#main{min-width:0}
 .lecture .meta .creator{color:var(--green);font-weight:650;overflow-wrap:anywhere}
 @media(max-width:780px){.lecture .meta{column-gap:8px;row-gap:5px}.lecture .meta .creator{font-size:12px}}
 
-/* Compact learning flow and reversible catalog search. */
-.learning-flow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin:0 0 var(--space-6);padding:var(--space-3) 0;border-block:1px solid var(--line);font-size:var(--font-ui-size)}
-.learning-flow a{display:inline-flex;align-items:center;min-height:var(--tap-target);color:var(--green);text-decoration:none}
-.learning-flow a:hover{text-decoration:underline}
-.learning-flow>span{color:var(--muted)}
 .search-controls{display:flex;gap:var(--space-2);align-items:center}
 .search-controls .search{flex:1;min-width:0}
 .search-controls button{flex:none;min-height:var(--tap-target)}
-@media(max-width:360px){.learning-flow{gap:var(--space-1);font-size:12px}}
