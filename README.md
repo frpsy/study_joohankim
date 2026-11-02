@@ -1,77 +1,60 @@
-# study_joohankim
+# 내면의 서재
 
-유튜브 강의 자막을 받아 주제별로 정리해두는 개인 학습 아카이브이다.
-처음에는 김주환 교수님 채널로 시작했지만, 다른 강의/저자/교수님으로도
-계속 확장할 수 있도록 구조를 잡았다.
+강의의 핵심 결론·미니강좌·5분 요약·원본 타임라인을 읽는 **로그인 없는 정적 학습 사이트**입니다. 김주환 교수뿐 아니라 다른 강연자와 향후 책·연구 자료까지 다룰 수 있도록 구성되어 있습니다.
 
-## 폴더 구조
+- **웹:** https://frpsy.github.io/study_joohankim/
+- **공개 경로:** `index.html`, `concepts.html`, `lectures/<id>.html`, `mini-courses/<id>.html`, `summaries/<id>.html`
+- **기능:** 자료 검색·필터, 대표 강의, 한 문장 핵심 결론, 핵심 3가지, 펼치는 5분 요약, 미니강좌, 원본 YouTube 링크, 타임라인 복사, 정적 오프라인 캐시
+- **없는 기능:** 사용자 로그인, 개인 학습 기록 저장, 학습 완료 상태, 학습 이력, Firebase 연결
 
-폴더 이름은 모두 영어(ASCII)로 통일한다. 파일 이름(영상 제목)은 원문 그대로 둔다.
+## 코드와 데이터의 역할
 
-```
-.
-├── INDEX.md                        # 전체 자막 목차 (자동 생성)
-├── data/subtitles.db               # 검색용 SQLite (자동 생성, git 제외)
-├── scripts/
-│   ├── subtitles.py                   # 다운로드 / URL 추출 / 분류 / 목차·검색을 한 파일로 처리
-│   └── README.md
-└── authors/                        # 저자(채널)별 자막 아카이브
-    └── <이름>/
-        ├── .channel_id                # 채널ID (폴더 자동 매칭용, 다운로더가 생성)
-        ├── .aliases                   # 제목/업로더에서 찾을 다른 이름들 (예: 한글 이름, 선택)
-        ├── urls.txt                   # 영상 URL 목록 (있을 때만)
-        ├── README.md                  # 저자 소개 + 카테고리 설명 (선택)
-        └── subtitles/                 # 자막 TXT (주제 폴더로 나뉘어 있기도 함)
-            ├── .downloaded_ids.txt       # 이미 받은 영상 ID (이어받기용)
-            └── failed_urls.txt           # 다운로드 실패 목록 (있을 때만)
-```
+| 경로 | 책임 |
+| --- | --- |
+| `lectures.json` | 강의 ID·제목·출처·길이·태그 |
+| `materials.json` | 향후 책·논문·글·노트 목록 |
+| `data/mini_courses.json` | **한 문장 핵심 결론의 단일 원본**, 핵심 3가지, 미니강좌 |
+| `data/summaries.json` | 5분 요약의 본문·적용·근거 한계 (한 문장 핵심 중복 저장 금지) |
+| `data/lecture_compact.json` | 댓글 타임라인과 출처 링크 |
+| `scripts/content_registry.py` | 소스 검증과 요약 데이터 결합 |
+| `scripts/build_library.py` | 홈과 공통 레이아웃, `build-info.json` 버전의 정적 자산 URL |
+| `scripts/build_compact_lectures.py` | 강의 노트·미니강좌 생성 |
+| `scripts/build_summaries.py` | 5분 요약 생성 |
+| `assets/site.css`, `assets/site.js` | 공통 디자인과 검색·복사·버전 확인 |
+| `sw.js` | 동일 출처 정적 리소스 캐싱 |
+| `build-info.json` | **배포·캐시 버전의 단일 원본** |
 
-이번 정리 대상인 김주환(`Joohan Kim`)과 `Andrew Huberman` 자막은 각각 5개씩, 두 저자 합계 10개이다. 원격에 있던 다른 저자 자료는 보존한다.
+기존 콘텐츠 ID와 공개 주소를 바꾸지 않으며, 생성된 HTML은 **직접 편집하지 않습니다.**
 
-- 김주환: 정리 직전 보유 자막 45개의 현재 조회수를 비교해 상위 5개를 남겼다.
-- Andrew Huberman: 채널 인기 강의 상위 5개의 영어 자막을 새로 받았다.
-- 제갈건 자막은 제거했다.
-- 조회수 확인일: 2026-10-30. 영상별 조회수와 선정 근거는 [data/retained_top5.json](data/retained_top5.json)에 있다.
-- `urls.txt`와 `.downloaded_ids.txt`는 남긴 영상만 가리킨다.
-- 채널 전체 다운로드는 자막을 다시 늘린다. 현재 5개 구성을 유지하려면 저자별 `urls.txt`를 사용하세요.
+## 변경 및 검증
 
-## 사용법
-
-저장소 루트에서 실행한다. 자세한 옵션은 [scripts/README.md](scripts/README.md)를 참고하세요.
+저장소 루트에서 아래 순서로 실행합니다. 별도 데이터베이스나 로그인은 필요하지 않습니다.
 
 ```bash
-pip install yt-dlp --break-system-packages
-
-# 1. 자막 다운로드 — URL만 넣으면 끝 (채널이면 새 영상만, 단일 영상이면 그 영상만, 저장 폴더는 자동)
-python scripts/subtitles.py "<채널/재생목록/영상 URL>"
-
-# 1b. URL 목록 파일로 일괄 다운로드 / 영상 URL 목록만 뽑기
-python scripts/subtitles.py --file "authors/Joohan Kim/urls.txt"
-python scripts/subtitles.py "<채널/재생목록 URL>" --urls-only "authors/Joohan Kim/urls.txt"
-
-# 2. 다운로드된 자막을 주제별 폴더로 자동 분류
-python scripts/subtitles.py organize --dir "authors/Joohan Kim/subtitles" --dry-run   # 미리보기
-python scripts/subtitles.py organize --dir "authors/Joohan Kim/subtitles"            # 실제 이동
-
-# 3. 전체 목차(INDEX.md) + 검색 DB 생성, 본문 검색
-python scripts/subtitles.py index
-python scripts/subtitles.py search "불안감"
+python3 scripts/content_registry.py
+python3 scripts/build_library.py
+python3 scripts/build_compact_lectures.py
+python3 scripts/build_summaries.py
+python3 scripts/build_library.py --check
+python3 scripts/build_compact_lectures.py --check
+python3 scripts/build_summaries.py --check
+python3 scripts/validate_design_system.py
+python3 scripts/validate_site.py
+python3 -m unittest discover -s tests -p 'test_*.py'
+node --test tests/test_*.cjs
 ```
 
-## 새로운 저자/교수님 추가하기
+브라우저 검사는 GitHub Actions에서 Chromium/Playwright로 자동 실행합니다. 강의 원고를 수정할 때는 데이터에서 고치고 세 생성기를 다시 실행하세요. 정적 화면 버전이 바뀌면 **`build-info.json.version`만 올리고** 생성된 HTML과 `concepts.html`의 자산 URL을 맞춥니다.
 
-1. `python scripts/subtitles.py "<채널 URL>"`을 실행하면 `authors/<이름>/subtitles`가 자동으로 만들어진다.
-   (직접 지정하려면 `-o authors/<이름>/subtitles`)
-2. 목록 파일로 받고 싶다면 `authors/<이름>/urls.txt`에 URL을 넣고 `subtitles.py --file`을 사용한다.
-3. `scripts/subtitles.py`의 `CATEGORIES`는 김주환 교수님 강의 주제에 맞춰져 있으므로,
-   새 저자의 강의 주제에 맞게 카테고리/키워드를 수정하거나 별도 분류 스크립트를 만들어 사용하세요.
-4. `authors/<이름>/README.md`에 채널 소개와 카테고리 설명을 간단히 남겨두면 좋다.
+## 강의 추가
 
-## 참고
+1. 실제 자막 및 원본 영상 ID·URL을 검증하고 `lectures.json`에 안정적인 콘텐츠 ID를 추가합니다. 영상 ID가 불확실하면 임의의 11자리 ID를 만들지 않습니다.
+2. `data/mini_courses.json`에 한 문장 핵심 결론·핵심 3가지·미니강좌를 작성합니다.
+3. `data/summaries.json`에 상세 해설·적용·근거의 한계를 작성하고, `data/lecture_compact.json`에 **실제 자막에 맞춘** 댓글 타임라인·출처를 등록합니다.
+4. 위 생성·검증 명령을 실행하고 GitHub Pages 공개 URL까지 확인합니다. 한 문장 핵심 결론과 타임라인은 임의로 생성·추측하지 않습니다.
 
-자막 텍스트는 원 저작자(강연자)에게 저작권이 있는 콘텐츠이다. 이 저장소는 개인 학습/검색
-목적의 정리 아카이브이며, 상업적 이용이나 재배포 목적이 아니다.
+## 자막 자료 아카이브
 
-## 강의 학습 웹 편집
+`authors/`는 강연자별 원본 자막 아카이브입니다. 자막 확보에 **vidIQ는 사용하지 않습니다.** 저자별 수집·목차 생성 등 별도 작업은 [scripts/README.md](scripts/README.md)를 참고합니다. 원본 강의·자막의 저작권과 출처를 존중합니다.
 
-학습 웹과 노션 아카이브를 수정할 때 [편집규칙.md](편집규칙.md)와 [용어집.md](용어집.md)를 따른다. 에이전트 작업의 시작 지침은 [AGENTS.md](AGENTS.md)에 있다. 자막·슬라이드의 핵심을 먼저 정리하고 관련 화면과 해설을 통합하며, 전 구간 대조·수정·공개 배포 확인까지 마친 뒤 완료를 보고한다.
+편집 지침은 [AGENTS.md](AGENTS.md), [편집규칙.md](편집규칙.md), [디자인 계약](docs/design-system.md), [콘텐츠 모델](docs/content-model.md)을 참고합니다.
