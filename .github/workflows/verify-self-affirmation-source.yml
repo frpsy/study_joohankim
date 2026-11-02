@@ -1,4 +1,4 @@
-name: Verify refactored public study site
+name: Verify deployed iPhone PWA and PC browser pages
 on:
   push:
     branches: [source-check/20261102]
@@ -9,39 +9,50 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
-      - name: Check all public pages, source copy and removed account routes
+      - name: Check public PWA, dark-mode assets, all reading pages and removed account routes
         run: |
           python3 - <<'PY'
-          import json,html,urllib.request,urllib.error
+          import urllib.request,urllib.error,json,html
           root="https://frpsy.github.io/study_joohankim/"
-          raw="https://raw.githubusercontent.com/frpsy/study_joohankim/main/data/mini_courses.json"
-          version="2026.11.02.15"
-          def get(url):
-              req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 RefactorDeploymentVerifier"})
+          version="2026.11.02.16"
+          errors=[]
+          def fetch(path):
+              url=root+path
+              request=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 StudyAppVerification"})
               try:
-                  with urllib.request.urlopen(req,timeout=17) as f:return f.status,f.read().decode("utf-8","replace")
-              except urllib.error.HTTPError as ex:return ex.code,""
-          status,courses_json=get(raw)
-          assert status==200,"failed to load canonical source"
-          courses=json.loads(courses_json)
-          pages=[("index.html",None),("concepts.html",None)]
-          for vid,details in courses.items():
-              for section in ["lectures","mini-courses","summaries"]:
-                  pages.append((section+"/"+vid+".html",details["lead"]))
-          failures=[]
-          css_status,css_body=get(root+"assets/site.css?v="+version)
-          if css_status!=200 or "/* Layout refinement: one spacing scale" not in css_body or "grid-template-columns:repeat(2,minmax(0,1fr))" not in css_body:
-              failures.append("published CSS layout refinement missing")
-          for path,lead in pages:
-              status,body=get(root+path+"?v="+version)
-              correct=status==200 and ("site.css?v="+version) in body and ("site.js?v="+version) in body
-              if lead:correct=correct and html.escape(lead) in body
-              if "lectures/affirmation-20261101.html"==path:correct=correct and "https://www.youtube.com/watch?v=oD5-nTDCKPg" in body
-              if any(term in body for term in ["study-history.html","assets/account.js","assets/progress.js",'id="study-progress"']):correct=False
-              if not correct:failures.append(path+": status "+str(status)+" or stale content")
-          for path in ["study-history.html","assets/firebase.js","assets/account.js","assets/progress.js"]:
-              status,_=get(root+path+"?v="+version)
-              if status!=404:failures.append(path+": expected 404; got "+str(status))
-          print(json.dumps({"verified_site":root,"version":version,"pages_checked":len(pages),"old_routes_checked":4,"lecture_count":len(courses),"errors":failures},ensure_ascii=False,indent=2))
-          if failures:raise SystemExit(1)
+                  with urllib.request.urlopen(request,timeout=18) as response:
+                      return response.status,response.read().decode("utf-8","replace")
+              except urllib.error.HTTPError as error:
+                  return error.code,""
+          status,raw=fetch("data/mini_courses.json")
+          assert status==200,"Failed to access reading source"
+          courses=json.loads(raw)
+          pages=["index.html","concepts.html"]
+          for lecture_id in courses:
+              pages.extend(folder+"/"+lecture_id+".html" for folder in ["lectures","mini-courses","summaries"])
+          for p in pages:
+              status,body=fetch(p+"?published="+version)
+              ok=status==200 and "site.css?v="+version in body and "site.js?v="+version in body
+              ok=ok and "assets/theme.js?v="+version in body and 'rel="manifest"' in body and "data-theme-toggle" in body
+              if p.startswith(("lectures/","mini-courses/","summaries/")):
+                  lead=courses[p.split("/")[1].split(".html")[0]]["lead"]
+                  ok=ok and html.escape(lead) in body
+              if not ok:errors.append("Page missing latest app shell or takeaway: "+p+" HTTP "+str(status))
+          status,manifest_text=fetch("manifest.webmanifest?published="+version)
+          if status!=200:errors.append("PWA manifest missing")
+          else:
+              manifest=json.loads(manifest_text)
+              for k,val in {"id":"/study_joohankim/","scope":"./","display":"standalone","start_url":"./index.html"}.items():
+                  if manifest.get(k)!=val:errors.append("Manifest invalid: "+k)
+          for p in ["assets/theme.js","assets/site.css","assets/icon-512.png","assets/apple-touch-icon.png","offline.html"]:
+              status,body=fetch(p+"?published="+version)
+              if status!=200:errors.append("PWA resource missing: "+p)
+              if p=="assets/theme.js" and "prefers-color-scheme: dark" not in body:errors.append("Theme logic missing")
+              if p=="assets/site.css" and ':root[data-theme="dark"]' not in body:errors.append("Dark CSS missing")
+          for p in ["study-history.html","assets/account.js","assets/progress.js","assets/firebase.js"]:
+              status,_=fetch(p+"?published="+version)
+              if status!=404:errors.append("Removed user data route should be 404: "+p+" status "+str(status))
+          report={"site":root,"version":version,"pages":len(pages),"lectures":len(courses),"errors":errors}
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          if errors:raise SystemExit(1)
           PY
