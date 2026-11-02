@@ -32,7 +32,7 @@ class GeneratorRegression(unittest.TestCase):
         self.assertIn('2개 자료',mixed)
         featured=render([row],[{**book,'featured':True}])
         self.assertIn('대표 책',featured)
-        self.assertIn('href="books/sample.html">자료 읽기',featured)
+        self.assertIn('href="books/sample.html"><span class="eyebrow">대표 책</span>',featured)
         with self.assertRaises(ValueError):render([row],[{**book,'featured':True},{**book,'id':'second','featured':True}])
         with self.assertRaises(ValueError):render([row],[{**book,'url':'https://untrusted.example/'}])
 
@@ -46,7 +46,7 @@ class GeneratorRegression(unittest.TestCase):
             for name in ('index.html','concepts.html','lectures.json'):
                 shutil.copyfile(repo/name,root/name)
             home=root/'index.html'
-            home.write_text(home.read_text().replace('<h1>내면의 서재</h1>','<h1>임의로 바꾼 제목</h1>'))
+            home.write_text(home.read_text().replace('<h1>학습 자료</h1>','<h1>임의로 바꾼 제목</h1>'))
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
