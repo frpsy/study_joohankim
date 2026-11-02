@@ -24,7 +24,7 @@ class KoreanLeads(unittest.TestCase):
                 self.assertTrue(lead.endswith('다.'), vid)
                 self.assertGreaterEqual(len(lead), 55, vid)
                 self.assertLessEqual(len(lead), 170, vid)
-                self.assertFalse(re.search(r'\\s{2,}', lead), vid)
+                self.assertFalse(re.search(r'\s{2,}', lead), vid)
                 self.assertEqual(lead, summaries[vid]['lead'], '5분 요약과 한 문장 핵심이 다름: '+vid)
                 for folder in ('lectures', 'mini-courses', 'summaries'):
                     text = (R/folder/f'{vid}.html').read_text(encoding='utf-8')
