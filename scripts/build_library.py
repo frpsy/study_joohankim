@@ -4,16 +4,14 @@ from pathlib import Path
 import json,html,sys
 R=Path(__file__).resolve().parents[1]
 SITE_NAME='내면의 서재'
-SITE_DESCRIPTOR='강의 · 개념 · 복습'
-ASSET_VERSION='20261102-summary-hierarchy-v19'
+SITE_DESCRIPTOR='강의 · 개념 · 미니강좌'
+ASSET_VERSION='20261102-no-learning-records-v20'
 def header(base='',active='lectures'):
-    return f'<a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="{base}index.html"><img class="brand-symbol" src="{base}assets/icon.svg" width="32" height="32" alt="" aria-hidden="true"><span class="brand-name">{SITE_NAME}<small>{SITE_DESCRIPTOR}</small></span></a><nav class="global-nav" aria-label="주요 메뉴"><a href="{base}index.html"'+(' aria-current="page"' if active=='lectures' else '')+f'>자료 모음</a><a href="{base}concepts.html"'+(' aria-current="page"' if active=='concepts' else '')+f'>용어와 개념</a><a href="{base}study-history.html"'+(' aria-current="page"' if active=='history' else '')+f'>학습 이력</a></nav></div></header>'
+    return f'<a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="{base}index.html"><img class="brand-symbol" src="{base}assets/icon.svg" width="32" height="32" alt="" aria-hidden="true"><span class="brand-name">{SITE_NAME}<small>{SITE_DESCRIPTOR}</small></span></a><nav class="global-nav" aria-label="주요 메뉴"><a href="{base}index.html"'+(' aria-current="page"' if active=='lectures' else '')+f'>자료 모음</a><a href="{base}concepts.html"'+(' aria-current="page"' if active=='concepts' else '')+f'>용어와 개념</a></nav></div></header>'
 def footer(base='',account=False):
-    control = '<button type="button" class="footer-account-link" id="settings-toggle" aria-controls="settings" aria-expanded="false">계정</button>' if account else ''
-    account_panel = '<div class="site-footer-account"><div class="site-footer-account-inner"><section id="settings" class="settings-panel" aria-label="계정 설정" hidden><div class="account-header"><h2>내 계정</h2><button type="button" class="btn secondary account-close" id="account-close" aria-label="계정 패널 닫기">닫기</button></div><p id="account-state" role="status" aria-live="polite">로그인 연결 중</p><div class="actions account-actions"><button type="button" class="btn" id="account-action" disabled>로그인 준비 중</button><a class="btn secondary" id="account-history" href="study-history.html" hidden>학습 이력</a></div><p class="account-hint">로그인 창이 열리지 않으면 Safari 또는 Chrome에서 사이트 주소를 직접 열어 주세요.</p></section></div></div>' if account else ''
-    return f'<footer class="site-footer"><div class="site-footer-inner"><span>{SITE_NAME} · 개인 학습</span><a href="{base}index.html">자료 모음으로</a><a href="{base}concepts.html">용어와 개념</a>{control}</div>{account_panel}</footer>'
+    return f'<footer class="site-footer"><div class="site-footer-inner"><span>{SITE_NAME}</span><a href="{base}index.html">자료 모음으로</a><a href="{base}concepts.html">용어와 개념</a></div></footer>'
 def page(title,body,base='',active='lectures',account=False):
-    return f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="강의, 책, 연구와 사유를 연결하며 배우고 기록하는 개인 학습 서재"><title>{SITE_NAME} · {html.escape(title)}</title><link rel="icon" href="{base}assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{base}assets/apple-touch-icon.png"><link rel="stylesheet" href="{base}assets/site.css?v={ASSET_VERSION}"><script defer src="{base}assets/site.js?v={ASSET_VERSION}"></script></head><body>{header(base,active)}{body}{footer(base,account)}</body></html>'
+    return f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="강의, 책, 연구와 사유를 연결하며 배우고 정리하는 개인 학습 서재"><title>{SITE_NAME} · {html.escape(title)}</title><link rel="icon" href="{base}assets/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{base}assets/apple-touch-icon.png"><link rel="stylesheet" href="{base}assets/site.css?v={ASSET_VERSION}"><script defer src="{base}assets/site.js?v={ASSET_VERSION}"></script></head><body>{header(base,active)}{body}{footer(base,account)}</body></html>'
 def render(rows, materials=None):
     materials=materials or []
     # 목록의 순서는 개인 학습용 편집 순서. 날짜가 없는 강의에는 임의의 공개일을 만들지 않는다.
@@ -38,7 +36,7 @@ def render(rows, materials=None):
         tags=''.join('<span>'+html.escape(x)+'</span>' for x in row['tags'])
         cards+=f'<a class="lecture" data-video-id="{row["id"]}" data-kind="lecture" data-creator="{html.escape(row.get("creator",""),quote=True)}" data-search="{searchable}" href="lectures/{row["id"]}.html"><div class="meta">'+(f'<time datetime="{row["date"]}">{row["date"].replace("-",".")}</time>' if row.get("date") else '')+f'<span>{html.escape(row["duration"])}</span><span class="creator">{creator}</span></div><h3>{html.escape(row["title"])}</h3><p>{html.escape(row["description"])}</p><div class="tags">{tags}</div><span class="read">핵심 요약과 타임라인 →</span></a>'
     # Other material types have their own pages and are not assumed to have a YouTube ID.
-    # This keeps the current lecture URLs and Firestore learning-record IDs intact.
+    # Keep existing lecture URLs and stable content IDs intact.
     type_names={'book':'책','paper':'연구','article':'글','note':'학습 노트'}
     for item in materials:
         kind=item['kind']
@@ -65,8 +63,7 @@ def render(rows, materials=None):
         featured=f'<a class="home-feature" data-kind="lecture" data-video-id="{latest["id"]}" data-creator="{html.escape(latest.get("creator",""),quote=True)}" data-search="{searchable}" href="lectures/{latest["id"]}.html"><span class="eyebrow">대표 강의</span><h2>{html.escape(latest["title"])}</h2><p>{html.escape(latest["description"])}</p><span class="home-feature-action">강의 본문 읽기 →</span></a>'
     course_link='<a class="home-course-link" href="#learning-route-title">미니강좌 보기 →</a>' if steps else ''
     body=f'''<div class="site-shell"><main id="main" class="home-main"><section id="lectures"><div id="home-catalog"><div class="home-overview"><div class="home-overview-heading"><h1>학습 자료</h1>{course_link}</div>{featured}</div><div class="search-panel"><label for="search">자료 검색</label><div class="search-controls"><input class="search" id="search" type="search" placeholder="주제, 이름, 키워드 검색…" data-filter-input="#home-catalog" data-count="count" data-empty="empty" data-noun="자료" data-persist-query="true"><button type="button" class="btn secondary" data-clear-for="search" hidden>초기화</button></div><div class="filter-chips">{chips}</div><p class="search-summary" id="count" aria-live="polite">{total}개 자료</p></div><div class="lecture-grid" id="lecture-list">{cards}</div></div><p class="empty" id="empty" hidden>검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택</p></section>{path}</main></div>'''
-    body+='<script type="module" src="assets/account.js?v=20261101-auth-fix"></script>'
-    return page('자료 모음',body,account=True)
+    return page('자료 모음',body)
 
 def build(check=False):
     result=render(json.loads((R/'lectures.json').read_text(encoding='utf-8')),json.loads((R/'materials.json').read_text(encoding='utf-8')))
