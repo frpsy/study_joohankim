@@ -1,4 +1,4 @@
-/* Shared navigation and discovery. Lecture-specific copy/checkbox logic stays in its page. */
+/* Shared navigation, search, text copying and deployed-version feedback. */
 (()=>{
   const header=document.querySelector('.site-header');
   const sidebar=document.querySelector('.sidebar');
@@ -97,8 +97,8 @@
 
   // The label identifies the JavaScript actually loaded by this tab. A fresh,
   // uncached version manifest allows comparison with the currently deployed site.
-  const CLIENT_VERSION='2026.11.02.13';
   const siteScriptURL=document.currentScript?.src;
+  const CLIENT_VERSION=siteScriptURL ? new URL(siteScriptURL).searchParams.get('v') || 'unknown' : 'unknown';
   const footer=document.querySelector('.site-footer-inner');
   if(footer && siteScriptURL){
     const versionBox=document.createElement('span');
@@ -127,12 +127,12 @@
       .catch(()=>{versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 배포 미확인'});
   }
 
-  // Cache only public same-origin study pages and common assets. Other origins
-  // No account or record storage is required for public reading.
+  // Cache only same-origin public reading pages; no personal records are stored.
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
     const assetScript = document.currentScript;
     if (assetScript?.src) {
       const workerURL = new URL('../sw.js', assetScript.src);
+      workerURL.searchParams.set('v', new URL(assetScript.src).searchParams.get('v') || 'unversioned');
       navigator.serviceWorker.register(workerURL.href).catch(() => {});
     }
   }
