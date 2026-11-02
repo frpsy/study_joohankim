@@ -69,8 +69,8 @@ jobs:
           ]
           for u in urls:
               try:
-                  status,body=get(u+"?refresh=2026.11.02.8")
-                  result["public_pages"][u]={"status":status,"contains_lecture_title":title_fragment in body,"contains_new_version":"20261102-self-affirmation-v15" in body,"content_length":len(body)}
+                  status,body=get(u+"?refresh=2026.11.02.9")
+                  result["public_pages"][u]={"status":status,"contains_lecture_title":title_fragment in body,"contains_new_version":"20261102-affirmation-video-v16" in body,"contains_original_video_link":("https://www.youtube.com/watch?v=oD5-nTDCKPg" in body) if "/lectures/" in u else None,"content_length":len(body)}
               except Exception as ex:result["public_pages"][u]={"error":str(ex)[:250]}
           path=pathlib.Path("docs/source-check-20261102.json")
           path.parent.mkdir(exist_ok=True)
