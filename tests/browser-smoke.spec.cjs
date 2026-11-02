@@ -1,4 +1,9 @@
 const {test,expect}=require('@playwright/test');
+const studyVersion=require('../build-info.json').version;
+const studyLectures=require('../lectures.json');
+const studyMaterials=require('../materials.json');
+const expectedLibraryCount=studyLectures.length+studyMaterials.length;
+const kimLectureCount=studyLectures.filter(x=>x.creator==='김주환').length;
 const sizes=[
   {width:360,height:780},
   {width:390,height:844},
@@ -95,7 +100,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const page=await context.newPage();
   await page.goto('/index.html');
-  await expect(page.locator('.site-version')).toContainText('화면 v2026.11.02.7');
+  await expect(page.locator('.site-version')).toContainText('화면 v'+studyVersion);
   await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
   await context.close();
 });
@@ -166,7 +171,7 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
     expect(overflow,'no horizontal overflow at '+url).toBeLessThanOrEqual(1);
   }
   await page.goto('/index.html');
-  await expect(page.locator('.hub-hero h1')).toHaveText(/읽고, 듣고, 연결하는\s*내면의 서재/);
+  await expect(page.locator('.hub-hero h1')).toHaveText('내면의 서재');
   const compact=await page.evaluate(()=>{
     const header=document.querySelector('.site-header').getBoundingClientRect();
     const title=document.querySelector('.hub-hero h1').getBoundingClientRect();
@@ -177,7 +182,7 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
   });
   expect(compact.headerHeight).toBeLessThan(115);
   expect(compact.titleHeight).toBeLessThan(95);
-  expect(compact.cardCount).toBe(6);
+  expect(compact.cardCount).toBe(expectedLibraryCount);
   expect(compact.menuTapHeight).toBeGreaterThanOrEqual(44);
   await page.locator('[data-filter-for="search"][data-value="명상"]').click();
   await expect(page.locator('#count')).toHaveText('1개 자료');
@@ -203,14 +208,14 @@ test('desktop home presents a side-by-side editorial hero and readable cards',as
 test('catalog searches by creator without losing video ID progress hooks',async({page})=>{
   await page.goto('/index.html');
   const items=page.locator('#lecture-list .lecture');
-  await expect(items).toHaveCount(6);
+  await expect(items).toHaveCount(expectedLibraryCount);
   await expect(page.locator('[data-creator="Andrew Huberman"]')).toHaveCount(1);
   await page.locator('#search').fill('Huberman');
   await expect(page.locator('#count')).toHaveText('1개 자료');
   await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
   await expect(page.locator('#lecture-list .lecture:visible')).toHaveAttribute('data-video-id','QmOF0crdyRU');
   await page.locator('#search').fill('김주환');
-  await expect(page.locator('#count')).toHaveText('5개 자료');
+  await expect(page.locator('#count')).toHaveText(kimLectureCount+'개 자료');
 });
 
 test('catalog restores a shared search and returns to it after reading',async({page})=>{
@@ -227,7 +232,7 @@ test('catalog restores a shared search and returns to it after reading',async({p
   await page.locator('[data-clear-for="search"]').click();
   await expect(page.locator('#search')).toBeFocused();
   await expect(page.locator('#search')).toHaveValue('');
-  await expect(page.locator('#count')).toHaveText('6개 자료');
+  await expect(page.locator('#count')).toHaveText(expectedLibraryCount+'개 자료');
   expect(new URL(page.url()).searchParams.has('q')).toBe(false);
   expect(new URL(page.url()).searchParams.get('source')).toBe('test');
   await page.locator('[data-filter-for="search"][data-value="수용"]').click();
