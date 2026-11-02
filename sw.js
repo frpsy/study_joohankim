@@ -16,13 +16,13 @@ function isStaticSiteResource(request) {
   if (request.mode === 'navigate') return true;
   return ['style', 'script', 'image', 'font', 'manifest'].includes(request.destination);
 }
-async function update(cache, request) {
+async function update(cache, request, isNavigation = false) {
   try {
     const response = await fetch(request);
     if (response.ok && response.type === 'basic') {
       // Ignore refresh/version query parameters in the stored HTML key, so the
       // next offline visit never resurrects an older page from an old cache entry.
-      const key = request.mode === 'navigate'
+      const key = isNavigation || request.mode === 'navigate'
         ? new Request(new URL(request.url).origin + new URL(request.url).pathname)
         : request;
       await cache.put(key, response.clone());
@@ -64,7 +64,7 @@ self.addEventListener('fetch', event => {
     // Navigation must be network-first. Cache-first HTML can indefinitely show
     // an old header even when build-info.json reports a newer deployment.
     if (request.mode === 'navigate') {
-      const fresh = await update(cache, new Request(request, {cache:'no-store'}));
+      const fresh = await update(cache, new Request(request, {cache:'no-store'}), true);
       if (fresh) return fresh;
       return await cache.match(request, {ignoreSearch:true})
         || await cache.match(new URL('./offline.html',root))
