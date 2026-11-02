@@ -1,4 +1,4 @@
-name: Verify original lecture video and deployed study pages
+name: Verify all seven published key takeaways
 on:
   push:
     branches:
@@ -9,78 +9,54 @@ jobs:
   verify:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
           ref: source-check/20261102
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Fetch official channel video metadata and public Pages
+      - name: Check all public study pages against current canonical leads
         shell: bash
         run: |
-          python3 -m pip install --quiet yt-dlp
           python3 - <<'PY'
-          import urllib.request, xml.etree.ElementTree as ET, json, re, subprocess, datetime, pathlib
-          title_fragment="내가 나에게 하는 말이 나를 살린다"
-          channel_id="UCYNnQhFGE-EP0HrWRxMGUaw"
-          result={"checked_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),"channel_id":channel_id,"video_id":None,"video_url":None,"video_title":None,"source":None,"errors":[],"public_pages":{}}
-          def match(title):
-              return title_fragment in title or ("부두 데스" in title and "자기확언" in title)
-          def get(url):
-              req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; StudyArchiveVerifier/1.0)"})
-              with urllib.request.urlopen(req,timeout=17) as res:return res.status,res.read(900000).decode("utf-8","replace")
-          rss="https://www.youtube.com/feeds/videos.xml?channel_id="+channel_id
-          try:
-              status,xml=get(rss)
-              root=ET.fromstring(xml)
-              ns={"atom":"http://www.w3.org/2005/Atom","yt":"http://www.youtube.com/xml/schemas/2015"}
-              for item in root.findall("atom:entry",ns):
-                  title=item.findtext("atom:title","",ns)
-                  vid=item.findtext("yt:videoId","",ns)
-                  if match(title) and re.fullmatch(r"[A-Za-z0-9_-]{11}",vid):
-                      result.update(video_id=vid,video_url="https://www.youtube.com/watch?v="+vid,video_title=title,source="official_youtube_rss")
-                      break
-              if result["video_id"] is None:result["errors"].append("RSS returned no title match")
-          except Exception as ex:result["errors"].append("RSS: "+str(ex)[:250])
-          if result["video_id"] is None:
-              for tab in ("streams","videos"):
-                  try:
-                      cmd=["yt-dlp","--no-warnings","--skip-download","--flat-playlist","--playlist-end","9","--dump-single-json","https://www.youtube.com/@joohankim/"+tab]
-                      cp=subprocess.run(cmd,capture_output=True,text=True,timeout=90)
-                      if cp.returncode!=0:
-                          result["errors"].append("yt-dlp "+tab+": "+cp.stderr[-350:].strip())
-                          continue
-                      data=json.loads(cp.stdout)
-                      for entry in data.get("entries",[]):
-                          title=entry.get("title") or ""
-                          vid=entry.get("id") or ""
-                          if match(title) and re.fullmatch(r"[A-Za-z0-9_-]{11}",vid):
-                              result.update(video_id=vid,video_url="https://www.youtube.com/watch?v="+vid,video_title=title,source="yt_dlp_official_channel_"+tab)
-                              break
-                      if result["video_id"]:break
-                  except Exception as ex:result["errors"].append("yt-dlp "+tab+": "+str(ex)[:250])
-          urls=[
-            "https://frpsy.github.io/study_joohankim/",
-            "https://frpsy.github.io/study_joohankim/lectures/affirmation-20261101.html",
-            "https://frpsy.github.io/study_joohankim/mini-courses/affirmation-20261101.html",
-            "https://frpsy.github.io/study_joohankim/summaries/affirmation-20261101.html",
-          ]
-          for u in urls:
+          import datetime, html, json, pathlib, time, urllib.request
+          base="https://frpsy.github.io/study_joohankim/"
+          raw="https://raw.githubusercontent.com/frpsy/study_joohankim/main/data/mini_courses.json"
+          version="20261102-key-takeaways-v18"
+          def fetch(url):
+              req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 StudyArchiveQualityCheck"})
+              with urllib.request.urlopen(req,timeout=17) as response:
+                  return response.status,response.read().decode("utf-8","replace")
+          status,raw_json=fetch(raw)
+          assert status==200
+          leads=json.loads(raw_json)
+          result={"verified_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),"main_version":"2026.11.02.11","checked_pages":{},"issues":[]}
+          urls=[("home",base,None)]
+          for vid,row in leads.items():
+              for folder in ("lectures","mini-courses","summaries"):
+                  urls.append((folder+"/"+vid,base+folder+"/"+vid+".html",row["lead"]))
+          for name,url,lead in urls:
               try:
-                  status,body=get(u+"?refresh=2026.11.02.9")
-                  result["public_pages"][u]={"status":status,"contains_lecture_title":title_fragment in body,"contains_new_version":"20261102-affirmation-video-v16" in body,"contains_original_video_link":("https://www.youtube.com/watch?v=oD5-nTDCKPg" in body) if "/lectures/" in u else None,"content_length":len(body)}
-              except Exception as ex:result["public_pages"][u]={"error":str(ex)[:250]}
-          path=pathlib.Path("docs/source-check-20261102.json")
-          path.parent.mkdir(exist_ok=True)
-          path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          print(json.dumps(result,ensure_ascii=False,indent=2))
+                  # Unique cache-busting query avoids stale CDN responses.
+                  status,text=fetch(url+"?refresh=2026.11.02.11")
+                  checks={"http_200":status==200,"new_asset_version":version in text}
+                  if lead is not None:checks["reviewed_takeaway_visible"]=html.escape(lead) in text
+                  result["checked_pages"][name]=checks
+                  if not all(checks.values()):result["issues"].append(name+": "+str(checks))
+              except Exception as e:
+                  result["checked_pages"][name]={"error":str(e)[:220]}
+                  result["issues"].append(name+": "+str(e)[:220])
+          out=pathlib.Path("docs/key-takeaway-public-check-20261102.json")
+          out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps({"number_of_pages":len(urls),"issues":result["issues"],"all_passed":not result["issues"]},ensure_ascii=False))
+          if result["issues"]:raise SystemExit(1)
           PY
-      - name: Commit verification evidence
+      - name: Commit verification evidence to isolated audit branch
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/source-check-20261102.json
-          git commit -m "docs: record live study pages and official video metadata check"
-          git push origin HEAD:source-check/20261102
+          git add docs/key-takeaway-public-check-20261102.json
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: verify public key takeaways on all 22 study pages"
+            git push origin HEAD:source-check/20261102
+          fi
