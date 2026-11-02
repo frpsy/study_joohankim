@@ -14,6 +14,11 @@ class NavigationPerformanceContract(unittest.TestCase):
         for removed in ("assets/firebase.js", "assets/account.js", "assets/progress.js", "assets/firebase-config.js", "study-history.html"):
             self.assertFalse((R / removed).exists(), removed)
 
+    def test_removed_account_layout_css_does_not_return(self):
+        css = (R / "assets/site.css").read_text(encoding="utf-8")
+        self.assertNotIn(".hub-actions", css)
+        self.assertNotIn("#settings-toggle", css)
+
     def test_header_and_cards_do_not_regress(self):
         css = (R / "assets/site.css").read_text(encoding="utf-8")
         self.assertIn(".site-header{background:var(--paper);", css)

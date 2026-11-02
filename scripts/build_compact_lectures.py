@@ -2,7 +2,7 @@
 from pathlib import Path
 import html,json,sys
 from build_library import page,R
-from editorial_copy import effective_summaries
+from content_registry import effective_summaries
 E=html.escape
 def load(name):return json.loads((R/'data'/name).read_text(encoding='utf-8'))
 def render(row,record,mini,summary):

@@ -124,7 +124,8 @@ class ExternalLinkRegression(unittest.TestCase):
         from build_summaries import build
         self.assertFalse(build(check=True))
         root = Path(__file__).resolve().parents[1]
-        data = json.loads((root / "data" / "summaries.json").read_text(encoding="utf-8"))
+        from content_registry import effective_summaries
+        data = effective_summaries(root)
         for vid, item in data.items():
             body = item["lead"] + "".join(p for s in item["sections"] for p in s["p"]) + item["note"]
             self.assertTrue(1800 <= len(body) <= 2800, (vid, len(body)))

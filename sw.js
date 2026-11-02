@@ -1,6 +1,6 @@
 /* Fast, offline-tolerant navigation for public static study pages only.
    No personal account or learning record resources are cached. */
-const VERSION = '20261102-no-learning-records-v20';
+const VERSION = new URL(self.location.href).searchParams.get('v') || 'unversioned';
 const CACHE = 'study-home-static-' + VERSION;
 const PREFIX = 'study-home-static-';
 const CORE = [
