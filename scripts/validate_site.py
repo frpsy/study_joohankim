@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlparse,unquote
 import re,json,sys
 from build_library import render
+from content_registry import validate_catalog
 from build_mindmaps import errors as mindmap_errors
 class Document(HTMLParser):
     def __init__(self):
