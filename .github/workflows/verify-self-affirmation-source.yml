@@ -15,7 +15,7 @@ jobs:
           import json,html,urllib.request,urllib.error
           root="https://frpsy.github.io/study_joohankim/"
           raw="https://raw.githubusercontent.com/frpsy/study_joohankim/main/data/mini_courses.json"
-          version="2026.11.02.14"
+          version="2026.11.02.15"
           def get(url):
               req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 RefactorDeploymentVerifier"})
               try:
@@ -29,6 +29,9 @@ jobs:
               for section in ["lectures","mini-courses","summaries"]:
                   pages.append((section+"/"+vid+".html",details["lead"]))
           failures=[]
+          css_status,css_body=get(root+"assets/site.css?v="+version)
+          if css_status!=200 or "/* Layout refinement: one spacing scale" not in css_body or "grid-template-columns:repeat(2,minmax(0,1fr))" not in css_body:
+              failures.append("published CSS layout refinement missing")
           for path,lead in pages:
               status,body=get(root+path+"?v="+version)
               correct=status==200 and ("site.css?v="+version) in body and ("site.js?v="+version) in body
