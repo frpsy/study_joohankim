@@ -56,19 +56,25 @@ self.addEventListener('fetch', event => {
   if (!isStaticSiteResource(request)) return;
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
-    // Explicit reloads always check the network first to get recently published content.
+    // Navigation must be network-first. Cache-first HTML can indefinitely show
+    // an old header even when build-info.json reports a newer deployment.
+    if (request.mode === 'navigate') {
+      const fresh = await update(cache, new Request(request, {cache:'no-store'}));
+      if (fresh) return fresh;
+      return await cache.match(request, {ignoreSearch:true})
+        || await cache.match(new URL('./offline.html',root))
+        || Response.error();
+    }
+    // Static CSS/JS and images stay cache-first for fast repeat reading.
     if (request.cache === 'reload' || new URL(request.url).searchParams.has('refresh')) {
       const fresh = await update(cache, request);
       if (fresh) return fresh;
     }
-    const cached = await cache.match(request, {ignoreSearch: true});
+    const cached = await cache.match(request, {ignoreSearch:true});
     if (cached) {
       event.waitUntil(update(cache, request));
       return cached;
     }
-    const fresh = await update(cache, request);
-    if(fresh)return fresh;
-    if(request.mode==='navigate')return await cache.match(new URL('./offline.html',root)) || Response.error();
-    return Response.error();
+    return await update(cache, request) || Response.error();
   })());
 });
