@@ -5,7 +5,7 @@ import json,html,sys
 R=Path(__file__).resolve().parents[1]
 SITE_NAME='내면의 서재'
 SITE_DESCRIPTOR='강의 · 개념 · 복습'
-ASSET_VERSION='20261102-self-affirmation-v15'
+ASSET_VERSION='20261102-affirmation-video-v16'
 def header(base='',active='lectures'):
     return f'<a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="{base}index.html"><img class="brand-symbol" src="{base}assets/icon.svg" width="32" height="32" alt="" aria-hidden="true"><span class="brand-name">{SITE_NAME}<small>{SITE_DESCRIPTOR}</small></span></a><nav class="global-nav" aria-label="주요 메뉴"><a href="{base}index.html"'+(' aria-current="page"' if active=='lectures' else '')+f'>자료 모음</a><a href="{base}concepts.html"'+(' aria-current="page"' if active=='concepts' else '')+f'>용어와 개념</a><a href="{base}study-history.html"'+(' aria-current="page"' if active=='history' else '')+f'>학습 이력</a></nav></div></header>'
 def footer(base='',account=False):
