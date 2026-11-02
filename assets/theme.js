@@ -2,6 +2,7 @@
 (()=>{
   'use strict';
   const key='study-site-appearance';
+  if(navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches)document.documentElement.dataset.standalone='true';
   const media=window.matchMedia('(prefers-color-scheme: dark)');
   const modes=['auto','light','dark'];
   let choice='auto';
