@@ -1,4 +1,4 @@
-"""Verified video source must not change the stable study-record key."""
+"""Verified video source must not change the stable content URL key."""
 import json
 from pathlib import Path
 import unittest
@@ -9,7 +9,7 @@ VIDEO_ID = "oD5-nTDCKPg"
 URL = "https://www.youtube.com/watch?v=" + VIDEO_ID
 
 class OriginalVideoSourceTest(unittest.TestCase):
-    def test_official_url_and_stable_learning_key(self):
+    def test_official_url_and_stable_content_key(self):
         rows = json.loads((ROOT/"lectures.json").read_text(encoding="utf-8"))
         row = next(x for x in rows if x["id"] == CONTENT_ID)
         self.assertEqual(row["video_url"], URL)
@@ -17,7 +17,7 @@ class OriginalVideoSourceTest(unittest.TestCase):
         self.assertEqual(sources[0]["url"], URL)
         lecture = (ROOT/"lectures"/f"{CONTENT_ID}.html").read_text(encoding="utf-8")
         self.assertIn('href="'+URL+'"', lecture)
-        self.assertIn('data-lecture="'+CONTENT_ID+'"', lecture)
+        self.assertNotIn('id="study-progress"', lecture)
         self.assertNotIn("원본 영상 주소 확인 중", lecture)
         self.assertNotIn("watch?v="+CONTENT_ID, lecture)
         home = (ROOT/"index.html").read_text(encoding="utf-8")
