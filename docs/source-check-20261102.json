@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-02T02:01:53.126304+00:00",
+  "checked_at_utc": "2026-11-02T02:08:15.516176+00:00",
   "channel_id": "UCYNnQhFGE-EP0HrWRxMGUaw",
   "video_id": "oD5-nTDCKPg",
   "video_url": "https://www.youtube.com/watch?v=oD5-nTDCKPg",
@@ -13,25 +13,29 @@
       "status": 200,
       "contains_lecture_title": true,
       "contains_new_version": true,
-      "content_length": 8365
+      "contains_original_video_link": null,
+      "content_length": 8367
     },
     "https://frpsy.github.io/study_joohankim/lectures/affirmation-20261101.html": {
       "status": 200,
       "contains_lecture_title": true,
       "contains_new_version": true,
-      "content_length": 8314
+      "contains_original_video_link": true,
+      "content_length": 8396
     },
     "https://frpsy.github.io/study_joohankim/mini-courses/affirmation-20261101.html": {
       "status": 200,
       "contains_lecture_title": true,
       "contains_new_version": true,
-      "content_length": 5138
+      "contains_original_video_link": null,
+      "content_length": 5140
     },
     "https://frpsy.github.io/study_joohankim/summaries/affirmation-20261101.html": {
       "status": 200,
       "contains_lecture_title": true,
       "contains_new_version": true,
-      "content_length": 4804
+      "contains_original_video_link": null,
+      "content_length": 4806
     }
   }
 }
