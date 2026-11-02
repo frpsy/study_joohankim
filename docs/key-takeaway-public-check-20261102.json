@@ -1,0 +1,116 @@
+{
+  "verified_at": "2026-11-02T02:50:26.215175+00:00",
+  "main_version": "2026.11.02.11",
+  "checked_pages": {
+    "home": {
+      "http_200": true,
+      "new_asset_version": true
+    },
+    "lectures/ZCty0wvogDo": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/ZCty0wvogDo": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/ZCty0wvogDo": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "lectures/hw4_kLaHOMg": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/hw4_kLaHOMg": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/hw4_kLaHOMg": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "lectures/izYj8g-j00U": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/izYj8g-j00U": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/izYj8g-j00U": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "lectures/vHuZh8xLcDc": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/vHuZh8xLcDc": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/vHuZh8xLcDc": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "lectures/QmOF0crdyRU": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/QmOF0crdyRU": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/QmOF0crdyRU": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "lectures/xA-4G4z-1MM": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/xA-4G4z-1MM": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/xA-4G4z-1MM": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "lectures/affirmation-20261101": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "mini-courses/affirmation-20261101": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    },
+    "summaries/affirmation-20261101": {
+      "http_200": true,
+      "new_asset_version": true,
+      "reviewed_takeaway_visible": true
+    }
+  },
+  "issues": []
+}
