@@ -55,12 +55,13 @@ function mount(root) {
     if (!current()) return;
     setStatus(status, "");
     let busy = false;
+    let pendingKind = null;
     const buttons = {};
     const names = { study: "학습 완료", review: "복습 완료" };
     function refresh() {
       for (const kind of Object.keys(names)) {
         const done = !!progress[kind];
-        buttons[kind].textContent = names[kind] + (done ? " ✓" : "");
+        buttons[kind].textContent = busy && kind === pendingKind ? "저장 중…" : names[kind] + (done ? " ✓" : "");
         buttons[kind].dataset.complete = String(done);
         buttons[kind].setAttribute("aria-label", names[kind] + (done ? " 취소" : ""));
         buttons[kind].setAttribute("title", done ? "눌러서 완료 취소" : "눌러서 완료 기록");
@@ -73,6 +74,8 @@ function mount(root) {
       button.addEventListener("click", async () => {
         if (!current() || busy) return;
         busy = true;
+        pendingKind = kind;
+        root.setAttribute("aria-busy", "true");
         refresh();
         setStatus(status, "저장 중");
         const value = !progress[kind];
@@ -91,7 +94,7 @@ function mount(root) {
         } catch {
           if (current()) setStatus(status, "저장하지 못했습니다. 다시 눌러 주세요.", true);
         } finally {
-          if (current()) { busy = false; refresh(); }
+          if (current()) { busy = false; pendingKind = null; root.setAttribute("aria-busy", "false"); refresh(); }
         }
       });
     }
@@ -102,6 +105,7 @@ function mount(root) {
   function startAuth() {
     Promise.resolve(onUserChange(user => {
       const token = ++generation;
+      root.setAttribute("aria-busy", "false");
       if (user) renderSignedIn(user, token);
       else renderSignedOut();
     })).catch(() => {
