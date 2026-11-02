@@ -16,11 +16,16 @@ function isStaticSiteResource(request) {
   if (request.mode === 'navigate') return true;
   return ['style', 'script', 'image', 'font', 'manifest'].includes(request.destination);
 }
-async function update(cache, request) {
+async function update(cache, request, isNavigation = false) {
   try {
     const response = await fetch(request);
     if (response.ok && response.type === 'basic') {
-      await cache.put(request, response.clone());
+      // Ignore refresh/version query parameters in the stored HTML key, so the
+      // next offline visit never resurrects an older page from an old cache entry.
+      const key = isNavigation || request.mode === 'navigate'
+        ? new Request(new URL(request.url).origin + new URL(request.url).pathname)
+        : request;
+      await cache.put(key, response.clone());
     }
     return response;
   } catch { return null; }
@@ -56,19 +61,25 @@ self.addEventListener('fetch', event => {
   if (!isStaticSiteResource(request)) return;
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
-    // Explicit reloads always check the network first to get recently published content.
+    // Navigation must be network-first. Cache-first HTML can indefinitely show
+    // an old header even when build-info.json reports a newer deployment.
+    if (request.mode === 'navigate') {
+      const fresh = await update(cache, new Request(request, {cache:'no-store'}), true);
+      if (fresh) return fresh;
+      return await cache.match(request, {ignoreSearch:true})
+        || await cache.match(new URL('./offline.html',root))
+        || Response.error();
+    }
+    // Static CSS/JS and images stay cache-first for fast repeat reading.
     if (request.cache === 'reload' || new URL(request.url).searchParams.has('refresh')) {
       const fresh = await update(cache, request);
       if (fresh) return fresh;
     }
-    const cached = await cache.match(request, {ignoreSearch: true});
+    const cached = await cache.match(request, {ignoreSearch:true});
     if (cached) {
       event.waitUntil(update(cache, request));
       return cached;
     }
-    const fresh = await update(cache, request);
-    if(fresh)return fresh;
-    if(request.mode==='navigate')return await cache.match(new URL('./offline.html',root)) || Response.error();
-    return Response.error();
+    return await update(cache, request) || Response.error();
   })());
 });

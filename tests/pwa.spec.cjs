@@ -133,3 +133,48 @@ test('appearance control is quiet and only at bottom of every page',async({brows
   await context.close();
  }
 });
+
+test('online navigation rejects a stale cached header and offline still reads the page',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'allow'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  await page.evaluate(async()=>{
+    await navigator.serviceWorker.ready;
+    const registration=await navigator.serviceWorker.getRegistration();
+    await registration.update();
+  });
+  await page.reload();
+  await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(0);
+  await expect(page.locator('.site-footer [data-theme-toggle]')).toHaveCount(1);
+  await page.evaluate(async()=>{
+    const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
+    const cache=await caches.open(key);
+    const stale='<!doctype html><html><body><header class="site-header"><button data-theme-toggle>OLD HEADER BUTTON</button></header><main>old offline document</main></body></html>';
+    await cache.put(new URL('index.html',location.href),new Response(stale,{headers:{'Content-Type':'text/html;charset=UTF-8'}}));
+  });
+  await page.goto('/index.html?check=online-first');
+  await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(0);
+  await expect(page.locator('.site-footer [data-theme-toggle]')).toHaveCount(1);
+  await expect(page.locator('h1')).toHaveText('학습 자료');
+  const freshCached=await page.evaluate(async()=>{
+    const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
+    const cache=await caches.open(key);
+    const response=await cache.match(new URL('index.html',location.href));
+    return response ? (await response.text()).includes('OLD HEADER BUTTON') : true;
+  });
+  expect(freshCached).toBe(false);
+  await context.setOffline(true);
+  if(browser.browserType().name()==='webkit'){
+    // Linux Playwright WebKit errors on page.goto while offline; verify fresh cached bytes.
+    const cached=await page.evaluate(async()=>{
+      const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
+      const response=await (await caches.open(key)).match(new URL('index.html',location.href));
+      return response ? (await response.text()).includes('<h1>학습 자료</h1>') : false;
+    });
+    expect(cached).toBe(true);
+  }else{
+    await page.goto('/index.html');
+    await expect(page.locator('h1')).toHaveText('학습 자료');
+  }
+  await context.close();
+});
