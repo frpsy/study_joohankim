@@ -25,7 +25,7 @@ class EditorialBrandContract(unittest.TestCase):
 
     def test_home_has_consistent_editorial_hierarchy_and_no_content_loss(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('읽고, 듣고, 연결하는<br class="hero-title-break"> 내면의 서재',html)
+        self.assertIn('<h1>내면의 서재</h1>',html)
         self.assertIn('개인 학습 아카이브',html)
         self.assertIn('대표 강의',html)
         self.assertEqual(html.count('class="lecture"'),6)
