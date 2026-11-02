@@ -88,7 +88,7 @@ test('main tabs load from static cache without a network connection',async({brow
     return (await Promise.all(['./index.html','./concepts.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
   },null,{timeout:15000});
   await context.setOffline(true);
-  for(const [url,title] of [['/concepts.html','용어와 개념'],['학습 이력'],['/index.html','자료 모음']]){
+  for(const [url,title] of [['/concepts.html','용어와 개념'],['/index.html','자료 모음']]){
     await page.goto(url,{waitUntil:'domcontentloaded'});
     await expect(page.locator('.global-nav a[aria-current="page"]')).toHaveText(title);
     await expect(page.locator('main')).toBeVisible();
