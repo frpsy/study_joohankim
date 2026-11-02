@@ -45,7 +45,7 @@ def lecture_layout_errors(source):
     return errors
 
 def validate(root):
-    rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=[];docs={}
+    rows=json.loads((root/'lectures.json').read_text(encoding='utf-8'));errors=validate_catalog(root);docs={}
     if len({x['id'] for x in rows})!=len(rows):errors.append('duplicate video in registry')
     materials=json.loads((root/'materials.json').read_text(encoding='utf-8')) if (root/'materials.json').exists() else []
     if not isinstance(materials,list):errors.append('materials registry must be a list');materials=[]
