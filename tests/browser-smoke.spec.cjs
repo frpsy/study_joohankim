@@ -293,9 +293,9 @@ test('refined layout keeps two real nav tabs, balanced cards and readable widths
    const li=parseFloat(getComputedStyle(document.querySelector('#lecture-overview li')).fontSize);
    return {width:box.width,left:box.left,right:box.right,h2,h3,li,overflow:document.documentElement.scrollWidth-innerWidth};
   });
-  expect(reading.width).toBeLessThanOrEqual(width<=780 ? width-30 : 721);
-  expect(reading.left).toBeGreaterThanOrEqual(-1);
-  expect(reading.right).toBeLessThanOrEqual(width+1);
+  expect(reading.width).toBeLessThanOrEqual(width<=780 ? width-24 : 721);
+  expect(reading.left).toBeGreaterThanOrEqual(width<=780 ? 12 : -1);
+  expect(reading.right).toBeLessThanOrEqual(width<=780 ? width-12 : width+1);
   expect(reading.h2).toBeGreaterThan(reading.h3);
   expect(reading.h3).toBeGreaterThanOrEqual(reading.li);
   expect(reading.overflow).toBeLessThanOrEqual(1);
