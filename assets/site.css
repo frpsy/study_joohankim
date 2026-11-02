@@ -268,14 +268,14 @@ html{scroll-padding-top:var(--anchor-offset,100px)}
 .lecture-section .timeline-disclosure>summary{margin-top:2px}
 @media(max-width:780px){.lecture-section pre.timeline-teaser{font-size:12px;line-height:1.5;padding:10px}}
 
-/* Home: one primary route, one secondary learning route and one account control. */
-.hub-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.hub-actions>.btn{min-height:44px}
-.hub-actions #settings-toggle{margin-left:auto}
+/* Home: public study materials; no account controls. */
+
+
+
 @media(max-width:780px){
-  .hub-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
-  .hub-actions #settings-toggle{margin:0;grid-column:1/-1;justify-self:stretch}
-  .hub-actions>.btn{min-height:44px;text-align:center}
+  
+  
+  
 }
 
 
@@ -297,10 +297,10 @@ body{letter-spacing:-.012em}
 .hub-hero .page-hero{max-width:700px}
 .hub-hero .hero-eyebrow{font-size:12px;letter-spacing:.075em}
 .hub-hero .page-hero h1{margin:10px 0 12px;font-size:clamp(32px,3.8vw,47px);line-height:1.24;letter-spacing:-.062em;font-weight:760;text-wrap:balance}
-.hub-actions{gap:9px;margin:0;align-items:center}
-.hub-actions>.btn{min-height:44px;padding:10px 17px;font-size:14px;border-radius:11px;font-weight:600}
-.hub-actions .btn.secondary{background:transparent}
-.hub-actions #settings-toggle{color:var(--muted);border-color:var(--line)}
+
+
+
+
 .latest-entry{border:1px solid var(--brand-outline);border-radius:20px;background:var(--brand-soft);box-shadow:none;padding:25px 26px}
 .latest-entry .eyebrow{font-size:11px;color:var(--green);letter-spacing:.075em}
 .latest-entry h2{font-size:23px;line-height:1.36;letter-spacing:-.04em;font-weight:720;margin:12px 0 20px;text-wrap:pretty}
@@ -364,9 +364,9 @@ main#main{min-width:0}
   .hub-hero.mobile-hub{display:grid;grid-template-columns:minmax(0,1fr);padding:23px 0 26px;gap:18px}
   .hub-hero.mobile-hub .page-hero{padding:0}
   .hub-hero.mobile-hub .page-hero h1{font-size:clamp(29px,7.6vw,34px);line-height:1.25;letter-spacing:-.06em;margin:9px 0 9px}
-  .hub-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important;margin:0}
-  .hub-actions>.btn{font-size:13px;min-height:44px;padding:9px 8px}
-  .hub-actions #settings-toggle{grid-column:1/-1;margin:0;justify-self:stretch}
+  
+  
+  
   .hub-hero.mobile-hub .latest-entry{margin:0;padding:18px 19px;border:1px solid var(--brand-outline);background:var(--brand-soft);border-radius:17px}
   .hub-hero.mobile-hub .latest-entry h2{font-size:19px;line-height:1.4;margin:9px 0 9px}
   .hub-hero.mobile-hub .latest-entry>a{font-size:13px;min-height:38px;display:inline-flex;align-items:center}
@@ -407,12 +407,12 @@ main#main{min-width:0}
   .lecture:hover{transform:none}
 }
 
-/* Footer-only account: learning controls are the only hero actions. */
-.hub-actions{display:flex!important;flex-wrap:wrap;align-items:center;gap:9px!important}
-.hub-actions>.btn{flex:0 1 auto}
+/* The public catalog requires no account controls. */
+
+
 @media(max-width:780px){
-  .hub-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
-  .hub-actions>.btn{width:100%;min-height:44px}
+  
+  
 }
 @media(max-width:360px){}
 
