@@ -254,3 +254,51 @@ test('mobile lecture summary uses clear type hierarchy and reader-facing labels'
     await context.close();
   }
 });
+
+test('refined layout keeps two real nav tabs, balanced cards and readable widths',async({browser})=>{
+ for(const width of [360,390,768,1280]){
+  const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  const metrics=await page.evaluate(()=>{
+   const rect=selector=>{const x=document.querySelector(selector);const r=x.getBoundingClientRect();return {width:r.width,left:r.left,right:r.right,top:r.top,bottom:r.bottom}};
+   const nav=document.querySelector('.global-nav');
+   const tabs=[...nav.querySelectorAll('a')];
+   return {
+    tabCount:tabs.length,
+    navColumns:getComputedStyle(nav).gridTemplateColumns,
+    tabRects:tabs.map(x=>{const r=x.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,height:r.height}}),
+    overview:rect('.home-overview'),
+    feature:rect('.home-feature'),
+    card:rect('.lecture'),
+    rootOverflow:document.documentElement.scrollWidth-innerWidth,
+   };
+  });
+  expect(metrics.tabCount).toBe(2);
+  expect(metrics.rootOverflow).toBeLessThanOrEqual(1);
+  expect(metrics.feature.right).toBeLessThanOrEqual(width);
+  expect(metrics.card.right).toBeLessThanOrEqual(width);
+  if(width<=780){
+   expect(metrics.tabRects[0].top).toBeCloseTo(metrics.tabRects[1].top,0);
+   expect(Math.abs(metrics.tabRects[0].right-metrics.tabRects[0].left-(metrics.tabRects[1].right-metrics.tabRects[1].left))).toBeLessThan(2);
+   expect(metrics.tabRects[0].height).toBeGreaterThanOrEqual(44);
+   expect(metrics.tabRects[1].height).toBeGreaterThanOrEqual(44);
+   expect(metrics.feature.top).toBeGreaterThan(metrics.overview.top);
+  }
+  await page.goto('/lectures/affirmation-20261101.html');
+  const reading=await page.evaluate(()=>{
+   const box=document.querySelector('.compact-lecture').getBoundingClientRect();
+   const h2=parseFloat(getComputedStyle(document.querySelector('#lecture-overview>h2')).fontSize);
+   const h3=parseFloat(getComputedStyle(document.querySelector('#lecture-overview .summary-tier:not(details)>h3')).fontSize);
+   const li=parseFloat(getComputedStyle(document.querySelector('#lecture-overview li')).fontSize);
+   return {width:box.width,left:box.left,right:box.right,h2,h3,li,overflow:document.documentElement.scrollWidth-innerWidth};
+  });
+  expect(reading.width).toBeLessThanOrEqual(721);
+  expect(reading.left).toBeGreaterThanOrEqual(-1);
+  expect(reading.right).toBeLessThanOrEqual(width+1);
+  expect(reading.h2).toBeGreaterThan(reading.h3);
+  expect(reading.h3).toBeGreaterThanOrEqual(reading.li);
+  expect(reading.overflow).toBeLessThanOrEqual(1);
+  await context.close();
+ }
+});
