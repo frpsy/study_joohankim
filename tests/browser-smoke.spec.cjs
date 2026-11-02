@@ -286,3 +286,32 @@ test('featured lecture opens the actual reading page without a duplicate list ca
   await expect(page).toHaveURL(/\/lectures\/affirmation-20261101\.html$/);
   await expect(page.locator('#lecture-overview')).toBeVisible();
 });
+
+test('mobile lecture summary uses clear type hierarchy and reader-facing labels',async({browser})=>{
+  for(const width of [360,390,1280]){
+    const context=await browser.newContext({viewport:{width,height:844}});
+    const page=await context.newPage();
+    await page.goto('/lectures/affirmation-20261101.html');
+    await expect(page.locator('#lecture-overview>h2')).toHaveText('핵심 요약');
+    await expect(page.locator('#lecture-overview .summary-tier:not(details)>h3')).toHaveText('02 · 핵심 3가지');
+    await expect(page.locator('#lecture-overview .summary-list li')).toHaveCount(3);
+    const metrics=await page.evaluate(()=>{
+      const size=selector=>parseFloat(getComputedStyle(document.querySelector(selector)).fontSize);
+      return {
+        h2:size('#lecture-overview>h2'),
+        h3:size('#lecture-overview .summary-tier:not(details)>h3'),
+        lead:size('#lecture-overview .summary-tier>.summary-lead'),
+        list:size('#lecture-overview .summary-list li'),
+        overflow:document.documentElement.scrollWidth-window.innerWidth,
+      };
+    });
+    expect(metrics.h2).toBeGreaterThan(metrics.h3);
+    expect(metrics.h3).toBeGreaterThanOrEqual(metrics.list);
+    expect(metrics.list).toBeLessThanOrEqual(16);
+    expect(metrics.lead).toBeLessThanOrEqual(17);
+    expect(metrics.overflow).toBeLessThanOrEqual(1);
+    await page.goto('/mini-courses/affirmation-20261101.html');
+    await expect(page.getByRole('link',{name:'핵심 요약'})).toBeVisible();
+    await context.close();
+  }
+});
