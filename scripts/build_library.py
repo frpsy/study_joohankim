@@ -5,7 +5,7 @@ import json,html,sys
 R=Path(__file__).resolve().parents[1]
 SITE_NAME='내면의 서재'
 SITE_DESCRIPTOR='강의 · 개념 · 복습'
-ASSET_VERSION='20261102-key-takeaways-v18'
+ASSET_VERSION='20261102-summary-hierarchy-v19'
 def header(base='',active='lectures'):
     return f'<a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><div class="site-header-inner"><a class="site-brand" href="{base}index.html"><img class="brand-symbol" src="{base}assets/icon.svg" width="32" height="32" alt="" aria-hidden="true"><span class="brand-name">{SITE_NAME}<small>{SITE_DESCRIPTOR}</small></span></a><nav class="global-nav" aria-label="주요 메뉴"><a href="{base}index.html"'+(' aria-current="page"' if active=='lectures' else '')+f'>자료 모음</a><a href="{base}concepts.html"'+(' aria-current="page"' if active=='concepts' else '')+f'>용어와 개념</a><a href="{base}study-history.html"'+(' aria-current="page"' if active=='history' else '')+f'>학습 이력</a></nav></div></header>'
 def footer(base='',account=False):
@@ -36,7 +36,7 @@ def render(rows, materials=None):
         creator=html.escape(row.get('creator','출처 미기재'))
         searchable=html.escape(" ".join([row['title'],row.get('description',''),row.get('creator','')]+row['tags']),quote=True)
         tags=''.join('<span>'+html.escape(x)+'</span>' for x in row['tags'])
-        cards+=f'<a class="lecture" data-video-id="{row["id"]}" data-kind="lecture" data-creator="{html.escape(row.get("creator",""),quote=True)}" data-search="{searchable}" href="lectures/{row["id"]}.html"><div class="meta">'+(f'<time datetime="{row["date"]}">{row["date"].replace("-",".")}</time>' if row.get("date") else '')+f'<span>{html.escape(row["duration"])}</span><span class="creator">{creator}</span></div><h3>{html.escape(row["title"])}</h3><p>{html.escape(row["description"])}</p><div class="tags">{tags}</div><span class="read">3단 요약과 타임라인 →</span></a>'
+        cards+=f'<a class="lecture" data-video-id="{row["id"]}" data-kind="lecture" data-creator="{html.escape(row.get("creator",""),quote=True)}" data-search="{searchable}" href="lectures/{row["id"]}.html"><div class="meta">'+(f'<time datetime="{row["date"]}">{row["date"].replace("-",".")}</time>' if row.get("date") else '')+f'<span>{html.escape(row["duration"])}</span><span class="creator">{creator}</span></div><h3>{html.escape(row["title"])}</h3><p>{html.escape(row["description"])}</p><div class="tags">{tags}</div><span class="read">핵심 요약과 타임라인 →</span></a>'
     # Other material types have their own pages and are not assumed to have a YouTube ID.
     # This keeps the current lecture URLs and Firestore learning-record IDs intact.
     type_names={'book':'책','paper':'연구','article':'글','note':'학습 노트'}
