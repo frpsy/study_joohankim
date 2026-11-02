@@ -471,3 +471,59 @@ main#main{min-width:0}
  .compact-lecture #lecture-overview .summary-tier>.summary-lead{font-size:16px;line-height:1.68;padding:15px 16px}
  .compact-lecture #lecture-overview .summary-list li{font-size:15px;line-height:1.68;margin-bottom:11px}
 }
+
+/* Layout refinement: one spacing scale, readable measures, two real navigation tabs. */
+.site-shell,.site-header-inner,.site-footer-inner{max-width:1080px}
+.home-main{min-width:0}
+.home-overview{column-gap:clamp(18px,2.6vw,30px)}
+.home-overview-heading{justify-content:center}
+.home-feature{min-width:0}
+.home-feature h2{max-width:32ch}
+.home-main .search-panel{min-width:0}
+.home-main .lecture-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.7vw,18px)}
+.home-main .lecture{min-width:0;display:flex;flex-direction:column}
+.home-main .lecture .read{align-self:flex-start}
+.compact-lecture,.summary-page{width:100%;max-width:var(--reading-measure);margin-inline:auto}
+.compact-lecture .summary-head,.summary-page .summary-head{max-width:100%;margin-bottom:clamp(20px,3vw,30px)}
+.compact-lecture .lecture-section{min-width:0}
+.compact-lecture .lecture-section p,.summary-page p,.mini-course p{max-width:70ch}
+.compact-lecture #lecture-overview .summary-tier{border-bottom:1px solid var(--line)}
+.compact-lecture #lecture-overview .summary-tier:last-child{border-bottom:0}
+.compact-lecture #lecture-overview .summary-list li{max-width:70ch}
+.compact-lecture .actions{flex-wrap:wrap;row-gap:8px}
+@media(min-width:781px) and (max-width:1024px){
+ .home-overview{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}
+ .home-feature{padding:21px 23px}
+ .home-main .lecture-grid{gap:14px}
+}
+@media(max-width:780px){
+ .site-header-inner{grid-template-columns:minmax(0,1fr);gap:10px;padding-block:11px 10px}
+ .global-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+ .global-nav a{min-width:0;min-height:44px;font-size:14px;padding:10px 8px}
+ .home-overview{gap:14px;margin-block:16px 20px}
+ .home-overview-heading{min-width:0;gap:12px}
+ .home-overview-heading h1{font-size:clamp(24px,6.7vw,28px)}
+ .home-feature{padding:20px;border-radius:17px}
+ .home-feature h2{font-size:clamp(20px,5.5vw,23px)}
+ .home-main .search-panel{padding:16px;margin-bottom:17px}
+ .home-main .lecture-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .home-main .lecture{padding:19px 20px 17px}
+ .home-main .lecture h3{margin-block:9px 7px;line-height:1.43}
+ .home-main .lecture p{line-height:1.65}
+ .learning-route{margin-top:28px;padding-top:25px}
+ .compact-lecture,.summary-page{max-width:100%}
+ .compact-lecture .summary-head{margin:9px 0 22px}
+ .compact-lecture .lecture-section{margin-bottom:29px}
+ .compact-lecture #lecture-overview .summary-tier{padding:16px 0 18px}
+ .compact-lecture #lecture-overview .summary-tier>.summary-lead{padding:17px 18px;line-height:1.72}
+ .compact-lecture #lecture-overview .summary-list li{margin-bottom:13px;line-height:1.72}
+ .compact-lecture .lecture-section pre{max-width:100%;overflow-wrap:anywhere}
+}
+@media(max-width:360px){
+ .home-overview-heading{gap:7px}
+ .home-overview-heading h1{font-size:23px}
+ .home-course-link{font-size:12px}
+ .home-feature{padding:17px}
+ .home-main .lecture{padding:17px}
+ .compact-lecture #lecture-overview .summary-tier>.summary-lead{padding:15px}
+}
