@@ -495,3 +495,20 @@ main#main{min-width:0}
 }
 @media(max-width:360px){.home-overview-heading h1{font-size:24px}.home-course-link{font-size:12px}.home-feature{padding:17px}}
 @media(prefers-reduced-motion:reduce){.home-feature{transition:none}}
+
+/* Lecture notes: distinguish section titles from reading text without oversized subheadings. */
+.compact-lecture #lecture-overview>h2{font-size:clamp(22px,2.5vw,25px);line-height:1.35;letter-spacing:-.035em;margin:0 0 12px;font-weight:750}
+.compact-lecture #lecture-overview .summary-tier{padding:17px 0 20px}
+.compact-lecture #lecture-overview .summary-tier>.eyebrow{display:block;font-size:13px;line-height:1.4;letter-spacing:0;font-weight:700;margin:0 0 12px}
+.compact-lecture #lecture-overview .summary-tier>h3{font-size:16px;line-height:1.45;letter-spacing:-.025em;font-weight:700;margin:0 0 12px}
+.compact-lecture #lecture-overview .summary-list{padding-left:1.35em;margin:0;list-style:decimal}
+.compact-lecture #lecture-overview .summary-list li{font-size:15px;line-height:1.72;letter-spacing:-.01em;font-weight:400;margin:0 0 12px;padding-left:2px;overflow-wrap:anywhere;word-break:keep-all}
+.compact-lecture #lecture-overview .summary-list li:last-child{margin-bottom:0}
+.compact-lecture #lecture-overview .summary-tier>.summary-lead{font-size:16px;line-height:1.72;letter-spacing:-.015em;padding:16px 17px;margin:0;background:var(--tint);word-break:keep-all;overflow-wrap:anywhere}
+.compact-lecture #lecture-overview .summary-tier>summary{font-size:16px;line-height:1.5;font-weight:650;padding:12px 0;min-height:44px}
+@media(max-width:780px){
+ .compact-lecture #lecture-overview>h2{font-size:23px;margin-bottom:10px}
+ .compact-lecture #lecture-overview .summary-tier{padding:15px 0 18px}
+ .compact-lecture #lecture-overview .summary-tier>.summary-lead{font-size:16px;line-height:1.68;padding:15px 16px}
+ .compact-lecture #lecture-overview .summary-list li{font-size:15px;line-height:1.68;margin-bottom:11px}
+}
