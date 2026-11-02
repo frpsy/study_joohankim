@@ -46,9 +46,11 @@ jobs:
       - name: Install Playwright browser
         run: |
           npm install --no-save --no-audit --no-fund @playwright/test@1.56.1
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps chromium webkit
       - name: Check phone and desktop layouts and clipboard
-        run: npx playwright test --config=tests/playwright.config.cjs
+        run: |
+          npx playwright test --config=tests/playwright.config.cjs
+          BROWSER_NAME=webkit npx playwright test --config=tests/playwright.config.cjs tests/pwa.spec.cjs
       - name: Upload browser failure evidence
         if: failure()
         uses: actions/upload-artifact@v4
