@@ -8,13 +8,13 @@
 ## 1. 공통 토큰
 | 범주 | 토큰 | 값/역할 |
 |---|---|---|
-| 배경 | --paper / --surface | #f6f4ee / #fffefa |
-| 글자 | --ink / --muted | #253c33 / #5f7167 |
-| 강조 | --green / --tint | #315b46 / #e8eedf |
-| 경계선 | --line | #d9ded2 |
-| 카드 | --radius-card | 16px (--radius 참조) |
-| 버튼 | --radius-control | 9px |
-| 본문 | --font-body-size / --line-height-body | 17px / 1.85 |
+| 배경 | --paper / --surface | #ffffff / #ffffff |
+| 글자 | --ink / --muted | #18181b / #6b6b73 |
+| 강조 | --green / --tint | #2c6a4c / #f4f4f5 |
+| 경계선 | --line | #e7e7ea |
+| 카드 | --radius-card | 12px (--radius 참조) |
+| 버튼 | --radius-control | 8px |
+| 본문 | --font-body-size / --line-height-body | 16px / 1.8 |
 | 작은 UI | --font-ui-size | 14px |
 | 간격 | --space-1, 2, 3, 4, 5, 6, 8, 12 | 4, 8, 12, 16, 20, 24, 32, 48px |
 | 레이아웃 | --site-max-width | 1160px |
@@ -110,3 +110,13 @@
 - `manifest.webmanifest`의 경로는 GitHub Pages 프로젝트 범위에 묶는다. `viewport-fit=cover`와 `env(safe-area-inset-*)`로 홈 화면 실행 시 노치를 피한다.
 - 오프라인에서는 방문한 셸과 강의 7편의 **텍스트 자료**를 사용할 수 있게 사전 캐시한다. 이미지가 큰 강의 슬라이드, YouTube 원본은 오프라인을 보장하지 않는다.
 - 360/390/768/1280px와 Chromium·WebKit 브라우저 검사 후 병합한다. App Store 패키징·네이티브 iOS 코드·PC 앱 설치 UI는 개발하지 않는다.
+
+## 미니멀 모던 디자인 (2026-11-06 · 시각 언어 현행 우선 규칙)
+- 이 절은 7절의 ‘크림 종이색과 깊은 녹색’ 시각 언어를 대체한다. 구조·내비게이션·기능·앵커는 바꾸지 않고 색, 면, 경계선, 타이포그래피만 바꾼다.
+- **색:** 흰 배경(--paper, --surface), 거의 검은 글자(--ink #18181b), 회색 보조 글자(--muted #6b6b73), 얇은 경계선(--line #e7e7ea). 강조색은 하나(--green #2c6a4c)로 링크와 작은 라벨에만 쓴다. 주 버튼과 선택된 칩은 --ink 바탕에 --paper 글자.
+- **면:** 카드는 1px 경계선만 쓰고 그림자(--card-shadow: none)와 호버 이동 효과를 쓰지 않는다. 호버는 경계선 색 변화만 허용한다. 모서리는 --radius 12px, 컨트롤 8px, 칩 999px, 태그 6px.
+- **헤더·내비게이션:** 흰 바탕에 아래 1px 선. 현재 메뉴는 배경 대신 아래 2px 밑줄로 표시한다. 모바일 2열 메뉴와 44px 터치 영역은 유지한다.
+- **핵심 요약 한 문장:** 배경 상자 없이 왼쪽 2px 세로선으로 구분한다.
+- **다크 모드:** 중성 검정 계열(#0b0b0c 배경, #111113 면, #f4f4f5 글자)과 밝은 녹색 강조(#86d9ae). 라이트와 같은 구조를 쓰며 선택 칩·주 버튼은 --ink/--paper 반전으로 동작한다.
+- **글꼴:** 시스템 글꼴 유지(웹폰트 없음). 본문 16px·행간 1.8, 제목은 굵기 650–700과 음수 자간.
+- 구현 위치는 assets/site.css 최종 ‘Minimal modern / v8’ 레이어와 :root 토큰이다. 검사 기준은 scripts/validate_design_system.py의 TOKENS이다. 브라우저 상단 색(theme-color)은 라이트 #ffffff, 다크 #0b0b0c이다.

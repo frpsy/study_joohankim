@@ -15,7 +15,7 @@
     document.documentElement.dataset.themeMode=choice;
     document.documentElement.style.colorScheme=theme;
     const bar=document.querySelector('meta[name="theme-color"]');
-    if(bar)bar.content=theme==='dark'?'#18221e':'#f6f4ee';
+    if(bar)bar.content=theme==='dark'?'#0b0b0c':'#ffffff';
     const button=document.querySelector('[data-theme-toggle]');
     if(button){
       const next=modes[(modes.indexOf(choice)+1)%modes.length];

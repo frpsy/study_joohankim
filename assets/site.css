@@ -1,4 +1,4 @@
-:root{--paper:#f6f4ee;--surface:#fffefa;--ink:#253c33;--muted:#5f7167;--line:#d9ded2;--green:#315b46;--tint:#e8eedf;--radius:16px;--radius-card:var(--radius);--radius-control:9px;--font-body-size:17px;--font-ui-size:14px;--line-height-body:1.85;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-12:48px;--site-max-width:1160px;--tap-target:44px;--button-pad-y:9px;--button-pad-x:15px;--brand-ink:#213b30;--brand-soft:#edf2e9;--brand-outline:#dbe5da;--reading-measure:720px;--card-shadow:0 2px 12px rgba(32,55,43,.035)}
+:root{--paper:#ffffff;--surface:#ffffff;--ink:#18181b;--muted:#6b6b73;--line:#e7e7ea;--green:#2c6a4c;--tint:#f4f4f5;--radius:12px;--radius-card:var(--radius);--radius-control:8px;--font-body-size:16px;--font-ui-size:14px;--line-height-body:1.8;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-12:48px;--site-max-width:1160px;--tap-target:44px;--button-pad-y:9px;--button-pad-x:15px;--brand-ink:#111113;--brand-soft:#f7f7f8;--brand-outline:#e7e7ea;--reading-measure:720px;--card-shadow:none}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--paper);color:var(--ink);font:var(--font-body-size)/var(--line-height-body) system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
 a{color:var(--green);text-underline-offset:4px}button,input{font:inherit}button{cursor:pointer}a,button,input,summary{ -webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #7c996d;outline-offset:4px}
 [hidden]{display:none!important}.site-shell,.site-header-inner,.site-footer-inner{width:min(var(--site-max-width),100% - 48px);margin:auto}.site-header{position:sticky;top:0;z-index:20;background:rgba(246,244,238,.97);border-bottom:1px solid var(--line)}
@@ -530,7 +530,7 @@ main#main{min-width:0}
 
 /* Installed web app shell: iPhone safe areas and a usable desktop window. */
 .offline-content{padding-top:clamp(40px,10vh,100px);padding-bottom:64px}
-:root{--header-bg:#f6f4ee;--input-border:#b7c6b7;--focus-color:#7c996d}
+:root{--header-bg:#ffffff;--input-border:#cfcfd4;--focus-color:#2c6a4c}
 .theme-toggle{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:98px;padding:9px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--ink);font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap;cursor:pointer}
 .theme-toggle:hover{border-color:var(--green)}
 .theme-toggle:focus-visible{outline:3px solid var(--focus-color);outline-offset:2px}
@@ -553,11 +553,11 @@ html[data-standalone="true"] .site-footer-inner{padding-left:env(safe-area-inset
  .theme-toggle{min-width:100px}
 }
 :root[data-theme="dark"]{
- --paper:#141b18;--surface:#1c2621;--ink:#edf5ef;--muted:#b8c7bb;
- --line:#405248;--green:#b4e5c2;--tint:#2c4134;
- --brand-ink:#e9f8ed;--brand-soft:#25372d;--brand-outline:#425b4b;
- --card-shadow:0 2px 16px rgba(0,0,0,.18);
- --header-bg:#141b18;--input-border:#698376;--focus-color:#a6d5ae;--on-green:#13251a;
+ --paper:#0b0b0c;--surface:#111113;--ink:#f4f4f5;--muted:#a1a1aa;
+ --line:#27272a;--green:#86d9ae;--tint:#1a1a1d;
+ --brand-ink:#fafafa;--brand-soft:#151517;--brand-outline:#27272a;
+ --card-shadow:none;
+ --header-bg:#0b0b0c;--input-border:#3f3f46;--focus-color:#86d9ae;--on-green:#052e1b;
  color-scheme:dark;
 }
 :root[data-theme="dark"] .site-header{background:var(--header-bg)}
@@ -616,3 +616,47 @@ html[data-standalone="true"] .site-footer-inner{padding-left:env(safe-area-inset
  .site-footer-inner .theme-toggle{margin-left:auto}
 }
 @media print{.site-footer-inner .theme-toggle{display:none}}
+
+/* Minimal modern / v8. Final presentation layer: flat surfaces, hairlines, one accent, no motion on cards. */
+body{letter-spacing:-.011em;-webkit-font-smoothing:antialiased;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif}
+h1,h2,h3{font-weight:650;letter-spacing:-.03em}
+.page-hero h1,.summary-head h1,.home-overview-heading h1{color:var(--ink);font-weight:700;letter-spacing:-.04em}
+.site-header{background:var(--header-bg);box-shadow:none;border-bottom:1px solid var(--line)}
+.site-brand,.site-brand .brand-name{color:var(--ink);font-weight:650;letter-spacing:-.03em}
+.site-brand img.brand-symbol{border-radius:8px}
+.global-nav a{border-radius:0;background:transparent;color:var(--muted);font-weight:500;box-shadow:inset 0 -2px 0 transparent}
+.global-nav a:hover{background:transparent;color:var(--ink)}
+.global-nav a[aria-current=page]{background:transparent;color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--ink)}
+.eyebrow,.home-feature .eyebrow,.latest-entry .eyebrow{color:var(--green);letter-spacing:.06em;font-weight:650}
+.lecture,.concept-grid .card,.home-feature,.latest-entry,.related-card,.box,.card,.panel{box-shadow:none;border-radius:var(--radius-card)}
+.lecture,.concept-grid .card{background:var(--surface);border:1px solid var(--line)}
+.lecture:hover,.concept-grid .card:hover{border-color:var(--muted);box-shadow:none;transform:none}
+.lecture .meta .creator{color:var(--ink);font-weight:600}
+.home-feature{background:var(--brand-soft);border:1px solid var(--line)}
+.home-feature:hover{background:var(--tint);border-color:var(--muted)}
+.home-feature-action,.home-course-link{color:var(--ink)}
+.search-panel,.home-main .search-panel{background:transparent;border:0;border-radius:0;padding-inline:0;box-shadow:none}
+.search-panel .search,.search{border:1px solid var(--input-border);border-radius:var(--radius-control);background:var(--surface);color:var(--ink)}
+.search-panel .search:focus,.search:focus{border-color:var(--ink);outline:2px solid var(--ink);outline-offset:1px}
+.filter-chips button{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-weight:500}
+.filter-chips button:hover{color:var(--ink);border-color:var(--muted);filter:none}
+.filter-chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:600}
+.tags span,.tag,.badge,.lecture .tags span{background:var(--tint);color:var(--muted);border-radius:6px;font-weight:500}
+.btn{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn.secondary{background:transparent;border:1px solid var(--line);border-radius:var(--radius-control);color:var(--ink)}
+.btn.secondary:hover{background:var(--tint);filter:none}
+.summary-lead,.compact-lecture #lecture-overview .summary-tier>.summary-lead{background:transparent;border-left:2px solid var(--ink);border-radius:0;padding:2px 0 2px 18px}
+.summary-note{background:var(--tint);border:0;border-radius:var(--radius-control)}
+pre,.lecture-section pre{background:var(--tint);border:0;border-radius:var(--radius-control)}
+img{border-color:var(--line)}
+.site-footer{border-top:1px solid var(--line)}
+@media(min-width:781px){
+ .site-header-inner{min-height:64px}
+ .home-overview{margin:40px 0 28px}
+ .home-main .lecture{padding:26px 26px 22px}
+ .compact-lecture .summary-head,.summary-page .summary-head{margin-bottom:36px}
+}
+:root[data-theme="dark"] .filter-chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+:root[data-theme="dark"] .lecture:hover,:root[data-theme="dark"] .concept-grid .card:hover{border-color:var(--muted);box-shadow:none}
+:root[data-theme="dark"] .home-feature:hover{background:var(--tint);border-color:var(--muted)}
+:root[data-theme="dark"] .search-panel .search:focus{outline-color:var(--ink)}
