@@ -104,7 +104,7 @@ test('footer shows actual loaded version and checks deployed version separately'
   const page=await context.newPage();
   await page.goto('/index.html');
   await expect(page.locator('.site-version')).toContainText('화면 v'+studyVersion);
-  await expect(page.locator('.site-version')).toContainText('최신 배포 확인');
+  await expect(page.locator('.site-version')).toContainText('최신 버전');
   await context.close();
 });
 test('footer provides a refresh link when deployed manifest is newer',async({browser})=>{

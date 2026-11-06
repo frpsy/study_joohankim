@@ -113,7 +113,7 @@
       .then(info=>{
         if(typeof info.version!=='string')throw new Error('Invalid version');
         if(info.version===CLIENT_VERSION){
-          versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 배포 확인';
+          versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 버전';
         }else{
           versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 v'+info.version+' · ';
           const refresh=document.createElement('a');
@@ -124,7 +124,7 @@
           versionBox.append(refresh);
         }
       })
-      .catch(()=>{versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 배포 미확인'});
+      .catch(()=>{versionBox.textContent='화면 v'+CLIENT_VERSION+' · 최신 버전 확인 실패'});
   }
 
   // Cache only same-origin public reading pages; no personal records are stored.
