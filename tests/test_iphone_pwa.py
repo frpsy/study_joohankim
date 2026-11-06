@@ -22,7 +22,7 @@ class IPhonePWAContract(unittest.TestCase):
 
     def test_iphone_and_desktop_pages_share_app_theme(self):
         for folder in ('lectures','mini-courses','summaries'):
-            self.assertEqual(len(list((ROOT/folder).glob('*.html'))),7)
+            self.assertEqual(len(list((ROOT/folder).glob('*.html'))),8 if folder=='mini-courses' else 7)
         pages=[ROOT/'index.html',ROOT/'concepts.html',ROOT/'offline.html']
         for folder in ('lectures','mini-courses','summaries'):pages+=sorted((ROOT/folder).glob('*.html'))
         for page in pages:

@@ -33,7 +33,7 @@ def structural_errors(text):
 def lecture_layout_errors(source):
     d=Document();d.feed(source);errors=[]
     compact='data-layout="compact"' in source
-    required=['lecture-overview','lecture-comment'] if compact else ['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
+    required=['lecture-overview','lecture-details','lecture-comment'] if compact else ['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
     if any(id not in d.ids for id in required):errors.append('standard lecture section missing')
     else:
         positions=[d.ids.index(id) for id in required]
@@ -79,7 +79,9 @@ def validate(root):
     if (root/'data/lecture_mindmaps.json').is_file():errors.extend(mindmap_errors(root))
     home=(root/'index.html').read_text(encoding='utf-8')
     try:
-        generated=render(rows,materials)
+        courses_path=root/'data/mini_courses.json'
+        courses=json.loads(courses_path.read_text(encoding='utf-8')) if courses_path.exists() else {}
+        generated=render(rows,materials,courses)
         if home!=generated:
             errors.append('generated home differs from index.html')
             first=next((i for i,(a,b) in enumerate(zip(generated,home)) if a!=b),min(len(generated),len(home)))

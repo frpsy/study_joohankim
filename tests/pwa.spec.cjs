@@ -83,7 +83,7 @@ test('service worker caches lecture library and app shell for offline reading',a
     if(!name)return {name:null,lecture:false,theme:false};
     const cache=await caches.open(name);
     const url=p=>new URL(p,location.href).href;
-    return {name,lecture:!!(await cache.match(url('lectures/affirmation-20261101.html'))),theme:!!(await cache.match(url('assets/theme.js')))};
+    return {name,lecture:!!(await cache.match(url('lectures/affirmation-20261101.html'))),theme:!!(await cache.match(url('assets/theme.js?v='+version)))};
   },version);
   expect(precache.name).toBeTruthy();
   expect(precache.lecture).toBe(true);
@@ -155,7 +155,7 @@ test('online navigation rejects a stale cached header and offline still reads th
   await page.goto('/index.html?check=online-first');
   await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(0);
   await expect(page.locator('.site-footer [data-theme-toggle]')).toHaveCount(1);
-  await expect(page.locator('h1')).toHaveText('학습 자료');
+  await expect(page.locator('h1')).toHaveText('김주환 강의 스터디');
   const freshCached=await page.evaluate(async()=>{
     const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
     const cache=await caches.open(key);
@@ -169,12 +169,12 @@ test('online navigation rejects a stale cached header and offline still reads th
     const cached=await page.evaluate(async()=>{
       const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
       const response=await (await caches.open(key)).match(new URL('index.html',location.href));
-      return response ? (await response.text()).includes('<h1>학습 자료</h1>') : false;
+      return response ? (await response.text()).includes('<h1>김주환 강의 스터디</h1>') : false;
     });
     expect(cached).toBe(true);
   }else{
     await page.goto('/index.html');
-    await expect(page.locator('h1')).toHaveText('학습 자료');
+    await expect(page.locator('h1')).toHaveText('김주환 강의 스터디');
   }
   await context.close();
 });

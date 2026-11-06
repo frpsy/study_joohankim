@@ -4,9 +4,9 @@ const VERSION = new URL(self.location.href).searchParams.get('v') || 'unversione
 const CACHE = 'study-home-static-' + VERSION;
 const PREFIX = 'study-home-static-';
 const CORE = [
-  './', './index.html', './concepts.html', './offline.html',
+  './', './index.html', './concepts.html', './mini-courses/index.html', './offline.html',
   './manifest.webmanifest', './assets/icon-512.png', './assets/apple-touch-icon.png',
-  './assets/site.css', './assets/site.js', './assets/theme.js'
+  ...['site.css', 'site.js', 'theme.js'].map(file => './assets/' + file + '?v=' + VERSION)
 ];
 const root = new URL(self.registration.scope);
 
@@ -75,7 +75,7 @@ self.addEventListener('fetch', event => {
       const fresh = await update(cache, request);
       if (fresh) return fresh;
     }
-    const cached = await cache.match(request, {ignoreSearch:true});
+    const cached = await cache.match(request);
     if (cached) {
       event.waitUntil(update(cache, request));
       return cached;
