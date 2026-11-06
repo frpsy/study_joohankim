@@ -137,3 +137,24 @@
     }
   }
 })();
+
+/* Reading progress: a thin bar on long reading pages. Decorative only; no state is stored. */
+(()=>{
+  const page=document.querySelector('.compact-lecture,.summary-page');
+  if(!page||page.classList.contains('offline-content'))return;
+  const bar=document.createElement('div');
+  bar.className='read-progress';
+  bar.setAttribute('aria-hidden','true');
+  document.body.append(bar);
+  let frame=0;
+  const update=()=>{
+    frame=0;
+    const total=document.documentElement.scrollHeight-window.innerHeight;
+    const ratio=total>0?Math.min(1,Math.max(0,window.scrollY/total)):0;
+    bar.style.setProperty('--p',ratio.toFixed(4));
+  };
+  const schedule=()=>{if(!frame)frame=requestAnimationFrame(update)};
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule);
+  update();
+})();
