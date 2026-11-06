@@ -46,7 +46,7 @@ self.addEventListener('install', event => {
           .map(row=>'./lectures/'+row.id+'.html');
       }
     }catch{}
-    await Promise.allSettled([...CORE,...pages].map(path=>update(cache,new Request(new URL(path,root)))));
+    await Promise.allSettled([...CORE,...pages].map(path=>update(cache,new Request(new URL(path,root),{cache:'reload'}))));
   })());
 });
 self.addEventListener('activate', event => {
@@ -73,6 +73,14 @@ self.addEventListener('fetch', event => {
     // Static CSS/JS and images stay cache-first for fast repeat reading.
     if (request.cache === 'reload' || new URL(request.url).searchParams.has('refresh')) {
       const fresh = await update(cache, request);
+      if (fresh) return fresh;
+    }
+    // A versioned URL (?v=…) is a new build: use only that exact copy, never an older
+    // build's file that merely shares the path, so new HTML never runs old CSS/JS.
+    if (new URL(request.url).searchParams.has('v')) {
+      const exact = await cache.match(request);
+      if (exact) return exact;
+      const fresh = await update(cache, new Request(request, {cache:'reload'}));
       if (fresh) return fresh;
     }
     const cached = await cache.match(request, {ignoreSearch:true});

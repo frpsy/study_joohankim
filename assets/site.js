@@ -158,16 +158,3 @@
   window.addEventListener('resize',schedule);
   update();
 })();
-(()=>{
-  // 요약 타임스탬프를 누르면 전체 타임스탬프를 펼친다.
-  document.querySelectorAll('.timeline-teaser').forEach(teaser=>{
-    const box=teaser.nextElementSibling;
-    if(!box||!box.classList.contains('timeline-disclosure'))return;
-    teaser.setAttribute('role','button');
-    teaser.setAttribute('tabindex','0');
-    teaser.setAttribute('aria-expanded','false');
-    const open=()=>{box.hidden=false;teaser.hidden=true;teaser.setAttribute('aria-expanded','true')};
-    teaser.addEventListener('click',open);
-    teaser.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
-  });
-})();
