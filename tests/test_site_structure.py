@@ -30,8 +30,10 @@ class GeneratorRegression(unittest.TestCase):
         self.assertIn('data-kind="book"',mixed)
         self.assertIn('다른 저자',mixed)
         self.assertIn('2개 자료',mixed)
-        self.assertIn('대표 강의',mixed)
-        self.assertIn('href="books/sample.html"',mixed)
+        featured=render([row],[{**book,'featured':True}])
+        self.assertIn('대표 책',featured)
+        self.assertIn('href="books/sample.html"><span class="eyebrow">대표 책</span>',featured)
+        with self.assertRaises(ValueError):render([row],[{**book,'featured':True},{**book,'id':'second','featured':True}])
         with self.assertRaises(ValueError):render([row],[{**book,'url':'https://untrusted.example/'}])
 
     def test_hand_edited_home_is_rejected(self):
@@ -44,7 +46,7 @@ class GeneratorRegression(unittest.TestCase):
             for name in ('index.html','concepts.html','lectures.json'):
                 shutil.copyfile(repo/name,root/name)
             home=root/'index.html'
-            home.write_text(home.read_text().replace('<h1>김주환 강의 스터디</h1>','<h1>임의로 바꾼 제목</h1>'))
+            home.write_text(home.read_text().replace('<h1>학습 자료</h1>','<h1>임의로 바꾼 제목</h1>'))
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
@@ -135,7 +137,7 @@ class ExternalLinkRegression(unittest.TestCase):
         concepts = (root / "concepts.html").read_text(encoding="utf-8")
         home = (root / "index.html").read_text(encoding="utf-8")
         self.assertIn("강의에서 다룬 핵심 개념과 관련 해설", concepts)
-        self.assertIn("검색 결과가 없습니다. 다른 검색어를 입력하거나 ‘전체’를 선택해 주세요.", home)
+        self.assertIn("검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택", home)
         self.assertNotIn("study-history.html", home)
         self.assertNotIn("account.js", home)
         self.assertNotIn("settings-toggle", home)

@@ -1,8 +1,8 @@
 {
   "id": "/study_joohankim/",
-  "name": "김주환 강의 스터디",
-  "short_name": "김주환 강의 스터디",
-  "description": "강의 핵심 요약, 주제별 타임라인과 학습 자료",
+  "name": "내면의 서재",
+  "short_name": "내면의 서재",
+  "description": "강의와 개념, 미니강좌를 읽는 개인 학습 서재",
   "lang": "ko-KR",
   "start_url": "./index.html",
   "scope": "./",

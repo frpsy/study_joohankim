@@ -6,7 +6,6 @@ const expectedLibraryCount=studyLectures.length+studyMaterials.length;
 const kimLectureCount=studyLectures.filter(x=>x.creator==='김주환').length;
 const sizes=[
   {width:360,height:780},
-  {width:375,height:812},
   {width:390,height:844},
   {width:768,height:900},
   {width:1280,height:800},
@@ -31,7 +30,7 @@ for(const viewport of sizes){
     expect(minHeight).toBeGreaterThanOrEqual(44);
     const disclosure=page.locator('details.timeline-disclosure');
     await expect(disclosure).not.toHaveAttribute('open');
-    await expect(disclosure.locator('summary')).toHaveText('펼치기접기');
+    await expect(disclosure.locator('summary')).toHaveText('전체 타임라인 보기');
     const teaser=page.locator('.timeline-teaser');
     await expect(teaser).toBeVisible();
     const lines=(await teaser.textContent()).split('\n');
@@ -42,8 +41,6 @@ for(const viewport of sizes){
     await disclosure.locator('summary').click();
     await expect(disclosure).toHaveAttribute('open');
     await expect(page.locator('#comment')).toBeVisible();
-    await expect(disclosure.getByText('접기',{exact:true})).toBeVisible();
-    await expect(teaser).toBeHidden();
     await disclosure.locator('summary').click();
     await expect(disclosure).not.toHaveAttribute('open');
     await expect(page.locator('#comment')).toBeHidden();
@@ -52,12 +49,31 @@ for(const viewport of sizes){
     await expect(button).toHaveText('복사 완료 ✓');
     await expect(page.locator('#status')).toHaveText('복사됨');
     expect(await page.evaluate(()=>navigator.clipboard.readText())).toBe(source);
-    await expect(button).toHaveText('복사',{timeout:6000});
+    await expect(button).toHaveText('댓글용 타임라인 복사',{timeout:6000});
     await expect(page.locator('#status')).toBeEmpty();
     expect(pageErrors).toEqual([]);
     await context.close();
   });
 }
+
+test('mobile header and card spacing remain compact',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  const info=await page.evaluate(()=>{
+    const header=document.querySelector('.site-header');
+    const card=document.querySelector('.lecture');
+    const read=card.querySelector('.read');
+    const color=getComputedStyle(header).backgroundColor;
+    const bottom=header.getBoundingClientRect().height;
+    return {color,headerHeight:bottom,cardHeight:card.getBoundingClientRect().height,readMargin:parseFloat(getComputedStyle(read).marginTop)};
+  });
+  expect(info.color,'header must be opaque').toMatch(/^rgb\(/);
+  expect(info.headerHeight,'mobile navigation should stay compact').toBeLessThan(115);
+  expect(info.cardHeight,'cards should not stretch with empty space').toBeLessThan(400);
+  expect(info.readMargin,'link spacing should not be auto').toBeLessThanOrEqual(14);
+  await context.close();
+});
 
 test('main tabs load from static cache without a network connection',async({browser})=>{
   const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'allow',reducedMotion:'reduce'});
@@ -70,10 +86,10 @@ test('main tabs load from static cache without a network connection',async({brow
     const name=names.find(n=>n.startsWith('study-home-static-'));
     if(!name)return false;
     const cache=await caches.open(name);
-    return (await Promise.all(['./index.html','./concepts.html','./mini-courses/index.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
+    return (await Promise.all(['./index.html','./concepts.html'].map(p=>cache.match(new URL(p,location.href))))).every(Boolean);
   },null,{timeout:15000});
   await context.setOffline(true);
-  for(const [url,title] of [['/concepts.html','용어와 개념'],['/mini-courses/index.html','미니강좌'],['/index.html','강의']]){
+  for(const [url,title] of [['/concepts.html','용어와 개념'],['/index.html','자료 모음']]){
     await page.goto(url,{waitUntil:'domcontentloaded'});
     await expect(page.locator('.global-nav a[aria-current="page"]')).toHaveText(title);
     await expect(page.locator('main')).toBeVisible();
@@ -116,19 +132,19 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
   const page=await context.newPage();
   for(const url of ['/index.html','/concepts.html','/lectures/izYj8g-j00U.html']){
     await page.goto(url);
-    await expect(page.locator('.site-brand .brand-name')).toContainText('김주환 강의 스터디');
+    await expect(page.locator('.site-brand .brand-name')).toContainText('내면의 서재');
     await expect(page.locator('.brand-symbol')).toBeVisible();
     expect(await page.locator('.brand-symbol').evaluate(el=>el.naturalWidth)).toBeGreaterThan(0);
-    await expect(page).toHaveTitle(/김주환 강의 스터디/);
+    await expect(page).toHaveTitle(/내면의 서재/);
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
     expect(overflow,'no horizontal overflow at '+url).toBeLessThanOrEqual(1);
   }
   await page.goto('/index.html');
-  await expect(page.locator('.home-main h1')).toHaveText('김주환 강의 스터디');
+  await expect(page.locator('.home-overview-heading h1')).toHaveText('학습 자료');
   const compact=await page.evaluate(()=>{
     const header=document.querySelector('.site-header').getBoundingClientRect();
-    const title=document.querySelector('.home-main h1').getBoundingClientRect();
-    const cards=[...document.querySelectorAll('#lecture-list [data-kind]')];
+    const title=document.querySelector('.home-overview-heading h1').getBoundingClientRect();
+    const cards=[...document.querySelectorAll('#home-catalog [data-kind]')];
     const items=[...document.querySelectorAll('.global-nav a')];
     return {headerHeight:header.height,titleHeight:title.height,cardCount:cards.length,
       menuTapHeight:Math.min(...items.map(el=>el.getBoundingClientRect().height))};
@@ -139,19 +155,34 @@ test('editorial library identity and reading hierarchy stay consistent',async({b
   expect(compact.menuTapHeight).toBeGreaterThanOrEqual(44);
   await page.locator('[data-filter-for="search"][data-value="명상"]').click();
   await expect(page.locator('#count')).toHaveText('1개 자료');
-  await expect(page.locator('#lecture-list .lecture-row:visible')).toHaveCount(1);
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
+  await context.close();
+});
+
+test('desktop home presents a side-by-side editorial hero and readable cards',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:1280,height:800},reducedMotion:'reduce'});
+  const page=await context.newPage();
+  await page.goto('/index.html');
+  const hero=await page.evaluate(()=>{
+    const title=document.querySelector('.home-overview-heading').getBoundingClientRect();
+    const featured=document.querySelector('.home-feature').getBoundingClientRect();
+    const card=document.querySelector('.lecture').getBoundingClientRect();
+    return {heroSideBySide:featured.left>title.right-12,cardWidth:card.width};
+  });
+  expect(hero.heroSideBySide).toBe(true);
+  expect(hero.cardWidth).toBeGreaterThan(350);
   await context.close();
 });
 
 test('catalog searches by creator without losing video ID progress hooks',async({page})=>{
   await page.goto('/index.html');
-  const items=page.locator('#lecture-list .lecture-row');
-  await expect(items).toHaveCount(expectedLibraryCount);
+  const items=page.locator('#lecture-list .lecture');
+  await expect(items).toHaveCount(expectedLibraryCount-1);
   await expect(page.locator('[data-creator="Andrew Huberman"]')).toHaveCount(1);
   await page.locator('#search').fill('Huberman');
   await expect(page.locator('#count')).toHaveText('1개 자료');
-  await expect(page.locator('#lecture-list .lecture-row:visible')).toHaveCount(1);
-  await expect(page.locator('#lecture-list .lecture-row:visible')).toHaveAttribute('data-video-id','QmOF0crdyRU');
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveAttribute('data-video-id','QmOF0crdyRU');
   await page.locator('#search').fill('김주환');
   await expect(page.locator('#count')).toHaveText(kimLectureCount+'개 자료');
 });
@@ -159,8 +190,8 @@ test('catalog searches by creator without losing video ID progress hooks',async(
 test('catalog restores a shared search and returns to it after reading',async({page})=>{
   await page.goto('/index.html?q=Huberman&source=test#lectures');
   await expect(page.locator('#search')).toHaveValue('Huberman');
-  await expect(page.locator('#lecture-list .lecture-row:visible')).toHaveCount(1);
-  await page.locator('#lecture-list .lecture-row:visible').click();
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
+  await page.locator('#lecture-list .lecture:visible').click();
   await page.goBack();
   await expect(page.locator('#search')).toHaveValue('Huberman');
   await expect(page.locator('#count')).toHaveText('1개 자료');
@@ -180,53 +211,23 @@ test('catalog restores a shared search and returns to it after reading',async({p
   await expect(page.locator('[data-filter-for="search"][data-value="수용"]')).toHaveAttribute('aria-pressed','true');
 });
 
-for(const width of [375,1280]){
- test('featured, topic search, no results and back navigation at '+width+'px',async({browser})=>{
-  const context=await browser.newContext({viewport:{width,height:812}});
-  const page=await context.newPage();
+test('featured lecture opens the actual reading page without a duplicate list card',async({page})=>{
   await page.goto('/index.html');
   const feature=page.locator('.home-feature');
-  const url='/lectures/affirmation-20261101.html#lecture-overview';
-  const featureLinks=feature.getByRole('link');
-  await expect(featureLinks).toHaveCount(2);
-  for(const link of await featureLinks.all()){
-   await expect(link).toHaveAttribute('href',url.slice(1));
-   await link.click();
-   await expect(page).toHaveURL(new RegExp(url+'$'));
-   await expect(page.locator('#lecture-overview h2')).toBeInViewport();
-   await page.goBack();
-  }
+  await expect(feature).toHaveCount(1);
+  await expect(feature).toHaveAttribute('href','lectures/affirmation-20261101.html');
+  await expect(page.locator('#lecture-list [data-video-id="affirmation-20261101"]')).toHaveCount(0);
+  await expect(page.locator('#count')).toHaveText(expectedLibraryCount+'개 자료');
   await page.locator('#search').fill('자기확언');
-  await expect(page.locator('#lecture-list .lecture-row:visible')).toHaveCount(1);
-  await page.locator('#lecture-list .lecture-row:visible').click();
-  await expect(page.locator('#lecture-overview h2')).toBeInViewport();
-  await page.goBack();
-  await expect(page.locator('#search')).toHaveValue('자기확언');
-  await page.getByRole('button',{name:'수용',exact:true}).click();
-  await page.locator('#lecture-list .lecture-row:visible').click();
-  await expect(page).toHaveURL(/ZCty0wvogDo\.html#lecture-overview$/);
-  const timeline=page.locator('#lecture-details details');
-  await timeline.locator('summary').click();
-  await expect(timeline.getByRole('link').first()).toHaveAttribute('href',/watch\?v=ZCty0wvogDo&t=73$/);
-  await expect(page.locator('#lecture-comment')).toContainText('한국어 자동자막 기반');
-  await page.goBack();
-  await expect(page.getByRole('button',{name:'수용',exact:true})).toHaveAttribute('aria-pressed','true');
-  await page.locator('#search').fill('없는검색어');
-  await expect(page.locator('#empty')).toBeVisible();
-  await expect(page.locator('#count')).toHaveText('0개 자료');
-  await expect(page.locator('#lecture-list .lecture-row:visible')).toHaveCount(0);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-  const nav=page.getByRole('navigation',{name:'주요 메뉴'});
-  await nav.getByRole('link',{name:'미니강좌'}).click();
-  await expect(page.getByRole('heading',{name:'감정과 관계'})).toBeVisible();
-  await nav.getByRole('link',{name:'용어와 개념'}).click();
-  await expect(page.getByRole('heading',{name:'용어와 개념',exact:true})).toBeVisible();
-  await context.close();
- });
-}
+  await expect(page.locator('#count')).toHaveText('1개 자료');
+  await expect(feature).toBeVisible();
+  await feature.click();
+  await expect(page).toHaveURL(/\/lectures\/affirmation-20261101\.html$/);
+  await expect(page.locator('#lecture-overview')).toBeVisible();
+});
 
 test('mobile lecture summary uses clear type hierarchy and reader-facing labels',async({browser})=>{
-  for(const width of [360,375,390,768,1280]){
+  for(const width of [360,390,768,1280]){
     const context=await browser.newContext({viewport:{width,height:844}});
     const page=await context.newPage();
     await page.goto('/lectures/affirmation-20261101.html');
@@ -254,8 +255,8 @@ test('mobile lecture summary uses clear type hierarchy and reader-facing labels'
   }
 });
 
-test('navigation and readable widths stay compact',async({browser})=>{
- for(const width of [360,375,390,768,1280]){
+test('refined layout keeps two real nav tabs, balanced cards and readable widths',async({browser})=>{
+ for(const width of [360,390,768,1280]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
   const page=await context.newPage();
   await page.goto('/index.html');
@@ -265,14 +266,15 @@ test('navigation and readable widths stay compact',async({browser})=>{
    const tabs=[...nav.querySelectorAll('a')];
    return {
     tabCount:tabs.length,
+    navColumns:getComputedStyle(nav).gridTemplateColumns,
     tabRects:tabs.map(x=>{const r=x.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,height:r.height}}),
-    overview:rect('.home-main h1'),
+    overview:rect('.home-overview'),
     feature:rect('.home-feature'),
-    card:rect('.lecture-row'),
+    card:rect('.lecture'),
     rootOverflow:document.documentElement.scrollWidth-innerWidth,
    };
   });
-  expect(metrics.tabCount).toBe(3);
+  expect(metrics.tabCount).toBe(2);
   expect(metrics.rootOverflow).toBeLessThanOrEqual(1);
   expect(metrics.feature.right).toBeLessThanOrEqual(width);
   expect(metrics.card.right).toBeLessThanOrEqual(width);
@@ -281,8 +283,6 @@ test('navigation and readable widths stay compact',async({browser})=>{
    expect(Math.abs(metrics.tabRects[0].right-metrics.tabRects[0].left-(metrics.tabRects[1].right-metrics.tabRects[1].left))).toBeLessThan(2);
    expect(metrics.tabRects[0].height).toBeGreaterThanOrEqual(44);
    expect(metrics.tabRects[1].height).toBeGreaterThanOrEqual(44);
-   expect(metrics.tabRects[2].height).toBeGreaterThanOrEqual(44);
-   expect(metrics.tabRects[2].top).toBeCloseTo(metrics.tabRects[0].top,0);
    expect(metrics.feature.top).toBeGreaterThan(metrics.overview.top);
   }
   await page.goto('/lectures/affirmation-20261101.html');

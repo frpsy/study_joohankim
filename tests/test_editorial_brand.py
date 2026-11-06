@@ -19,8 +19,8 @@ class EditorialBrandContract(unittest.TestCase):
         for path in PAGES:
             with self.subTest(page=str(path.relative_to(ROOT))):
                 html = path.read_text(encoding='utf-8')
-                self.assertRegex(html, r'<title>[^<]*김주환 강의 스터디</title>')
-                self.assertIn('<span class="brand-name">김주환 강의 스터디</span>', html)
+                self.assertIn('<title>내면의 서재 · ', html)
+                self.assertIn('<span class="brand-name">내면의 서재<small>강의 · 개념 · 미니강좌</small></span>', html)
                 self.assertRegex(html, r'<img class="brand-symbol"[^>]+alt=""')
                 self.assertNotIn('내면을 공부하는 시간', html)
                 self.assertIn('site.css?v='+asset_version, html)
@@ -29,7 +29,7 @@ class EditorialBrandContract(unittest.TestCase):
 
     def test_home_has_consistent_editorial_hierarchy_and_no_content_loss(self):
         html = (ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('<h1>김주환 강의 스터디</h1>', html)
+        self.assertIn('<h1>학습 자료</h1>', html)
         self.assertNotIn('개인 학습 아카이브', html)
         self.assertNotIn('나의 학습 자료', html)
         self.assertIn('대표 강의', html)
@@ -38,9 +38,9 @@ class EditorialBrandContract(unittest.TestCase):
         self.assertEqual(html.count('data-kind='), expected)
         self.assertEqual(html.count('class="home-feature"'), 1)
         self.assertEqual(html.count('data-video-id="affirmation-20261101"'), 1)
-        self.assertNotIn('내면의 서재', html)
-        self.assertIn('data-filter-input="#lecture-list"', html)
-        self.assertIn('id="featured-title"><a href="lectures/affirmation-20261101.html#lecture-overview">', html)
+        self.assertNotIn('<h1>내면의 서재</h1>', html)
+        self.assertIn('data-filter-input="#home-catalog"', html)
+        self.assertIn('href="lectures/affirmation-20261101.html"><span class="eyebrow">대표 강의</span>', html)
         self.assertIn('data-creator="Andrew Huberman"', html)
         self.assertIn('data-creator="김주환"', html)
         self.assertNotIn('study-history.html', html)
