@@ -164,8 +164,9 @@
     const box=teaser.nextElementSibling;
     if(!box||!box.classList.contains('timeline-disclosure'))return;
     teaser.setAttribute('role','button');
+    teaser.setAttribute('tabindex','0');
     teaser.setAttribute('aria-expanded','false');
-    const open=()=>{box.open=true;teaser.setAttribute('aria-expanded','true')};
+    const open=()=>{box.hidden=false;teaser.hidden=true;teaser.setAttribute('aria-expanded','true')};
     teaser.addEventListener('click',open);
     teaser.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
   });
