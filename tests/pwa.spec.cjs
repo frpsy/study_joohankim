@@ -83,7 +83,7 @@ test('service worker caches lecture library and app shell for offline reading',a
     if(!name)return {name:null,lecture:false,theme:false};
     const cache=await caches.open(name);
     const url=p=>new URL(p,location.href).href;
-    return {name,lecture:!!(await cache.match(url('lectures/affirmation-20261101.html'))),theme:!!(await cache.match(url('assets/theme.js')))};
+    return {name,lecture:!!(await cache.match(url('lectures/affirmation-20261101.html'))),theme:!!(await cache.match(url('assets/theme.js?v='+version)))};
   },version);
   expect(precache.name).toBeTruthy();
   expect(precache.lecture).toBe(true);
