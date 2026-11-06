@@ -725,3 +725,4 @@ a{color:var(--ink);text-decoration-color:var(--accent);text-decoration-thickness
 @media(max-width:780px){.site-footer-inner .theme-toggle{margin-left:0}}
 .source-disclosure ul{list-style:none;padding:0;margin:6px 0 14px}.source-disclosure li{border-bottom:1px solid var(--line)}.source-disclosure li a{display:block;padding:12px 0;line-height:1.7;overflow-wrap:anywhere}
 .lecture-section pre.timeline-teaser{cursor:pointer}
+#lecture-comment .actions{display:flex;flex-direction:row-reverse;justify-content:flex-start;align-items:center;gap:10px}#lecture-comment .actions #status{margin-left:0}
