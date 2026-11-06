@@ -692,7 +692,11 @@ details[open]>:not(summary){animation:reveal-in var(--motion-base) var(--ease-ou
 .home-main .lecture:nth-child(5),.concept-grid .card:nth-child(5){animation-delay:.2s}
 .home-main .lecture:nth-child(n+6),.concept-grid .card:nth-child(n+6){animation-delay:.25s}
 .read-progress{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:3px;z-index:60;pointer-events:none;background:transparent}
-.read-progress::before{content:"";display:block;height:100%;background:var(--green);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+.read-progress::before{content:"";display:block;height:100%;background:var(--green);transform-origin:0 50%;transform:scaleX(var(--p,0));will-change:transform;transition:transform .14s linear}
+@keyframes read-progress-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@supports (animation-timeline:scroll()){
+ .read-progress::before{transition:none;animation:read-progress-grow linear both;animation-timeline:scroll(root block)}
+}
 :focus-visible{outline-offset:3px}
 @media print{.read-progress{display:none}}
 @media(prefers-reduced-motion:reduce){
