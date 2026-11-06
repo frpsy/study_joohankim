@@ -13,7 +13,7 @@ class DesignRegression(unittest.TestCase):
     def test_broken_cross_page_link(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'assets').mkdir();(root/'assets/site.css').write_text('');(root/'assets/site.js').write_text('')
-            (root/'lectures.json').write_text('[]',encoding='utf-8');(root/'index.html').write_text(BASE+'<a href="missing.html">잘못된 이동</a>',encoding='utf-8');(root/'concepts.html').write_text(BASE,encoding='utf-8')
+            (root/'lectures.json').write_text('[]',encoding='utf-8');(root/'index.html').write_text(BASE+'<a href="missing.html">잘못된 이동</a>',encoding='utf-8')
             self.assertTrue(any('missing target missing.html' in x for x in validate(root)))
 
 class GeneratorRegression(unittest.TestCase):
@@ -23,17 +23,14 @@ class GeneratorRegression(unittest.TestCase):
         self.assertIn('data-value="새 주제"',source)
         self.assertIn('A &lt; B &amp; C',source)
         self.assertNotIn('<em>문장</em>',source)
-        self.assertIn('1개 자료',source)
+        self.assertIn('1개 강의',source)
         self.assertNotIn('<time',source)
         book={'id':'sample-book','kind':'book','title':'사유의 기술','creator':'다른 저자','description':'책 메모','tags':['철학'],'url':'books/sample.html'}
         mixed=render([row],[book])
         self.assertIn('data-kind="book"',mixed)
         self.assertIn('다른 저자',mixed)
         self.assertIn('2개 자료',mixed)
-        featured=render([row],[{**book,'featured':True}])
-        self.assertIn('대표 책',featured)
-        self.assertIn('href="books/sample.html"><span class="eyebrow">대표 책</span>',featured)
-        with self.assertRaises(ValueError):render([row],[{**book,'featured':True},{**book,'id':'second','featured':True}])
+        self.assertNotIn('home-feature',mixed)
         with self.assertRaises(ValueError):render([row],[{**book,'url':'https://untrusted.example/'}])
 
     def test_hand_edited_home_is_rejected(self):
@@ -43,10 +40,10 @@ class GeneratorRegression(unittest.TestCase):
             repo=Path(__file__).resolve().parents[1]
             for name in ('assets','lectures'):
                 shutil.copytree(repo/name,root/name)
-            for name in ('index.html','concepts.html','lectures.json'):
+            for name in ('index.html','lectures.json'):
                 shutil.copyfile(repo/name,root/name)
             home=root/'index.html'
-            home.write_text(home.read_text().replace('<h1>학습 자료</h1>','<h1>임의로 바꾼 제목</h1>'))
+            home.write_text(home.read_text().replace('<h1 class="home-title">강의 요약</h1>','<h1 class="home-title">임의로 바꾼 제목</h1>'))
             self.assertIn('generated home differs from index.html',validate(root))
 
 if __name__=='__main__':unittest.main()
@@ -57,7 +54,7 @@ class WordingRegression(unittest.TestCase):
 
     def test_public_pages_have_no_production_notes(self):
         root = Path(__file__).resolve().parents[1]
-        pages = [root / "index.html", root / "concepts.html", *sorted((root / "lectures").glob("*.html"))]
+        pages = [root / "index.html", *sorted((root / "lectures").glob("*.html"))]
         for page in pages:
             text = page.read_text(encoding="utf-8")
             for word in self.BANNED:
@@ -115,29 +112,26 @@ class ExternalLinkRegression(unittest.TestCase):
     def test_blank_target_links_have_noopener(self):
         import re
         root = Path(__file__).resolve().parents[1]
-        pages = [root / "index.html", root / "concepts.html", *sorted((root / "lectures").glob("*.html"))]
+        pages = [root / "index.html", *sorted((root / "lectures").glob("*.html"))]
         for page in pages:
             for tag in re.findall(r"<a\b[^>]*target=\"_blank\"[^>]*>", page.read_text(encoding="utf-8")):
                 self.assertIn("noopener", tag, f"{page.name}: {tag[:80]}")
 
-    def test_summaries_match_source_and_keep_length(self):
-        from build_summaries import build
-        self.assertFalse(build(check=True))
+    def test_summary_sources_are_kept_but_not_published(self):
         root = Path(__file__).resolve().parents[1]
         from content_registry import effective_summaries
-        data = effective_summaries(root)
-        for vid, item in data.items():
-            body = item["lead"] + "".join(p for s in item["sections"] for p in s["p"]) + item["note"]
-            self.assertTrue(1800 <= len(body) <= 2800, (vid, len(body)))
-            lecture = (root / "lectures" / f"{vid}.html").read_text(encoding="utf-8")
-            self.assertIn(f"../summaries/{vid}.html", lecture)
+        self.assertEqual(len(effective_summaries(root)), len(json.loads((root / "lectures.json").read_text(encoding="utf-8"))))
+        for removed in ("concepts.html", "summaries", "mini-courses"):
+            self.assertFalse((root / removed).exists(), removed)
+        for page in (root / "lectures").glob("*.html"):
+            source = page.read_text(encoding="utf-8")
+            for token in ("../summaries/", "../mini-courses/", "concepts.html", "5분 요약", "미니강좌"):
+                self.assertNotIn(token, source, f"{page.name}: {token}")
 
     def test_ui_explanations_do_not_repeat_declarative_endings(self):
         root = Path(__file__).resolve().parents[1]
-        concepts = (root / "concepts.html").read_text(encoding="utf-8")
         home = (root / "index.html").read_text(encoding="utf-8")
-        self.assertIn("강의에서 다룬 핵심 개념과 관련 해설", concepts)
-        self.assertIn("검색 결과 없음 · 다른 단어 또는 ‘전체’ 선택", home)
+        self.assertIn("검색 결과가 없습니다. 다른 단어로 찾거나 ‘전체’를 선택해 주세요.", home)
         self.assertNotIn("study-history.html", home)
         self.assertNotIn("account.js", home)
         self.assertNotIn("settings-toggle", home)

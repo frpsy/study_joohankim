@@ -8,7 +8,9 @@ class NavigationPerformanceContract(unittest.TestCase):
         worker = (R / "sw.js").read_text(encoding="utf-8")
         self.assertIn("url.origin !== root.origin", worker)
         self.assertIn("request.method !== 'GET'", worker)
-        self.assertIn("'./concepts.html'", worker)
+        self.assertIn("'./offline.html'", worker)
+        self.assertNotIn("concepts.html", worker)
+        self.assertNotIn("mini-courses", worker)
         self.assertNotIn("study-history.html", worker)
         self.assertNotIn("studyUsers", worker)
         for removed in ("assets/firebase.js", "assets/account.js", "assets/progress.js", "assets/firebase-config.js", "study-history.html"):

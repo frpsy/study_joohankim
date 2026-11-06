@@ -4,7 +4,7 @@ const VERSION = new URL(self.location.href).searchParams.get('v') || 'unversione
 const CACHE = 'study-home-static-' + VERSION;
 const PREFIX = 'study-home-static-';
 const CORE = [
-  './', './index.html', './concepts.html', './offline.html',
+  './', './index.html', './offline.html',
   './manifest.webmanifest', './assets/icon-512.png', './assets/apple-touch-icon.png',
   './assets/site.css', './assets/site.js', './assets/theme.js'
 ];
@@ -43,7 +43,7 @@ self.addEventListener('install', event => {
         await cache.put(new URL('./lectures.json',root),response.clone());
         const rows=await response.json();
         pages=rows.filter(row=>typeof row.id==='string' && /^[a-zA-Z0-9_-]+$/.test(row.id))
-          .flatMap(row=>['lectures','mini-courses','summaries'].map(folder=>'./'+folder+'/'+row.id+'.html'));
+          .map(row=>'./lectures/'+row.id+'.html');
       }
     }catch{}
     await Promise.allSettled([...CORE,...pages].map(path=>update(cache,new Request(new URL(path,root)))));

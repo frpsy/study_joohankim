@@ -1,5 +1,14 @@
 # 강의 학습 아카이브 작업 지침
 
+## 현행 구성 (2026-11-06 사용자 요청 · 아래 모든 이전 규칙보다 우선)
+- 공개 화면은 **홈(강의 목록)과 강의 페이지 두 종류**뿐이다. 강의 페이지는 **핵심 요약(한 문장 + 핵심 세 가지)과 타임스탬프**만으로 구성한다. 하단의 ‘원본과 참고 자료’(출처 링크)는 근거 보존을 위해 접힌 상태로 둔다.
+- 5분 요약, 미니강좌, 용어와 개념 화면은 공개 트리에서 제거했다. 원고 데이터(data/summaries.json, data/mini_courses.json의 해설 필드, 용어집.md)는 보존하되 다시 게시하지 않는다. 한 문장(`lead`)과 핵심 세 가지(`three`)의 원본은 data/mini_courses.json이다.
+- 상단 메뉴는 두지 않고 브랜드만 둔다. 홈 H1은 ‘강의 요약’, 화면 라벨은 ‘타임스탬프’로 통일한다(‘댓글용 타임라인’ 대신). 기존 앵커 ID(lecture-overview, lecture-comment, comment 등)는 유지한다.
+- 핵심 세 가지는 각 항목을 ‘-다.’로 끝나는 한 문장으로 쓰고, 항목 사이 문형을 통일한다.
+- 시각 기준은 docs/design-system.md의 ‘블랙·레드·그레이 / v10’ 절이다. 반투명 유리 헤더는 사용자 요청(2026-11-06)이며, 이전의 ‘모바일 헤더는 불투명’ 규칙을 대체한다. 단 불투명도 0.7 이상과 backdrop blur를 유지하고, 미지원 브라우저는 불투명 배경으로 대체한다.
+- 검증: scripts/validate_design_system.py, scripts/validate_site.py, build_library.py --check, build_compact_lectures.py --check, Python·Node 테스트, Playwright(browser-smoke·pwa)를 모두 통과해야 병합한다.
+
+
 ## 다른 AI·채팅에서도 동일하게 작업하는 규칙
 1. 작업 시작 시 이 파일 → 편집규칙.md → docs/design-system.md → .agents/skills/lecture-study/SKILL.md 순서로 읽는다. 현재 강의 구성과 충돌하는 이전 설계 설명보다 이 파일의 현행 구성을 우선한다.
 2. 새로운 색·간격·글꼴·버튼 스타일을 임의로 만들지 않는다. 공통 assets/site.css의 디자인 토큰과 공통 assets/site.js 기능을 우선 재사용하고 기존 앵커·강의 원본·복사 기능을 보존한다.

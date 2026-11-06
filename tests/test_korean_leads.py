@@ -26,7 +26,7 @@ class KoreanLeads(unittest.TestCase):
                 self.assertLessEqual(len(lead), 170, vid)
                 self.assertFalse(re.search(r'\s{2,}', lead), vid)
                 self.assertEqual(lead, summaries[vid]['lead'], '5분 요약과 한 문장 핵심이 다름: '+vid)
-                for folder in ('lectures', 'mini-courses', 'summaries'):
+                for folder in ('lectures',):
                     text = (R/folder/f'{vid}.html').read_text(encoding='utf-8')
                     self.assertIn(lead, text, '화면이 편집 원고와 다름: '+folder+'/'+vid)
 

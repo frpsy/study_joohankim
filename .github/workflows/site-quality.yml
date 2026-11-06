@@ -26,7 +26,6 @@ jobs:
           python3 scripts/validate_design_system.py
           python3 scripts/validate_site.py
           python3 scripts/build_library.py --check
-          python3 scripts/build_summaries.py --check
           python3 scripts/build_compact_lectures.py --check
       - name: Run Python and Node regressions
         run: |
