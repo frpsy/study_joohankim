@@ -99,7 +99,7 @@ def main():
         errors=inspect(source,ledger,ledger['duration_seconds'])
         print(vid+': '+('; '.join(errors) if errors else ("PASS (compact notes; original source ledger retained)" if ledger.get("layout")=="compact" else f"PASS ({len(ledger['units'])} teaching units, {ledger['image_count']} images)")))
         fail|=bool(errors)
-    for file in [root/'concepts.html']+[root/'lectures'/f"{json.loads(p.read_text(encoding='utf-8'))['video_id']}.html" for p in manifests]:
+    for file in [root/'lectures'/f"{json.loads(p.read_text(encoding='utf-8'))['video_id']}.html" for p in manifests]:
         if not file.is_file():
             print('FAIL: missing page '+str(file));fail=True;continue
         page=Page();page.feed(file.read_text(encoding='utf-8'))

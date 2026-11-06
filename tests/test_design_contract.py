@@ -14,7 +14,7 @@ class DesignContractRegression(unittest.TestCase):
         self.assertEqual(contract_errors(ROOT), [])
 
     def test_canonical_tokens_cover_type_color_spacing_and_tap(self):
-        for name in ("--paper", "--green", "--font-body-size", "--space-4", "--radius-control", "--tap-target"):
+        for name in ("--paper", "--accent", "--font-body-size", "--space-4", "--radius-control", "--tap-target"):
             self.assertIn(name, TOKENS)
 
     def test_incomplete_pr_impact_is_rejected(self):

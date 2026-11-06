@@ -21,7 +21,7 @@ class CanonicalContentRegression(unittest.TestCase):
             with self.subTest(lecture=vid):
                 self.assertNotIn("lead",summaries[vid], "duplicate takeaway source")
                 self.assertEqual(combined[vid]["lead"],course["lead"])
-                self.assertIn(course["lead"],(ROOT/"summaries"/f"{vid}.html").read_text(encoding="utf-8"))
+                self.assertIn(course["lead"],(ROOT/"lectures"/f"{vid}.html").read_text(encoding="utf-8"))
 
     def test_mismatched_and_missing_source_data_fails_explicitly(self):
         with tempfile.TemporaryDirectory() as folder:

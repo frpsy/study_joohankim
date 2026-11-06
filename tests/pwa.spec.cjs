@@ -49,7 +49,7 @@ test('auto, manual dark and light theme persist across lectures and desktop',asy
 test('system appearance changes and keyboard operation remain accessible',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1280,height:820},colorScheme:'light'});
   const page=await context.newPage();
-  await page.goto('/concepts.html');
+  await page.goto('/lectures/affirmation-20261101.html');
   await expect(page.locator('html')).toHaveAttribute('data-theme','light');
   await page.emulateMedia({colorScheme:'dark'});
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
@@ -110,7 +110,7 @@ test('appearance control is quiet and only at bottom of every page',async({brows
  for(const width of [360,390,768,1280]){
   const context=await browser.newContext({viewport:{width,height:844},colorScheme:'dark'});
   const page=await context.newPage();
-  for(const url of ['/index.html','/concepts.html','/lectures/affirmation-20261101.html','/offline.html']){
+  for(const url of ['/index.html','/lectures/affirmation-20261101.html','/offline.html']){
    await page.goto(url);
    await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(0);
    await expect(page.locator('.site-footer-inner [data-theme-toggle]')).toHaveCount(1);
@@ -155,7 +155,7 @@ test('online navigation rejects a stale cached header and offline still reads th
   await page.goto('/index.html?check=online-first');
   await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(0);
   await expect(page.locator('.site-footer [data-theme-toggle]')).toHaveCount(1);
-  await expect(page.locator('h1')).toHaveText('학습 자료');
+  await expect(page.locator('h1')).toHaveText('강의 요약');
   const freshCached=await page.evaluate(async()=>{
     const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
     const cache=await caches.open(key);
@@ -169,12 +169,12 @@ test('online navigation rejects a stale cached header and offline still reads th
     const cached=await page.evaluate(async()=>{
       const key=(await caches.keys()).find(k=>k.startsWith('study-home-static-'));
       const response=await (await caches.open(key)).match(new URL('index.html',location.href));
-      return response ? (await response.text()).includes('<h1>학습 자료</h1>') : false;
+      return response ? (await response.text()).includes('<h1 class="home-title">강의 요약</h1>') : false;
     });
     expect(cached).toBe(true);
   }else{
     await page.goto('/index.html');
-    await expect(page.locator('h1')).toHaveText('학습 자료');
+    await expect(page.locator('h1')).toHaveText('강의 요약');
   }
   await context.close();
 });

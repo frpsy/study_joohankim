@@ -57,7 +57,7 @@ def validate(root):
         material_ids.add(item['id'])
         if item['kind'] not in valid_types:errors.append('invalid material kind '+str(item['kind']))
         if not isinstance(item['tags'],list):errors.append('invalid material tags '+str(item['id']))
-    pages=[root/'index.html',root/'concepts.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]+sorted((root/'summaries').glob('*.html'))+sorted((root/'mini-courses').glob('*.html'))
+    pages=[root/'index.html']+[root/'lectures'/f"{r['id']}.html" for r in rows]
     for p in pages:
         if not p.is_file():errors.append('missing page '+str(p));continue
         source=p.read_text(encoding='utf-8')

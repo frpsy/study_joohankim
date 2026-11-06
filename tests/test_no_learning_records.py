@@ -8,8 +8,8 @@ class NoLearningRecordFeatures(unittest.TestCase):
         for path in ("study-history.html","assets/progress.js","assets/account.js","assets/firebase.js","assets/firebase-config.js"):
             with self.subTest(path=path):self.assertFalse((ROOT/path).exists())
     def test_no_account_or_record_navigation_in_pages(self):
-        pages=[ROOT/"index.html",ROOT/"concepts.html"]
-        for folder in ("lectures","mini-courses","summaries"):pages.extend((ROOT/folder).glob("*.html"))
+        pages=[ROOT/"index.html"]
+        for folder in ("lectures",):pages.extend((ROOT/folder).glob("*.html"))
         for path in pages:
             with self.subTest(path=str(path.relative_to(ROOT))):
                 html=path.read_text(encoding="utf-8")

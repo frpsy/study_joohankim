@@ -21,10 +21,8 @@ class IPhonePWAContract(unittest.TestCase):
         self.assertFalse((ROOT/'ios').exists())
 
     def test_iphone_and_desktop_pages_share_app_theme(self):
-        for folder in ('lectures','mini-courses','summaries'):
-            self.assertEqual(len(list((ROOT/folder).glob('*.html'))),7)
-        pages=[ROOT/'index.html',ROOT/'concepts.html',ROOT/'offline.html']
-        for folder in ('lectures','mini-courses','summaries'):pages+=sorted((ROOT/folder).glob('*.html'))
+        self.assertEqual(len(list((ROOT/'lectures').glob('*.html'))),7)
+        pages=[ROOT/'index.html',ROOT/'offline.html']+sorted((ROOT/'lectures').glob('*.html'))
         for page in pages:
             with self.subTest(path=str(page.relative_to(ROOT))):
                 html=page.read_text(encoding='utf-8')
@@ -49,7 +47,8 @@ class IPhonePWAContract(unittest.TestCase):
         self.assertIn('env(safe-area-inset-top',css)
         self.assertIn('manifest.webmanifest',sw)
         self.assertIn('offline.html',sw)
-        self.assertIn("['lectures','mini-courses','summaries']",sw)
+        self.assertIn("'./lectures/'+row.id+'.html'",sw)
+        self.assertNotIn('mini-courses',sw)
         self.assertNotIn('studyUsers',sw)
         self.assertNotIn('assets/progress.js',sw)
         self.assertNotIn('assets/account.js',sw)
