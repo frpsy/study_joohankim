@@ -14,14 +14,9 @@ class CompactCourseChecks(unittest.TestCase):
    self.assertEqual(source.count('id="comment"'),1)
    self.assertEqual(source.count('data-copy-target="comment"'),1)
    self.assertIn('<details class="timeline-disclosure">',source)
-   self.assertIn('<span class="when-closed">펼치기</span>',source)
+   self.assertIn('<summary>전체 타임라인 보기</summary>',source)
    self.assertIn('class="timeline-teaser"',source)
-   self.assertIn("\n".join(f'<span>{html.escape(line)}</span>' for line in record["timeline"].splitlines()[:3]),source)
-   detail=source.split('id="lecture-details"',1)[1].split('id="lecture-comment"',1)[0]
-   stamps=re.findall(r'class="timeline-stamp">(.*?)</span>',detail)
-   original=record['timeline'].split('—상세—',1)[1]
-   self.assertEqual(stamps,re.findall(r'^(\d+:\d{2}(?::\d{2})?) ',original,re.M))
-   self.assertIn('자동자막 기반',source)
+   self.assertIn(html.escape("\n".join(record["timeline"].splitlines()[:3])),source)
    self.assertNotIn('class="timeline-preview"',source)
    self.assertNotIn('<img ',source[source.index('<main id="main"'):])
  def test_course_coverage_and_tiers(self):

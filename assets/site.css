@@ -425,51 +425,35 @@ main#main{min-width:0}
 .search-controls .search{flex:1;min-width:0}
 .search-controls button{flex:none;min-height:var(--tap-target)}
 
-/* Home and course index use one reading column with simple dividers. */
-.home-main,.course-index{max-width:var(--reading-measure);margin-inline:auto}
-.home-main>h1,.course-index>h1{margin:var(--space-6) 0 var(--space-4);font-size:clamp(25px,4vw,36px);line-height:1.25;letter-spacing:-.04em}
-.home-main .home-feature{margin:0 0 var(--space-6);padding:var(--space-3) 0 var(--space-2) var(--space-4);border-left:2px solid var(--green)}
-.home-feature .home-feature-label{font-size:13px;font-weight:700;color:var(--green)}
-.home-feature h2{margin:var(--space-1) 0;font-size:clamp(20px,3vw,24px);line-height:1.4}
-.home-feature h2 a{color:var(--ink);text-decoration:none}
-.home-feature h2 a:hover{text-decoration:underline}
-.home-feature p,.study-links p,.course-index>p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
-.home-feature-action{display:inline-flex;align-items:center;min-height:var(--tap-target);font-size:14px;font-weight:650}
-.home-main .search-panel{margin:0 0 var(--space-4);padding:0;border:0;background:none}
-.home-main .filter-chips{gap:var(--space-1);margin:var(--space-2) 0 0}
-.home-main .filter-chips button{min-height:var(--tap-target);padding:4px 9px;font-size:13px;border-radius:var(--radius-control)}
-.home-main #lectures{margin-bottom:var(--space-6)}
-.home-main .section-heading{margin:0 0 var(--space-1)}
-.home-main .section-heading h2,.course-index h2{font-size:20px}
-.home-main .section-heading .search-summary{margin:0}
-#lecture-list{border-top:1px solid var(--line)}
-.lecture-row{display:block;padding:var(--space-3) 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none}
-.lecture-row:hover h3{text-decoration:underline}
-.lecture-row h3{margin:0;font-size:17px;line-height:1.45;letter-spacing:-.025em}
-.lecture-row p{margin:var(--space-1) 0;font-size:14px;line-height:1.6}
-.lecture-row .meta{margin:0;gap:var(--space-2);font-size:12px;line-height:1.5}
-.study-links{display:grid;gap:var(--space-3);margin-bottom:var(--space-8)}
-.study-links>div,.course-index section{padding-top:var(--space-3);border-top:1px solid var(--line)}
-.study-links a,.course-index li a{font-weight:650}
-.course-index>p{margin-bottom:var(--space-6)}
-.course-index section{margin-bottom:var(--space-5)}
-.course-index h2{margin-bottom:var(--space-2)}
-.course-index ul,.topic-timeline ul{list-style:none;margin:0;padding:0}
-.course-index li+li{margin-top:var(--space-2)}
-.topic-timeline h3{font-size:16px;margin:var(--space-3) 0 var(--space-1)}
-.topic-timeline li{margin-bottom:var(--space-1);font-size:14px}
-.topic-timeline li a{min-height:0;display:inline}
-.timeline-stamp{font-variant-numeric:tabular-nums}
-.compact-lecture #lecture-comment .meta{margin:0}
-.compact-lecture #lecture-comment .actions{margin:var(--space-2) 0 0}
-.timeline-disclosure .when-open,.timeline-disclosure[open] .when-closed,
-.timeline-disclosure[open]+.timeline-teaser{display:none}
-.timeline-disclosure[open] .when-open{display:inline}
-.lecture-section pre.timeline-teaser span{display:inline-block;max-width:100%;vertical-align:top;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Home: one editorial title and directly clickable featured lecture. */
+.home-overview{display:grid;grid-template-columns:minmax(0,.54fr) minmax(0,1.46fr);gap:22px;align-items:stretch;margin:24px 0 22px}
+.home-overview-heading{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:13px;min-width:0}
+.home-overview-heading h1{margin:0;color:var(--brand-ink);font-size:clamp(28px,3.5vw,41px);letter-spacing:-.058em;line-height:1.25}
+.home-course-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:14px;font-weight:650;text-decoration:none;text-underline-offset:4px}
+.home-course-link:hover{text-decoration:underline}
+.home-feature{display:flex;flex-direction:column;gap:7px;min-width:0;min-height:208px;padding:24px 27px;border:1px solid var(--brand-outline);border-radius:19px;background:var(--brand-soft);color:var(--ink);text-decoration:none;transition:border-color .16s ease,background-color .16s ease}
+.home-feature:hover{border-color:#aac2ad;background:#e6efe4}
+.home-feature .eyebrow{font-size:12px;letter-spacing:.035em}
+.home-feature h2{margin:5px 0 2px;font-size:clamp(21px,2.3vw,26px);line-height:1.4;letter-spacing:-.045em;font-weight:720;text-wrap:pretty;overflow-wrap:anywhere}
+.home-feature p{margin:0 0 8px;color:var(--muted);font-size:14px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home-feature-action{display:inline-flex;align-items:center;margin-top:auto;min-height:32px;font-size:14px;font-weight:700;color:var(--green)}
+.home-main .search-panel{margin:0 0 18px}
+.home-main .search-panel label{font-size:16px;line-height:1.4;font-weight:700;margin-bottom:10px}
+.home-main #lectures{margin-bottom:42px}
 @media(max-width:780px){
- .home-main>h1,.course-index>h1{margin-top:var(--space-4)}
- .home-main .home-feature{margin-bottom:var(--space-4)}
+ .home-overview{grid-template-columns:minmax(0,1fr);gap:12px;margin:17px 0 17px}
+ .home-overview-heading{flex-direction:row;align-items:center;justify-content:space-between;gap:8px}
+ .home-overview-heading h1{font-size:26px;line-height:1.25}
+ .home-course-link{font-size:13px;white-space:nowrap;flex:none}
+ .home-feature{min-height:0;padding:19px 20px 15px;border-radius:17px;gap:5px}
+ .home-feature h2{font-size:21px;line-height:1.39;margin:5px 0 2px}
+ .home-feature p{font-size:13px;line-height:1.55;margin:0 0 6px}
+ .home-feature-action{font-size:13px;min-height:32px}
+ .home-main .search-panel{padding:15px 16px 13px;border-radius:16px}
+ .home-main .search-panel label{font-size:15px;margin-bottom:8px}
 }
+@media(max-width:360px){.home-overview-heading h1{font-size:24px}.home-course-link{font-size:12px}.home-feature{padding:17px}}
+@media(prefers-reduced-motion:reduce){.home-feature{transition:none}}
 
 /* Lecture notes: distinguish section titles from reading text without oversized subheadings. */
 .compact-lecture #lecture-overview>h2{font-size:clamp(22px,2.5vw,25px);line-height:1.35;letter-spacing:-.035em;margin:0 0 12px;font-weight:750}
@@ -488,8 +472,17 @@ main#main{min-width:0}
  .compact-lecture #lecture-overview .summary-list li{font-size:15px;line-height:1.68;margin-bottom:11px}
 }
 
-/* Shared reading measures and responsive navigation. */
+/* Layout refinement: one spacing scale, readable measures, two real navigation tabs. */
 .site-shell,.site-header-inner,.site-footer-inner{max-width:1080px}
+.home-main{min-width:0}
+.home-overview{column-gap:clamp(18px,2.6vw,30px)}
+.home-overview-heading{justify-content:center}
+.home-feature{min-width:0}
+.home-feature h2{max-width:32ch}
+.home-main .search-panel{min-width:0}
+.home-main .lecture-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.7vw,18px)}
+.home-main .lecture{min-width:0;display:flex;flex-direction:column}
+.home-main .lecture .read{align-self:flex-start}
 .compact-lecture,.summary-page{width:100%;max-width:var(--reading-measure);margin-inline:auto}
 .compact-lecture .summary-head,.summary-page .summary-head{max-width:100%;margin-bottom:clamp(20px,3vw,30px)}
 .compact-lecture .lecture-section{min-width:0}
@@ -498,10 +491,25 @@ main#main{min-width:0}
 .compact-lecture #lecture-overview .summary-tier:last-child{border-bottom:0}
 .compact-lecture #lecture-overview .summary-list li{max-width:70ch}
 .compact-lecture .actions{flex-wrap:wrap;row-gap:8px}
+@media(min-width:781px) and (max-width:1024px){
+ .home-overview{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}
+ .home-feature{padding:21px 23px}
+ .home-main .lecture-grid{gap:14px}
+}
 @media(max-width:780px){
  .site-header-inner{grid-template-columns:minmax(0,1fr);gap:10px;padding-block:11px 10px}
- .global-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:100%}
- .global-nav a{min-width:0;min-height:44px;font-size:13px;padding:8px 4px}
+ .global-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+ .global-nav a{min-width:0;min-height:44px;font-size:14px;padding:10px 8px}
+ .home-overview{gap:14px;margin-block:16px 20px}
+ .home-overview-heading{min-width:0;gap:12px}
+ .home-overview-heading h1{font-size:clamp(24px,6.7vw,28px)}
+ .home-feature{padding:20px;border-radius:17px}
+ .home-feature h2{font-size:clamp(20px,5.5vw,23px)}
+ .home-main .search-panel{padding:16px;margin-bottom:17px}
+ .home-main .lecture-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .home-main .lecture{padding:19px 20px 17px}
+ .home-main .lecture h3{margin-block:9px 7px;line-height:1.43}
+ .home-main .lecture p{line-height:1.65}
  .learning-route{margin-top:28px;padding-top:25px}
  .compact-lecture,.summary-page{max-width:100%}
  .compact-lecture .summary-head{margin:9px 0 22px}
@@ -512,6 +520,11 @@ main#main{min-width:0}
  .compact-lecture .lecture-section pre{max-width:100%;overflow-wrap:anywhere}
 }
 @media(max-width:360px){
+ .home-overview-heading{gap:7px}
+ .home-overview-heading h1{font-size:23px}
+ .home-course-link{font-size:12px}
+ .home-feature{padding:17px}
+ .home-main .lecture{padding:17px}
  .compact-lecture #lecture-overview .summary-tier>.summary-lead{padding:15px}
 }
 
@@ -529,7 +542,7 @@ html[data-standalone="true"] .site-shell,
 html[data-standalone="true"] .site-header-inner,
 html[data-standalone="true"] .site-footer-inner{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 @media(max-width:780px){
- .site-header-inner{grid-template-columns:minmax(0,1fr);row-gap:2px;padding-block:6px 4px}
+ .site-header-inner{grid-template-columns:minmax(0,1fr) auto;column-gap:10px;row-gap:7px;padding-block:8px}
  .site-brand{grid-column:1;grid-row:1;min-width:0}
  .theme-toggle{grid-column:2;grid-row:1;min-width:94px}
  .global-nav{grid-column:1/-1;grid-row:2;margin:0}
@@ -555,6 +568,7 @@ html[data-standalone="true"] .site-footer-inner{padding-left:env(safe-area-inset
 :root[data-theme="dark"] input,
 :root[data-theme="dark"] select,
 :root[data-theme="dark"] textarea{background:var(--surface);color:var(--ink);border-color:var(--input-border)}
+:root[data-theme="dark"] .home-feature:hover{background:#304638;border-color:#749b7d}
 :root[data-theme="dark"] .lecture:hover{border-color:#729980;box-shadow:0 7px 26px rgba(0,0,0,.22)}
 :root[data-theme="dark"] .filter-chips button[aria-pressed="true"]{border-color:#789c81}
 :root[data-theme="dark"] .lecture-section .topic>.tutor-unit,
