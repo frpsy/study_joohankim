@@ -133,3 +133,5 @@
 - **한 문장 핵심의 원본은 `data/mini_courses.json`의 `lead` 하나다.** `data/summaries.json`에 복제하지 않고 `scripts/content_registry.py`를 통해 생성기에 결합한다. 이전의 `data/summary_editorial_edits.json`, `scripts/editorial_copy.py` 덮어쓰기 체계는 재도입하지 않는다.
 - 정적 페이지와 서비스 워커 버전은 `build-info.json.version`을 기준으로 생성한다. `assets/site.js`는 실제 로딩된 URL의 버전을 표시하고 `sw.js`의 캐시 이름도 등록 URL의 버전을 사용한다.
 - 생성된 HTML을 손으로 수정하지 않는다. 데이터를 수정하고 생성기·원본 정합성·브라우저 회귀 테스트를 실행한다.
+
+- 원본 자막은 항상 `transcripts/`에 가공 없이 저장해 두고, 사용자가 질문하면 그 파일에서 해당 구간을 찾아 시각과 함께 인용해 답한다. 상세는 편집규칙.md 12절.
