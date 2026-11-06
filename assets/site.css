@@ -723,3 +723,5 @@ a{color:var(--ink);text-decoration-color:var(--accent);text-decoration-thickness
 .lecture-section .timeline-disclosure>summary{padding-left:0}
 .source-disclosure{border-top:1px solid var(--line);margin-top:28px}
 @media(max-width:780px){.site-footer-inner .theme-toggle{margin-left:0}}
+.source-disclosure ul{list-style:none;padding:0;margin:6px 0 14px}.source-disclosure li{border-bottom:1px solid var(--line)}.source-disclosure li a{display:block;padding:12px 0;line-height:1.7;overflow-wrap:anywhere}
+.lecture-section pre.timeline-teaser{cursor:pointer}
