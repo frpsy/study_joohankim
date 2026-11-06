@@ -732,3 +732,46 @@ a{color:var(--ink);text-decoration-color:var(--accent);text-decoration-thickness
 .lecture-section .timeline-toggle:checked+.timeline-box::after{content:"눌러서 접기  ▴"}
 .lecture-section .timeline-toggle:focus-visible+.timeline-box{outline:2px solid var(--focus-color);outline-offset:4px;border-radius:12px}
 .lecture-section .timeline-toggle{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+/* Reading refinement / v11 (2026-11-07). Same black·red·gray tokens; clearer reading order, calmer timestamps, lecture pager. */
+.summary-head{padding-bottom:4px}
+.summary-head h1{text-wrap:balance}
+.summary-head .actions{margin:14px 0 0}
+.summary-head .actions .btn.secondary{min-height:40px;padding:0 14px;font-size:13px;font-weight:600;color:var(--ink);border-color:var(--line-strong);background:transparent}
+.summary-head .actions .btn.secondary::after{content:"↓";margin-left:6px;color:var(--accent)}
+@media(hover:hover) and (pointer:fine){.summary-head .actions .btn.secondary:hover{border-color:var(--accent);color:var(--accent);filter:none}}
+.compact-lecture #lecture-overview .summary-tier>.eyebrow{display:block;margin:0 0 10px;font-size:11px;letter-spacing:.16em}
+.compact-lecture #lecture-overview .summary-tier>.summary-lead{margin:0;padding:16px 18px 16px 20px;border-left:3px solid var(--accent);background:var(--card-bg);border-radius:0 var(--radius-card) var(--radius-card) 0;font-size:17px;font-weight:600;line-height:1.75;letter-spacing:-.015em;color:var(--ink);text-wrap:pretty;word-break:keep-all}
+.compact-lecture #lecture-overview .summary-tier>h3{font-size:16px;font-weight:750;letter-spacing:-.02em;margin:0 0 6px}
+.compact-lecture #lecture-overview .summary-list{list-style:none;counter-reset:point;margin:0;padding:0}
+.compact-lecture #lecture-overview .summary-list li::marker{content:none}
+.compact-lecture #lecture-overview .summary-list li{counter-increment:point;position:relative;margin:0;max-width:none;padding:14px 0 14px 40px;border-top:1px solid var(--line);font-size:16px;line-height:1.75;color:var(--ink);word-break:keep-all;text-wrap:pretty}
+.compact-lecture #lecture-overview .summary-list li:first-child{border-top:0;padding-top:4px}
+.compact-lecture #lecture-overview .summary-list li:last-child{padding-bottom:0}
+.compact-lecture #lecture-overview .summary-list li:first-child::before{top:7px}
+.compact-lecture #lecture-overview .summary-list li::before{content:counter(point,decimal-leading-zero);position:absolute;left:0;top:17px;font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--accent);font-variant-numeric:tabular-nums}
+.lecture-section .timeline-box>pre{font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;font-variant-numeric:tabular-nums;font-size:14px;letter-spacing:-.005em;background:var(--card-bg);border:1px solid var(--line);border-radius:var(--radius-card);padding:14px 16px}
+.lecture-section .timeline-box>pre code{font:inherit}
+.lecture-pager{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:32px 0 0}
+.pager-link{display:flex;flex-direction:column;gap:6px;min-height:var(--tap-target);padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius-card);background:var(--card-bg);text-decoration:none;color:var(--ink);transition:border-color var(--motion-fast) var(--ease-out)}
+.pager-link small{font-size:11px;font-weight:750;letter-spacing:.12em;color:var(--accent)}
+.pager-link span{font-size:15px;font-weight:650;line-height:1.5;letter-spacing:-.02em;word-break:keep-all}
+.pager-link.is-next{text-align:right;align-items:flex-end}
+.pager-link.is-empty{border-style:dashed;opacity:.35;background:transparent}
+@media(hover:hover) and (pointer:fine){.pager-link:not(.is-empty):hover{border-color:var(--accent)}.pager-link:not(.is-empty):hover span{color:var(--accent)}}
+.compact-lecture .summary-links{margin:20px 0 0}
+.home-main .lecture .read{font-size:13px;font-weight:650;color:var(--muted);padding-top:4px}
+@media(hover:hover) and (pointer:fine){.home-main .lecture:hover .read{color:var(--accent)}}
+.site-footer-inner{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+.site-footer-inner .theme-toggle{order:55;margin-left:auto;padding-left:0;padding-right:0}
+.site-footer-inner .site-version{flex-basis:100%;order:60;font-size:11px}
+@media(max-width:780px){
+ .compact-lecture #lecture-overview .summary-tier>.summary-lead{font-size:16px;padding:14px 14px 14px 16px}
+ .compact-lecture #lecture-overview .summary-list li{font-size:15px;padding-left:34px}
+ .lecture-section .timeline-box>pre{font-size:13.5px;padding:12px 14px}
+ .lecture-pager{grid-template-columns:1fr}
+ .pager-link.is-next{text-align:left;align-items:flex-start}
+ .pager-link.is-empty{display:none}
+ .site-footer-inner .theme-toggle{margin-left:auto}
+}
+@media(prefers-reduced-motion:reduce){.pager-link{transition:none}}
+@media print{.lecture-pager{display:none}}
