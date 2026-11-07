@@ -14,9 +14,8 @@ class CompactCourseChecks(unittest.TestCase):
    self.assertEqual(html.unescape(text),record['timeline'])
    self.assertEqual(source.count('id="comment"'),1)
    self.assertEqual(source.count('data-copy-target="comment"'),1)
-   self.assertIn('<div class="timeline-box"><pre id="comment"><code>',source)
-   self.assertNotIn('timeline-toggle',source)
-   self.assertNotIn('<label class="timeline-box"',source)
+   self.assertIn('<label class="timeline-box" for="timeline-toggle"><pre id="comment"',source)
+   self.assertIn('type="checkbox" id="timeline-toggle"',source)
    for gone in ('전체 타임스탬프 보기','timeline-teaser','timeline-disclosure'):
     self.assertNotIn(gone,source)
    self.assertIn(html.escape("\n".join(record["timeline"].splitlines()[:3])),source)
