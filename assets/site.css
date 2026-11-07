@@ -775,3 +775,5 @@ a{color:var(--ink);text-decoration-color:var(--accent);text-decoration-thickness
 }
 @media(prefers-reduced-motion:reduce){.pager-link{transition:none}}
 @media print{.lecture-pager{display:none}}
+
+.related-videos ul{list-style:none;padding:0;margin:6px 0 14px}.related-videos li{border-bottom:1px solid var(--line)}.related-videos li a{display:block;padding:12px 0;line-height:1.7;overflow-wrap:anywhere}.related-videos a[target="_blank"]::after{content:" ↗";color:var(--muted)}
