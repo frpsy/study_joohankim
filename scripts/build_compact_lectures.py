@@ -19,7 +19,7 @@ def render(row,record,mini,prev=None,nxt=None):
  if timed:
   timeline_text=E(record['timeline'])
   action='<a class="btn secondary" href="#lecture-comment">타임스탬프로 이동</a>'
-  second=f'<section id="lecture-comment" class="lecture-section"><span id="timeline"></span><h2>타임스탬프</h2><div class="actions"><button id="copy" data-copy-target="comment" type="button">타임스탬프 복사</button><span id="status" role="status" aria-live="polite"></span></div><input type="checkbox" id="timeline-toggle" class="timeline-toggle" aria-label="타임스탬프 전체 펼치기"><label class="timeline-box" for="timeline-toggle"><pre id="comment" tabindex="0"><code>{timeline_text}</code></pre></label></section>'
+  second=f'<section id="lecture-comment" class="lecture-section"><span id="timeline"></span><h2>타임스탬프</h2><div class="actions"><button id="copy" data-copy-target="comment" type="button">타임스탬프 복사</button><span id="status" role="status" aria-live="polite"></span></div><div class="timeline-box"><pre id="comment"><code>{timeline_text}</code></pre></div></section>'
  else:
   action='<a class="btn secondary" href="#lecture-detail">상세 요약으로 이동</a>'
   blocks=''.join('<h3>'+E(b['h'])+'</h3>'+''.join('<p>'+E(t)+'</p>' for t in b['p']) for b in record['detail'])
