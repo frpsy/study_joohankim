@@ -102,5 +102,17 @@
     "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
     "timeline": "unchanged",
     "original_images": "Retained in repository and Git history, removed from reading pages per user request."
+  },
+  "transcript": {
+    "path": "transcripts/izYj8g-j00U.ko.txt",
+    "raw": "transcripts/izYj8g-j00U.ytdlp.ko-orig.json3",
+    "language": "ko",
+    "caption_type": "YouTube 자동 생성 한국어 자막(ko-orig)",
+    "characters": 88440,
+    "lines": 3066,
+    "coverage": "00:01:02~02:29:44 (영상 전 구간, 큰 공백 없음)",
+    "timecodes": "자막 자체 시각",
+    "acquired": "2026-11-07",
+    "status": "저장소 보관만 완료. 이 자막으로 기존 요약·타임스탬프를 다시 대조하지는 않음"
   }
 }
