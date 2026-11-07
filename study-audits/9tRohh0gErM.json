@@ -1,0 +1,16 @@
+{
+  "video_id": "9tRohh0gErM",
+  "image_count": 0,
+  "review_basis": "2026-11-07 yt-dlp(web_embedded)로 확보한 자막 전체를 처음부터 끝까지 순서대로 검토하고 설명란 공식 챕터와 대조함.",
+  "transcript": {
+    "path": "transcripts/9tRohh0gErM.en.txt",
+    "raw": "transcripts/9tRohh0gErM.ytdlp.en.json3",
+    "language": "en",
+    "caption_type": "YouTube 수동 영어 자막(en)",
+    "characters": 180598,
+    "lines": 5210,
+    "coverage": "영상 시작부터 마지막 스폰서 안내까지 전 구간",
+    "timecodes": "자막 자체 시각과 설명란 공식 챕터"
+  },
+  "human_content_review_required": true
+}

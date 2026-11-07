@@ -182,11 +182,12 @@ test('catalog searches by creator without losing video ID hooks',async({page})=>
   await page.goto('/index.html');
   const items=page.locator('#lecture-list .lecture');
   await expect(items).toHaveCount(expectedLibraryCount);
-  await expect(page.locator('[data-creator="Andrew Huberman"]')).toHaveCount(1);
+  await expect(page.locator('[data-creator="Andrew Huberman"]')).toHaveCount(2);
   await page.locator('#search').fill('Huberman');
-  await expect(page.locator('#count')).toHaveText('1개 강의');
-  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
-  await expect(page.locator('#lecture-list .lecture:visible')).toHaveAttribute('data-video-id','QmOF0crdyRU');
+  await expect(page.locator('#count')).toHaveText('2개 강의');
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(2);
+  await expect(page.locator('#lecture-list .lecture[data-video-id="QmOF0crdyRU"]')).toBeVisible();
+  await expect(page.locator('#lecture-list .lecture[data-video-id="9tRohh0gErM"]')).toBeVisible();
   await page.locator('#search').fill('김주환');
   await expect(page.locator('#count')).toHaveText(kimLectureCount+'개 강의');
 });
@@ -194,11 +195,11 @@ test('catalog searches by creator without losing video ID hooks',async({page})=>
 test('catalog restores a shared search and returns to it after reading',async({page})=>{
   await page.goto('/index.html?q=Huberman&source=test#lectures');
   await expect(page.locator('#search')).toHaveValue('Huberman');
-  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(1);
-  await page.locator('#lecture-list .lecture:visible').click();
+  await expect(page.locator('#lecture-list .lecture:visible')).toHaveCount(2);
+  await page.locator('#lecture-list .lecture:visible').first().click();
   await page.goBack();
   await expect(page.locator('#search')).toHaveValue('Huberman');
-  await expect(page.locator('#count')).toHaveText('1개 강의');
+  await expect(page.locator('#count')).toHaveText('2개 강의');
   await page.locator('#search').fill('없는검색어');
   await expect(page.locator('#empty')).toBeVisible();
   await expect(page).toHaveURL(/q=/);
