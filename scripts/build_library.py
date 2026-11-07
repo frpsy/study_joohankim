@@ -25,7 +25,7 @@ def render(rows, materials=None):
         creator=html.escape(row.get('creator','출처 미기재'))
         searchable=html.escape(" ".join([row['title'],row.get('description',''),row.get('creator','')]+row['tags']),quote=True)
         tags=''.join('<span>'+html.escape(x)+'</span>' for x in row['tags'])
-        cards+=f'<a class="lecture" data-video-id="{row["id"]}" data-kind="lecture" data-creator="{html.escape(row.get("creator",""),quote=True)}" data-search="{searchable}" href="lectures/{row["id"]}.html"><div class="meta">'+(f'<time datetime="{row["date"]}">{row["date"].replace("-",".")}</time>' if row.get("date") else '')+f'<span>{html.escape(row["duration"])}</span><span class="creator">{creator}</span></div><h2>{html.escape(row["title"])}</h2><p>{html.escape(row["description"])}</p><div class="tags">{tags}</div><span class="read">핵심 요약과 타임스탬프 →</span></a>'
+        cards+=f'<a class="lecture" data-video-id="{row["id"]}" data-kind="lecture" data-creator="{html.escape(row.get("creator",""),quote=True)}" data-search="{searchable}" href="lectures/{row["id"]}.html"><div class="meta">'+(f'<time datetime="{row["date"]}">{row["date"].replace("-",".")}</time>' if row.get("date") else '')+f'<span>{html.escape(row["duration"])}</span><span class="creator">{creator}</span></div><h2>{html.escape(row["title"])}</h2><p>{html.escape(row["description"])}</p><div class="tags">{tags}</div><span class="read">'+("핵심 요약과 타임스탬프 →" if row.get("creator","김주환")=="김주환" else "상세 요약 →")+'</span></a>'
     # Other material types have their own pages and are not assumed to have a YouTube ID.
     type_names={'book':'책','paper':'연구','article':'글','note':'학습 노트'}
     for item in materials:

@@ -67,6 +67,8 @@ class TimelineDisplayRegression(unittest.TestCase):
         for page in (root/'lectures').glob('*.html'):
             source=page.read_text(encoding='utf-8')
             sections=re.findall(r'<section[^>]*id="(?:lecture-comment|timeline|comment|comment-section)"[^>]*>.*?</section>',source,re.S)
+            if 'id="lecture-detail"' in source:
+                self.assertFalse(sections,page.name);continue
             self.assertTrue(any('<pre' in section for section in sections),page.name)
             for section in sections:
                 self.assertNotRegex(section,r'<(?:ol|ul)\b',page.name)

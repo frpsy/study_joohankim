@@ -1,16 +1,30 @@
 {
-  "video_id": "7R3-3HR6-u4",
-  "image_count": 0,
-  "review_basis": "2026-11-07 yt-dlp(web_embedded)로 확보한 자막 전체를 처음부터 끝까지 순서대로 검토하고 설명란 공식 챕터와 대조함.",
-  "transcript": {
-    "path": "transcripts/7R3-3HR6-u4.en.txt",
-    "raw": "transcripts/7R3-3HR6-u4.ytdlp.en-orig.json3",
-    "language": "en",
-    "caption_type": "YouTube 자동 생성 영어 자막(en-orig)",
-    "characters": 209371,
-    "lines": 4860,
-    "coverage": "영상 시작부터 마지막 스폰서 안내까지 전 구간",
-    "timecodes": "자막 자체 시각과 설명란 공식 챕터"
-  },
-  "human_content_review_required": true
+ "video_id": "7R3-3HR6-u4",
+ "image_count": 0,
+ "review_basis": "2026-11-07 yt-dlp(web_embedded)로 확보한 자막 전체를 처음부터 끝까지 순서대로 검토하고 설명란 공식 챕터와 대조함.",
+ "transcript": {
+  "path": "transcripts/7R3-3HR6-u4.en.txt",
+  "raw": "transcripts/7R3-3HR6-u4.ytdlp.en-orig.json3",
+  "language": "en",
+  "caption_type": "YouTube 자동 생성 영어 자막(en-orig)",
+  "characters": 209371,
+  "lines": 4860,
+  "coverage": "영상 시작부터 마지막 스폰서 안내까지 전 구간",
+  "timecodes": "자막 자체 시각과 설명란 공식 챕터"
+ },
+ "human_content_review_required": true,
+ "detail_summary_review": {
+  "date": "2026-11-07",
+  "basis": "자막 전 구간 정독 후 작성, 웹 원문·초록·보도자료와 대조",
+  "fact_checked": [
+   "Takahashi/Acosta-Rodríguez 2022: 수컷 쥐, 열량 제한 약 10%, 밤 급식 약 35%, 창 2시간·12시간 차이 없음(HHMI 기준)",
+   "Healthy Heroes: 약 150명(강연 155명), 10시간 대 14시간, 3개월, 혈압·혈당·VLDL 크기 1.34nm, 음주 감소(Salk 보도자료 기준)"
+  ],
+  "not_verified": [
+   "RED-S 40%, 성인 절반이 교대 근무형 생활 등 Panda의 추정·통계, 스위스 연구, 앱 연구 수치는 자막 기준이며 원문 미확인",
+   "Cell Metabolism 원문 본문은 열어 보지 못함(보도자료와 DOI 링크만 확인)"
+  ],
+  "grammar_review": "문단 종결, 같은 서술어 반복, 사실·해석 구분을 점검해 수정함",
+  "timestamps": "김주환 외 강의라 제거함"
+ }
 }
