@@ -1,184 +1,200 @@
 {
-  "video_id": "QmOF0crdyRU",
-  "image_count": 0,
-  "review_basis": "2026-10-30 확보된 영어 자동 자막 전체(4,683행, 131,199자)를 처음부터 끝까지 순서대로 8구간 검토. 이 영상에는 슬라이드가 없어 이미지 대조는 해당하지 않음. 공식 소개란·타임스탬프와 공개 연구 출처를 추가 대조함.",
-  "transcript": {
-    "path": "authors/Andrew Huberman/subtitles/Controlling Your Dopamine For Motivation, Focus & Satisfaction.txt",
-    "language": "en",
-    "caption_type": "English transcript; source file does not record whether captions are manual or automatic",
-    "characters": 131199,
-    "lines": 4683,
-    "coverage": "entire file from opening to closing sponsor section; eight contiguous ranges",
-    "timecodes": "Official Huberman Lab episode timestamps used; caption file itself has no timecodes"
+ "video_id": "QmOF0crdyRU",
+ "image_count": 0,
+ "review_basis": "2026-10-30 확보된 영어 자동 자막 전체(4,683행, 131,199자)를 처음부터 끝까지 순서대로 8구간 검토. 이 영상에는 슬라이드가 없어 이미지 대조는 해당하지 않음. 공식 소개란·타임스탬프와 공개 연구 출처를 추가 대조함.",
+ "transcript": {
+  "path": "authors/Andrew Huberman/subtitles/Controlling Your Dopamine For Motivation, Focus & Satisfaction.txt",
+  "language": "en",
+  "caption_type": "English transcript; source file does not record whether captions are manual or automatic",
+  "characters": 131199,
+  "lines": 4683,
+  "coverage": "entire file from opening to closing sponsor section; eight contiguous ranges",
+  "timecodes": "Official Huberman Lab episode timestamps used; caption file itself has no timecodes"
+ },
+ "units": [
+  {
+   "id": "dopamine-1",
+   "source_start": 598,
+   "source_end": 930,
+   "topic": "topic-1",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
   },
-  "units": [
-    {
-      "id": "dopamine-1",
-      "source_start": 598,
-      "source_end": 930,
-      "topic": "topic-1",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-2",
-      "source_start": 930,
-      "source_end": 1680,
-      "topic": "topic-2",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-3",
-      "source_start": 1680,
-      "source_end": 2994,
-      "topic": "topic-3",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-4",
-      "source_start": 2994,
-      "source_end": 4070,
-      "topic": "topic-4",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-5",
-      "source_start": 4070,
-      "source_end": 5325,
-      "topic": "topic-5",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-6",
-      "source_start": 5325,
-      "source_end": 6460,
-      "topic": "topic-6",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-7",
-      "source_start": 6460,
-      "source_end": 7010,
-      "topic": "topic-7",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    },
-    {
-      "id": "dopamine-8",
-      "source_start": 7010,
-      "source_end": 8220,
-      "topic": "topic-8",
-      "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
-      "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
-    }
-  ],
-  "human_content_review_required": true,
-  "duration_seconds": 8220,
-  "content_review": {
-    "reviewed_on": "2026-10-30",
-    "checks": [
-      "자막 전 구간의 주제 흐름과 강의 소개·시간표 일치",
-      "도파민 신호의 부위·측정 수준과 혈장 측정 구별",
-      "강의의 설명 모형과 합의된 연구 근거 구별",
-      "건강·의약품 주장의 한계 및 자가처방 위험 표현",
-      "영상이 슬라이드를 제공하지 않아 화면 자료를 추정하거나 만들지 않음",
-      "해설-시간표 링크·문답·탐색 링크 확인"
-    ],
-    "new_primary_sources": [
-      "https://pmc.ncbi.nlm.nih.gov/articles/PMC8220193/",
-      "https://pubmed.ncbi.nlm.nih.gov/27069377/",
-      "https://pubmed.ncbi.nlm.nih.gov/37788571/",
-      "https://pubmed.ncbi.nlm.nih.gov/10751106/",
-      "https://pmc.ncbi.nlm.nih.gov/articles/PMC5435294/"
-    ]
+  {
+   "id": "dopamine-2",
+   "source_start": 930,
+   "source_end": 1680,
+   "topic": "topic-2",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
   },
-  "original_timeline_verification": {
-    "checked_on": "2026-10-30",
-    "verified_against": "https://www.hubermanlab.com/episode/controlling-your-dopamine-for-motivation-focus-and-satisfaction",
-    "video": "https://www.youtube.com/watch?v=QmOF0crdyRU",
-    "basis": "Official episode chapter list: 0:00 through 2:12:20; exact 40 entries in HTML include 5 summary repeats and 35 detailed entries.",
-    "transcript_status": "Existing transcript is an untimed English text. It cannot validate second-precise boundaries. Official website transcript is marked under human review.",
-    "preview_status": "User-provided iPhone screenshot confirms clickable 46:46 timestamp in YouTube comment and playback at 46:54. Does not prove all timestamps or comment account.",
-    "web_status": "GitHub main source verified; live GitHub Pages fetch unavailable in available web tool. User confirmed visible comment text in earlier turn.",
-    "original_caption_disposition": "Preserved: replacing/deleting existing transcript without a better verified timecoded source risks loss of provenance.",
-    "checks_passed": [
-      "original chapter times crosschecked against official chapter table",
-      "40 timeline entries retained; 5 summary and 35 detailed",
-      "existing English source present",
-      "manual HTML structural inspection: no duplicate ids or broken same-page anchors"
-    ],
-    "remaining_limits": [
-      "No end-to-end browser/mobile automated test",
-      "No timed YouTube caption file obtained; vidIQ insufficient credits",
-      "No proof of all 40 click targets in playback",
-      "Full repository Python regression tests not run in execution environment"
-    ]
+  {
+   "id": "dopamine-3",
+   "source_start": 1680,
+   "source_end": 2994,
+   "topic": "topic-3",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
   },
-  "user_supplied_srt": {
-    "received_on": "2026-10-30",
-    "filename": "[English] Controlling Your Dopamine For Motivation, Focus & Satisfaction.srt",
-    "cue_count": 3258,
-    "last_cue_end": "02:16:29.093",
-    "validation": "All 3258 sequential SRT cue blocks parsed with chronological timestamps, none invalid",
-    "source": "User-uploaded English SRT; not yet checked against the live YouTube player in entirety",
-    "verified_points": [
-      {
-        "time": "00:09:58",
-        "cue": "So let's talk about dopamine."
-      },
-      {
-        "time": "00:15:31",
-        "cue": "So what are the underlying neural circuits?"
-      },
-      {
-        "time": "00:36:58",
-        "cue": "So let's talk about the baseline of dopamine"
-      },
-      {
-        "time": "01:37:56",
-        "cue": "Now, I'd like to talk about the positive aspects"
-      }
-    ],
-    "repository_upload_status": "SRT binary/text attachment not yet committed; audit-only update",
-    "next_step": "Store full SRT from attached file in repository and recheck all chapter anchors",
-    "web_check_date": "2026-10-30",
-    "source_cue_count": 3258,
-    "last_time": "02:16:29.093",
-    "spot_checks": [
-      {
-        "chapter": "9:58",
-        "cue": "9:58",
-        "status": "aligned"
-      },
-      {
-        "chapter": "15:30",
-        "cue": "15:31",
-        "status": "within one second"
-      },
-      {
-        "chapter": "36:58",
-        "cue": "36:58",
-        "status": "aligned"
-      },
-      {
-        "chapter": "1:37:55",
-        "cue": "1:37:56",
-        "status": "within one second"
-      }
-    ],
-    "site_notice": "Added timed-transcript-check to original lecture page",
-    "repository_srt_status": "not uploaded; full SRT present only in conversation upload"
+  {
+   "id": "dopamine-4",
+   "source_start": 2994,
+   "source_end": 4070,
+   "topic": "topic-4",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
   },
-  "layout": "compact",
-  "compact_edit": {
-    "date": "2026-10-31",
-    "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
-    "timeline": "unchanged",
-    "original_images": "Retained in repository and Git history, removed from reading pages per user request."
+  {
+   "id": "dopamine-5",
+   "source_start": 4070,
+   "source_end": 5325,
+   "topic": "topic-5",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+  },
+  {
+   "id": "dopamine-6",
+   "source_start": 5325,
+   "source_end": 6460,
+   "topic": "topic-6",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+  },
+  {
+   "id": "dopamine-7",
+   "source_start": 6460,
+   "source_end": 7010,
+   "topic": "topic-7",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
+  },
+  {
+   "id": "dopamine-8",
+   "source_start": 7010,
+   "source_end": 8220,
+   "topic": "topic-8",
+   "basis": "전체 자막 구간 검토; 공식 Huberman Lab 시간표 및 논문/연구 리뷰 대조",
+   "supplement": "연구 범위를 넘는 인과·건강 해석은 보충 문장으로 구분"
   }
+ ],
+ "human_content_review_required": true,
+ "duration_seconds": 8220,
+ "content_review": {
+  "reviewed_on": "2026-10-30",
+  "checks": [
+   "자막 전 구간의 주제 흐름과 강의 소개·시간표 일치",
+   "도파민 신호의 부위·측정 수준과 혈장 측정 구별",
+   "강의의 설명 모형과 합의된 연구 근거 구별",
+   "건강·의약품 주장의 한계 및 자가처방 위험 표현",
+   "영상이 슬라이드를 제공하지 않아 화면 자료를 추정하거나 만들지 않음",
+   "해설-시간표 링크·문답·탐색 링크 확인"
+  ],
+  "new_primary_sources": [
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC8220193/",
+   "https://pubmed.ncbi.nlm.nih.gov/27069377/",
+   "https://pubmed.ncbi.nlm.nih.gov/37788571/",
+   "https://pubmed.ncbi.nlm.nih.gov/10751106/",
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC5435294/"
+  ]
+ },
+ "original_timeline_verification": {
+  "checked_on": "2026-10-30",
+  "verified_against": "https://www.hubermanlab.com/episode/controlling-your-dopamine-for-motivation-focus-and-satisfaction",
+  "video": "https://www.youtube.com/watch?v=QmOF0crdyRU",
+  "basis": "Official episode chapter list: 0:00 through 2:12:20; exact 40 entries in HTML include 5 summary repeats and 35 detailed entries.",
+  "transcript_status": "Existing transcript is an untimed English text. It cannot validate second-precise boundaries. Official website transcript is marked under human review.",
+  "preview_status": "User-provided iPhone screenshot confirms clickable 46:46 timestamp in YouTube comment and playback at 46:54. Does not prove all timestamps or comment account.",
+  "web_status": "GitHub main source verified; live GitHub Pages fetch unavailable in available web tool. User confirmed visible comment text in earlier turn.",
+  "original_caption_disposition": "Preserved: replacing/deleting existing transcript without a better verified timecoded source risks loss of provenance.",
+  "checks_passed": [
+   "original chapter times crosschecked against official chapter table",
+   "40 timeline entries retained; 5 summary and 35 detailed",
+   "existing English source present",
+   "manual HTML structural inspection: no duplicate ids or broken same-page anchors"
+  ],
+  "remaining_limits": [
+   "No end-to-end browser/mobile automated test",
+   "No timed YouTube caption file obtained; vidIQ insufficient credits",
+   "No proof of all 40 click targets in playback",
+   "Full repository Python regression tests not run in execution environment"
+  ]
+ },
+ "user_supplied_srt": {
+  "received_on": "2026-10-30",
+  "filename": "[English] Controlling Your Dopamine For Motivation, Focus & Satisfaction.srt",
+  "cue_count": 3258,
+  "last_cue_end": "02:16:29.093",
+  "validation": "All 3258 sequential SRT cue blocks parsed with chronological timestamps, none invalid",
+  "source": "User-uploaded English SRT; not yet checked against the live YouTube player in entirety",
+  "verified_points": [
+   {
+    "time": "00:09:58",
+    "cue": "So let's talk about dopamine."
+   },
+   {
+    "time": "00:15:31",
+    "cue": "So what are the underlying neural circuits?"
+   },
+   {
+    "time": "00:36:58",
+    "cue": "So let's talk about the baseline of dopamine"
+   },
+   {
+    "time": "01:37:56",
+    "cue": "Now, I'd like to talk about the positive aspects"
+   }
+  ],
+  "repository_upload_status": "SRT binary/text attachment not yet committed; audit-only update",
+  "next_step": "Store full SRT from attached file in repository and recheck all chapter anchors",
+  "web_check_date": "2026-10-30",
+  "source_cue_count": 3258,
+  "last_time": "02:16:29.093",
+  "spot_checks": [
+   {
+    "chapter": "9:58",
+    "cue": "9:58",
+    "status": "aligned"
+   },
+   {
+    "chapter": "15:30",
+    "cue": "15:31",
+    "status": "within one second"
+   },
+   {
+    "chapter": "36:58",
+    "cue": "36:58",
+    "status": "aligned"
+   },
+   {
+    "chapter": "1:37:55",
+    "cue": "1:37:56",
+    "status": "within one second"
+   }
+  ],
+  "site_notice": "Added timed-transcript-check to original lecture page",
+  "repository_srt_status": "not uploaded; full SRT present only in conversation upload"
+ },
+ "layout": "compact",
+ "compact_edit": {
+  "date": "2026-10-31",
+  "basis": "Existing summary copy, source ledgers and timeline preserved. Mini courses synthesize those materials; no new whole-transcript or slide review claimed.",
+  "timeline": "unchanged",
+  "original_images": "Retained in repository and Git history, removed from reading pages per user request."
+ },
+ "detail_summary_review": {
+  "date": "2026-11-07",
+  "basis": "자막 전 구간 정독 후 작성, 웹 원문·초록·보도자료와 대조",
+  "fact_checked": [
+   "Kolb 2003: 쥐, 암페타민·코카인, 3~3.5개월, 암페타민 효과 약 3.5개월 뒤에도 지속(PMC 초록)",
+   "Šrámek 2000: 32·20·14°C 1시간 침수, 14°C에서 노르아드레날린·도파민 크게 상승, 대사율 약 350%(Europe PMC 초록 요약)",
+   "Lepper 1973: 유치원생 51명, 상장 약속 집단이 이후 그림을 덜 그림(2차 자료)"
+  ],
+  "not_verified": [
+   "도파민 2.5배·3시간 지속 수치는 초록 요약에서 확인하지 못함",
+   "Volkow 2015는 제목만 확인(원문 접속 차단)",
+   "약물별 도파민 증가 배수, 기준선·피크 모형, 보충제 주장은 강연자 설명이며 코카인 수치는 자막이 끊겨 확인하지 못함"
+  ],
+  "grammar_review": "문단 종결, 같은 서술어 반복, 사실·해석 구분을 점검해 수정함",
+  "timestamps": "김주환 외 강의라 제거함"
+ }
 }

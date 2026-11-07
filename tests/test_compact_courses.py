@@ -9,6 +9,7 @@ class CompactCourseChecks(unittest.TestCase):
   records=json.loads((R/'data/lecture_compact.json').read_text())
   for vid,record in records.items():
    source=(R/'lectures'/f'{vid}.html').read_text()
+   if 'timeline' not in record:continue
    text=re.search(r'<pre id="comment"[^>]*><code>(.*?)</code></pre>',source,re.S).group(1)
    self.assertEqual(html.unescape(text),record['timeline'])
    self.assertEqual(source.count('id="comment"'),1)
@@ -20,6 +21,19 @@ class CompactCourseChecks(unittest.TestCase):
    self.assertIn(html.escape("\n".join(record["timeline"].splitlines()[:3])),source)
    self.assertNotIn('class="timeline-preview"',source)
    self.assertNotIn('<img ',source[source.index('<main id="main"'):])
+ def test_only_kim_lectures_have_timestamps_others_have_detailed_summary(self):
+  rows=json.loads((R/'lectures.json').read_text());records=json.loads((R/'data/lecture_compact.json').read_text())
+  for row in rows:
+   vid=row['id'];record=records[vid];source=(R/'lectures'/f'{vid}.html').read_text()
+   if row.get('creator')=='김주환':
+    self.assertIn('timeline',record,vid);self.assertIn('id="lecture-comment"',source,vid);self.assertNotIn('id="lecture-detail"',source,vid)
+   else:
+    self.assertNotIn('timeline',record,vid);self.assertNotIn('id="lecture-comment"',source,vid);self.assertNotIn('timeline-toggle',source,vid)
+    self.assertIn('id="lecture-detail"',source,vid);self.assertGreaterEqual(len(record['detail']),5,vid)
+    self.assertGreaterEqual(len(record['sources']),3,vid)
+    for block in record['detail']:
+     self.assertTrue(block['h'] and block['p'],vid)
+     for text in block['p']:self.assertRegex(text,r'[.)]$',vid+': '+text[:30])
  def test_course_coverage_and_tiers(self):
   rows=json.loads((R/'lectures.json').read_text());courses=json.loads((R/'data/mini_courses.json').read_text())
   self.assertEqual({r['id'] for r in rows},set(courses))

@@ -1,16 +1,30 @@
 {
-  "video_id": "9tRohh0gErM",
-  "image_count": 0,
-  "review_basis": "2026-11-07 yt-dlp(web_embedded)로 확보한 자막 전체를 처음부터 끝까지 순서대로 검토하고 설명란 공식 챕터와 대조함.",
-  "transcript": {
-    "path": "transcripts/9tRohh0gErM.en.txt",
-    "raw": "transcripts/9tRohh0gErM.ytdlp.en.json3",
-    "language": "en",
-    "caption_type": "YouTube 수동 영어 자막(en)",
-    "characters": 180598,
-    "lines": 5210,
-    "coverage": "영상 시작부터 마지막 스폰서 안내까지 전 구간",
-    "timecodes": "자막 자체 시각과 설명란 공식 챕터"
-  },
-  "human_content_review_required": true
+ "video_id": "9tRohh0gErM",
+ "image_count": 0,
+ "review_basis": "2026-11-07 yt-dlp(web_embedded)로 확보한 자막 전체를 처음부터 끝까지 순서대로 검토하고 설명란 공식 챕터와 대조함.",
+ "transcript": {
+  "path": "transcripts/9tRohh0gErM.en.txt",
+  "raw": "transcripts/9tRohh0gErM.ytdlp.en.json3",
+  "language": "en",
+  "caption_type": "YouTube 수동 영어 자막(en)",
+  "characters": 180598,
+  "lines": 5210,
+  "coverage": "영상 시작부터 마지막 스폰서 안내까지 전 구간",
+  "timecodes": "자막 자체 시각과 설명란 공식 챕터"
+ },
+ "human_content_review_required": true,
+ "detail_summary_review": {
+  "date": "2026-11-07",
+  "basis": "자막 전 구간 정독 후 작성, 웹 원문·초록·보도자료와 대조",
+  "fact_checked": [
+   "Hatori 2012: 8시간 창 쥐 실험은 비만 전 시작한 예방 실험이며 34g 대 47g(18주) 확인",
+   "Mauro 2020: 16명(집단당 8명)·4주·자유 테스토스테론 약 27% 감소 확인, 코르티솔은 두 집단 모두 감소라 강연 설명과 달라 본문에 차이를 기록",
+   "Gardner 2018: 609명·12개월·두 식단 모두 비슷한 체중 감량(ScienceDaily 보도 기준)"
+  ],
+  "not_verified": [
+   "Panda·Varady 8시간 연구, Aoyama 2021, 식단·보조제 관련 주장은 자막 기준이며 원문 미확인"
+  ],
+  "grammar_review": "문단 종결, 같은 서술어 반복, 사실·해석 구분을 점검해 수정함",
+  "timestamps": "김주환 외 강의라 제거함"
+ }
 }

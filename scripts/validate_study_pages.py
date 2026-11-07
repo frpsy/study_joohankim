@@ -46,7 +46,7 @@ def inspect(source,ledger,duration):
             if target not in p.ids:errors.append('missing script target: '+target)
     if ledger.get('layout')=='compact':
         if 'data-layout="compact"' not in source:errors.append('compact layout missing')
-        if 'lecture-overview' not in p.ids or 'lecture-comment' not in p.ids:errors.append('compact section missing')
+        if 'lecture-overview' not in p.ids or not ({'lecture-comment','lecture-detail'}&set(p.ids)):errors.append('compact section missing')
         if p.images:errors.append('compact notes must not contain slide gallery')
         for href in p.links:
             if href.startswith('#') and href[1:] not in p.ids:errors.append('broken anchor: '+href)

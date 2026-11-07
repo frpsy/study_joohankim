@@ -33,14 +33,15 @@ def structural_errors(text):
 def lecture_layout_errors(source):
     d=Document();d.feed(source);errors=[]
     compact='data-layout="compact"' in source
-    required=['lecture-overview','lecture-comment'] if compact else ['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
+    timed='id="lecture-comment"' in source
+    required=['lecture-overview','lecture-comment' if timed else 'lecture-detail'] if compact else ['lecture-overview','lecture-mindmap','lecture-details','lecture-practice','lecture-sources','lecture-comment']
     if any(id not in d.ids for id in required):errors.append('standard lecture section missing')
     else:
         positions=[d.ids.index(id) for id in required]
         if positions!=sorted(positions):errors.append('standard lecture section order differs')
     import re
-    if 'data-copy-target=' not in source:errors.append('shared comment copy missing')
-    if not re.search(r'<span[^>]*id="status"[^>]*role="status"[^>]*aria-live="polite"',source):errors.append('accessible copy status missing')
+    if (not compact or timed) and 'data-copy-target=' not in source:errors.append('shared comment copy missing')
+    if (not compact or timed) and not re.search(r'<span[^>]*id="status"[^>]*role="status"[^>]*aria-live="polite"',source):errors.append('accessible copy status missing')
     if not compact and 'data-expand-scope="#lecture-details"' not in source:errors.append('shared expand controls missing')
     return errors
 
@@ -67,6 +68,9 @@ def validate(root):
             if 'id="why"' in source or '이 강의에서 얻을 수 있는 것' in source:problems.append('separate goals block reintroduced; merge it into the hero intro')
             m=re.search(r'</h1><p[^>]*>(.*?)</p>',source)
             if 'data-layout="compact"' not in source and (not m or len(m.group(1))<150):problems.append('hero intro must state why it matters and what the lecture gives')
+        if p.parent.name=='lectures':
+            kim=next((r.get('creator')=='김주환' for r in rows if r['id']==p.stem),True)
+            if kim!=('id="lecture-comment"' in source):problems.append('timestamps belong only to 김주환 lectures; others need a detailed summary')
         errors.extend(p.name+': '+x for x in problems)
     for p,d in docs.items():
         for href in d.hrefs+d.styles+d.scripts:
