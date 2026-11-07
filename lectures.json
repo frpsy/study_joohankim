@@ -61,6 +61,22 @@
     "kind": "lecture"
   },
   {
+    "id": "7R3-3HR6-u4",
+    "date": "2023-03-13",
+    "title": "식사 시각을 일정하게 지키면 몸의 시계가 맞는다",
+    "duration": "2시간 49분",
+    "description": "시간제한 식사와 칼로리 제한, 식사 시각과 생체 시계, 너무 짧은 식사 창의 위험, 교대 근무 소방관 연구",
+    "tags": [
+      "시간제한 식사",
+      "생체 시계",
+      "교대 근무",
+      "수면"
+    ],
+    "creator": "Satchin Panda",
+    "kind": "lecture",
+    "video_url": "https://www.youtube.com/watch?v=7R3-3HR6-u4"
+  },
+  {
     "id": "ZCty0wvogDo",
     "date": "2023-01-29",
     "title": "수용 - 무슨 일이 일어나든",
@@ -89,6 +105,22 @@
     ],
     "creator": "김주환",
     "kind": "lecture"
+  },
+  {
+    "id": "9tRohh0gErM",
+    "date": "2021-10-11",
+    "title": "언제 먹느냐가 단식의 효과를 정한다",
+    "duration": "2시간 26분",
+    "description": "식사 창의 위치와 길이, 단식 상태가 시작되는 시점, 단식을 깨는 것과 호르몬·간 건강에 미치는 영향",
+    "tags": [
+      "간헐적 단식",
+      "시간제한 식사",
+      "혈당",
+      "간 건강"
+    ],
+    "creator": "Andrew Huberman",
+    "kind": "lecture",
+    "video_url": "https://www.youtube.com/watch?v=9tRohh0gErM"
   },
   {
     "id": "QmOF0crdyRU",

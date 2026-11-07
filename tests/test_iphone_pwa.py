@@ -21,7 +21,7 @@ class IPhonePWAContract(unittest.TestCase):
         self.assertFalse((ROOT/'ios').exists())
 
     def test_iphone_and_desktop_pages_share_app_theme(self):
-        self.assertEqual(len(list((ROOT/'lectures').glob('*.html'))),7)
+        self.assertEqual(len(list((ROOT/'lectures').glob('*.html'))),9)
         pages=[ROOT/'index.html',ROOT/'offline.html']+sorted((ROOT/'lectures').glob('*.html'))
         for page in pages:
             with self.subTest(path=str(page.relative_to(ROOT))):
